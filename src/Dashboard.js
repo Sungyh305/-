@@ -1,8 +1,10 @@
 import { Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
+import { useNavigation } from '@react-navigation/native'
 import { firebase } from '../config'
 
 const Dashboard = () => {
+    const navigation = useNavigation();
     const [name, setName] = useState('')
 
     // change the passowrd
@@ -39,6 +41,14 @@ const Dashboard = () => {
             >
                 <Text style = {{fontSize:22, fontWeight: 'bold'}}>
                     Change Password
+                </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => navigation.navigate('Home')}
+                style = {styles.button}
+            >
+                <Text style = {{fontSize:22, fontWeight: 'bold'}}>
+                    Go to Home
                 </Text>
             </TouchableOpacity>
             <TouchableOpacity

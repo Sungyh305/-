@@ -3,7 +3,7 @@ import { View, Text, Button } from 'react-native';
 import * as Location from 'expo-location';
 import io from 'socket.io-client';
 
-const App = () => {
+const Home = () => {
   // 위치, 오류 메시지, 수신된 위치 데이터, 소켓 상태를 관리하는 상태 변수를 선언
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -12,7 +12,7 @@ const App = () => {
 
   // 처음 렌더링될 때 소켓을 연결하고 위치 권한을 요청
   useEffect(() => {
-    const socketInstance = io('http://[IPv4]:3000'); //cmd창에서 ipconfig로 IPv4 주소로 변경
+    const socketInstance = io('http://10.20.64.50:3000'); //cmd창에서 ipconfig로 IPv4 주소로 변경
     setSocket(socketInstance);
   
     return () => {
@@ -100,4 +100,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Home;
