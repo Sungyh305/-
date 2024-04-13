@@ -28,10 +28,11 @@ function App(){
   }, []);
 
   if (initializing) return null;
-
+  
+  // headerMode="none" 과 mode="modal"이 더 이상 사용되지 않아서 디음과 같이 수정했습니다.
   return (
     <NavigationContainer>
-      <RootStack.Navigator mode="modal" headerMode="none">
+      <RootStack.Navigator screenOptions={{ presentation: "modal", headerShown: false }}>
         {!user ? (
           <RootStack.Screen
             name="Auth"

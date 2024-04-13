@@ -12,7 +12,7 @@ const Home = () => {
 
   // 처음 렌더링될 때 소켓을 연결하고 위치 권한을 요청
   useEffect(() => {
-    const socketInstance = io('http://10.20.64.50:3000'); //cmd창에서 ipconfig로 IPv4 주소로 변경
+    const socketInstance = io('http://[IPv4주소]:3000'); //cmd창에서 ipconfig로 IPv4 주소로 변경
     setSocket(socketInstance);
   
     return () => {
@@ -34,6 +34,7 @@ const Home = () => {
       try {
         let location = await Location.getCurrentPositionAsync({});
         setLocation(location);
+        setErrorMsg(null);
       } catch (error) {
         setErrorMsg('위치 데이터를 가져올 수 없습니다.');
       }
