@@ -1,18 +1,20 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState, useEffect } from 'react';
 import { firebase } from './config';
 
-import Login from "./src/Login";
-import Registration from "./src/Registration";
-import Dashboard from "./src/Dashboard";
-import Home from "./src/Home";
-import Header from "./components/Header";
+import Login from './src/Login';
+import Registration from './src/Registration';
+import Dashboard from './src/Dashboard';
+import Home from './src/Home';
+import Header from './components/Header';
+
+import TmapScreen from './src/TmapScreen';
 
 const Stack = createStackNavigator();
 const RootStack = createStackNavigator();
 
-function App(){
+function App() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
 
@@ -28,21 +30,17 @@ function App(){
   }, []);
 
   if (initializing) return null;
-  
+
   // headerMode="none" 과 mode="modal"이 더 이상 사용되지 않아서 디음과 같이 수정했습니다.
   return (
     <NavigationContainer>
-      <RootStack.Navigator screenOptions={{ presentation: "modal", headerShown: false }}>
+      <RootStack.Navigator
+        screenOptions={{ presentation: 'modal', headerShown: false }}
+      >
         {!user ? (
-          <RootStack.Screen
-            name="Auth"
-            component={AuthStackScreen}
-          />
+          <RootStack.Screen name="Auth" component={AuthStackScreen} />
         ) : (
-          <RootStack.Screen
-            name="App"
-            component={AppStackScreen}
-          />
+          <RootStack.Screen name="App" component={AppStackScreen} />
         )}
       </RootStack.Navigator>
     </NavigationContainer>
@@ -62,8 +60,8 @@ const AuthStackScreen = () => (
           borderBottomRightRadius: 50,
           backgroundColor: '#00e4d0',
           shadowColor: '#000',
-          elevation: 25
-        }
+          elevation: 25,
+        },
       }}
     />
     <Stack.Screen
@@ -77,8 +75,8 @@ const AuthStackScreen = () => (
           borderBottomRightRadius: 50,
           backgroundColor: '#00e4d0',
           shadowColor: '#000',
-          elevation: 25
-        }
+          elevation: 25,
+        },
       }}
     />
   </Stack.Navigator>
@@ -97,8 +95,8 @@ const AppStackScreen = () => (
           borderBottomRightRadius: 50,
           backgroundColor: '#00e4d0',
           shadowColor: '#000',
-          elevation: 25
-        }
+          elevation: 25,
+        },
       }}
     />
     <Stack.Screen
@@ -112,8 +110,24 @@ const AppStackScreen = () => (
           borderBottomRightRadius: 50,
           backgroundColor: '#00e4d0',
           shadowColor: '#000',
-          elevation: 25
-        }
+          elevation: 25,
+        },
+      }}
+    />
+
+    <Stack.Screen
+      name="TmapScreen"
+      component={TmapScreen}
+      options={{
+        headerTitle: () => <Header name="TmapScreen" />,
+        headerStyle: {
+          height: 150,
+          borderBottomLeftRadius: 50,
+          borderBottomRightRadius: 50,
+          backgroundColor: '#00e4d0',
+          shadowColor: '#000',
+          elevation: 25,
+        },
       }}
     />
   </Stack.Navigator>
