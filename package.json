@@ -1,0 +1,15 @@
+{
+  "name": "where-are-you-go",
+  "version": "1.0.0",
+  "description": "",
+  "main": "App.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react-native": "0.73.6",
+    "react": "18.2.0"
+  }
+}
