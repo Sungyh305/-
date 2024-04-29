@@ -27,9 +27,10 @@ io.on('connection', (socket) => {
   socket.on('sendLocation', (locationData) => {
     console.log('클라이언트로부터 위치 데이터를 수신했습니다:', locationData);
 
-    // 위치 데이터를 처리한 후 해당 클라이언트에게 위치 정보를 다시 전송
-    io.to(socket.id).emit('locationUpdate', locationData);
-    console.log('locationUpdate 이벤트가 발생했습니다:', locationData);
+    // 연결된 모든 클라이언트에게 위치 데이터 전송
+    io.emit('updateLocation', locationData);
+    console.log('모든 클라이언트에게 위치 데이터를 전송했습니다.');
+    console.log('---------------------------------------------');
   });
 
   // 클라이언트 연결이 해제될 때 실행되는 이벤트 핸들러를 정의
@@ -39,6 +40,11 @@ io.on('connection', (socket) => {
     delete connectedClients[clientId];
   });
 });
+
+// 소켓 클라이언트를 ngrok이 제공하는 URL로 초기화
+const socket = require('socket.io-client')(
+  'https://da23-211-178-140-94.ngrok-free.app' //ngrok 킬 떄마다 변경
+);
 
 // 서버를 시작하고 지정된 포트에서 대기
 const port = process.env.PORT || 3000;

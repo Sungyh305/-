@@ -7,11 +7,12 @@ import io from 'socket.io-client';
 const TmapScreen = () => {
   // 위치, 소켓 상태를 관리하는 상태 변수를 선언
   const [location, setLocation] = useState(null);
+  const [serverLocation, setServerLocation] = useState(null);
   const [socket, setSocket] = useState(null);
 
   // 처음 렌더링될 때 소켓을 연결하고 위치 권한을 요청
   useEffect(() => {
-    const socketInstance = io('http://[IPv4 주소]:3000'); ////cmd창에서 ipconfig로 IPv4 주소로 변경
+    const socketInstance = io('https://da23-211-178-140-94.ngrok-free.app'); //ngrok 킬 떄마다 변경
     setSocket(socketInstance);
 
     return () => {
@@ -32,7 +33,9 @@ const TmapScreen = () => {
 
       try {
         // 현재 위치 가져오기
-        let location = await Location.getCurrentPositionAsync({});
+        let location = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.BestForNavigation,
+        });
         setLocation(location);
 
         // 소켓이 연결되어 있고 연결이 끊어지지 않은 경우에만 위치 데이터를 서버로 전송
@@ -62,13 +65,13 @@ const TmapScreen = () => {
       <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>simpleMap</title>
-        <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=[API키 입력]"></script>
+        <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=[api키]"></script>
         <script type="text/javascript">
           var map, marker;
 
           function initTmap() {
             map = new Tmapv2.Map('map_div', {
-              center: new Tmapv2.LatLng(37.5652045, 126.98702028),
+              center: new Tmapv2.LatLng(36.800193, 127.070862),
               width: '100%',
               height: '100%',
               zoom: 18,
@@ -88,10 +91,26 @@ const TmapScreen = () => {
                 : ''
             }
           }
+
+          // Socket.IO로부터 위치 데이터를 받아와서 지도에 마커 표시 -> 이거 아직 개발 중입니다.(여기부터 script 전까지는 작동 안됨)
+          var socket = io('https://da23-211-178-140-94.ngrok-free.app');
+          socket.on('updateLocation', function(locationData) {
+            var lat = locationData.latitude;
+            var lon = locationData.longitude;
+            marker = new Tmapv2.Marker({
+              position: new Tmapv2.LatLng(lat, lon),
+              map: map,
+            });
+            map.setCenter(new Tmapv2.LatLng(lat, lon));
+
+            // 서버로부터 전송받은 위치를 저장하여 화면에 표시
+            document.getElementById('serverLocation').innerHTML = '서버로부터 전송받은 위치: 위도 ' + lat + ', 경도 ' + lon;
+          });
         </script>
       </head>
       <body onload="initTmap()">
         <div id="map_div"></div>
+        <div id="serverLocation"></div> <!-- 서버로부터 전송받은 위치를 표시할 영역 -->
       </body>
     </html>
   `;
