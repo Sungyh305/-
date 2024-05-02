@@ -38,6 +38,7 @@ const Login = () => {
                     onChangeText={(email) => setEmail(email)}
                     autoCapitalize="none"
                     autoCorrect={false}
+                    keyboardType = "email-address"
                 />
                 <TextInput
                     style={styles.textInput}
@@ -59,7 +60,7 @@ const Login = () => {
                 style={{marginTop: 20}}
             >
                 <Text style={{fontWeight: 'bold', fontSize: 16}}>
-                    Don't have an account? Register Now
+                    회원 가입하기
                 </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -67,7 +68,7 @@ const Login = () => {
                 style={{marginTop: 20}}
             >
                 <Text style={{fontWeight: 'bold', fontSize: 16}}>
-                    Forget Password?
+                    비밀번호 바꾸기
                 </Text>
             </TouchableOpacity>
         </View>
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     textInput: {
         paddingTop: 20,
         paddingBottom: 10,
-        width: 400,
+        width: 300,
         fontSize: 20,
         borderBottomWidth: 1,
         borderBottomColor: '#000',
@@ -96,9 +97,9 @@ const styles = StyleSheet.create({
         marginTop: 50,
         height: 70,
         width: 250,
-        backgroundColor: '#026efd',
+        backgroundColor: '#86CC57',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 50,
+        borderRadius: 20,
     }
 })

@@ -6,8 +6,7 @@ import { firebase } from './config';
 import Login from "./src/Login";
 import Registration from "./src/Registration";
 import Dashboard from "./src/Dashboard";
-import Home from "./src/Home";
-import Header from "./components/Header";
+import TmapScreen from './src/TmapScreen';
 
 const Stack = createStackNavigator();
 const RootStack = createStackNavigator();
@@ -31,17 +30,13 @@ function App(){
 
   return (
     <NavigationContainer>
-      <RootStack.Navigator mode="modal" headerMode="none">
+      <RootStack.Navigator
+        screenOptions={{ presentation: 'modal', headerShown: false }}
+      >
         {!user ? (
-          <RootStack.Screen
-            name="Auth"
-            component={AuthStackScreen}
-          />
+          <RootStack.Screen name="Auth" component={AuthStackScreen} />
         ) : (
-          <RootStack.Screen
-            name="App"
-            component={AppStackScreen}
-          />
+          <RootStack.Screen name="App" component={AppStackScreen} />
         )}
       </RootStack.Navigator>
     </NavigationContainer>
@@ -53,32 +48,10 @@ const AuthStackScreen = () => (
     <Stack.Screen
       name="Login"
       component={Login}
-      options={{
-        headerTitle: () => <Header name="Login" />,
-        headerStyle: {
-          height: 150,
-          borderBottomLeftRadius: 50,
-          borderBottomRightRadius: 50,
-          backgroundColor: '#00e4d0',
-          shadowColor: '#000',
-          elevation: 25
-        }
-      }}
     />
     <Stack.Screen
       name="Registration"
       component={Registration}
-      options={{
-        headerTitle: () => <Header name="Registration" />,
-        headerStyle: {
-          height: 150,
-          borderBottomLeftRadius: 50,
-          borderBottomRightRadius: 50,
-          backgroundColor: '#00e4d0',
-          shadowColor: '#000',
-          elevation: 25
-        }
-      }}
     />
   </Stack.Navigator>
 );
@@ -88,32 +61,10 @@ const AppStackScreen = () => (
     <Stack.Screen
       name="Dashboard"
       component={Dashboard}
-      options={{
-        headerTitle: () => <Header name="Dashboard" />,
-        headerStyle: {
-          height: 150,
-          borderBottomLeftRadius: 50,
-          borderBottomRightRadius: 50,
-          backgroundColor: '#00e4d0',
-          shadowColor: '#000',
-          elevation: 25
-        }
-      }}
     />
     <Stack.Screen
-      name="Home"
-      component={Home}
-      options={{
-        headerTitle: () => <Header name="Home" />,
-        headerStyle: {
-          height: 150,
-          borderBottomLeftRadius: 50,
-          borderBottomRightRadius: 50,
-          backgroundColor: '#00e4d0',
-          shadowColor: '#000',
-          elevation: 25
-        }
-      }}
+      name="TmapScreen"
+      component={TmapScreen}
     />
   </Stack.Navigator>
 );

@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     textInput: {
         paddingTop: 20,
         paddingBottom: 10,
-        width: 400,
+        width: 320,
         fontSize: 20,
         borderBottomWidth: 1,
         borderBottomColor: '#000',
@@ -107,9 +107,9 @@ const styles = StyleSheet.create({
         marginTop: 50,
         height: 70,
         width: 250,
-        backgroundColor: '#026efd',
+        backgroundColor: '#86CC57',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 50,
+        borderRadius: 20,
     }
 })
