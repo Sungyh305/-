@@ -38,7 +38,7 @@ const Dashboard = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-        Hello, {name.firstName}
+        어디가? {name.firstName}
       </Text>
       <TouchableOpacity
         onPress={() => {
@@ -47,14 +47,14 @@ const Dashboard = () => {
         style={styles.button}
       >
         <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
-          Change Password
+          비밀번호 변경
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate('TmapScreen')}
         style={styles.button}
       >
-        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>Go to Tmap</Text>
+        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>지도 확인</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
@@ -62,7 +62,7 @@ const Dashboard = () => {
         }}
         style={styles.button}
       >
-        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>Sign out</Text>
+        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>종료하기</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
