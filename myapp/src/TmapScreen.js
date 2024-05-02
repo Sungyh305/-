@@ -12,7 +12,7 @@ const TmapScreen = () => {
 
   // 처음 렌더링될 때 소켓을 연결하고 위치 권한을 요청
   useEffect(() => {
-    const socketInstance = io('https://da23-211-178-140-94.ngrok-free.app'); //ngrok 킬 떄마다 변경
+    const socketInstance = io('https://fc4a-61-34-253-115.ngrok-free.app'); //ngrok 킬 떄마다 변경
     setSocket(socketInstance);
 
     return () => {
@@ -65,7 +65,7 @@ const TmapScreen = () => {
       <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>simpleMap</title>
-        <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=[api키]"></script>
+        <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=[r9AX2QesAX2YI2rsNa43sawPBD9D8XVK3XNnxMYK]"></script>
         <script type="text/javascript">
           var map, marker;
 
