@@ -1,0 +1,47 @@
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+
+# Native
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+# 구글 api 키
+# AIzaSyDcT2FPLOsWCCgeKJgH0MVT9ehPiWe4IxI
+
+# Tmap api 키
+#zGoql4ySX02CXzAzL9xVx5cMHVepqtwV19WnsxdC
+
+# ngrok 실행 예시
+# ngrok http --domain=profound-leech-engaging.ngrok-free.app 3000
+
+# firebase 오류 해결 -> npm install firebase@lateset
+# 구글 api 추가 -> npm install react-native-maps

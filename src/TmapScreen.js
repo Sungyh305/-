@@ -1,3 +1,5 @@
+// Tmap에서 GoogleMap으로 변경 고려중
+
 import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { WebView } from 'react-native-webview';
@@ -12,7 +14,7 @@ const TmapScreen = () => {
 
   // 처음 렌더링될 때 소켓을 연결하고 위치 권한을 요청
   useEffect(() => {
-    const socketInstance = io('https://da23-211-178-140-94.ngrok-free.app'); //ngrok 킬 떄마다 변경
+    const socketInstance = io('https://profound-leech-engaging.ngrok-free.app'); //ngrok 개인 pc 주소
     setSocket(socketInstance);
 
     return () => {
@@ -65,7 +67,7 @@ const TmapScreen = () => {
       <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>simpleMap</title>
-        <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=[api키]"></script>
+        <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=[api key]"></script>
         <script type="text/javascript">
           var map, marker;
 
@@ -93,7 +95,7 @@ const TmapScreen = () => {
           }
 
           // Socket.IO로부터 위치 데이터를 받아와서 지도에 마커 표시 -> 이거 아직 개발 중입니다.(여기부터 script 전까지는 작동 안됨)
-          var socket = io('https://da23-211-178-140-94.ngrok-free.app');
+          var socket = io('https://profound-leech-engaging.ngrok-free.app');  //ngrok 개인 pc 주소
           socket.on('updateLocation', function(locationData) {
             var lat = locationData.latitude;
             var lon = locationData.longitude;

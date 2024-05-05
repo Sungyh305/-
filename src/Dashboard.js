@@ -32,6 +32,9 @@ const Dashboard = () => {
         } else {
           console.log('User does not exist');
         }
+      })
+      .catch((error) => {
+        console.error('Error fetching user data:', error);
       });
   }, []);
 
@@ -57,6 +60,14 @@ const Dashboard = () => {
         <Text style={{ fontSize: 22, fontWeight: 'bold' }}>Go to Tmap</Text>
       </TouchableOpacity>
       <TouchableOpacity
+        onPress={() => navigation.navigate('GoogleMap')}
+        style={styles.button}
+      >
+        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
+          Go to GoogleMap
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
         onPress={() => {
           firebase.auth().signOut();
         }}
@@ -80,9 +91,9 @@ const styles = StyleSheet.create({
     marginTop: 50,
     height: 70,
     width: 250,
-    backgroundColor: '#026efd',
+    backgroundColor: '#86CC57',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 50,
+    borderRadius: 20,
   },
 });
