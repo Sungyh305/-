@@ -5,7 +5,7 @@ import * as Location from 'expo-location';
 import socketIOClient from 'socket.io-client';
 
 const SERVER_URL = 'https://profound-leech-engaging.ngrok-free.app'; //ngrok 개인 pc 주소
-const customMarkerImage = require('../assets/bus.png');
+const customMarkerImage = require('../assets/bus_apk.png');
 
 const GoogleMap = ({ navigation }) => {
   // 현재 위치와 브로드캐스트된 위치를 상태로 관리
