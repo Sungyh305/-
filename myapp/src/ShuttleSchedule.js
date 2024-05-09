@@ -6,7 +6,7 @@ const ShuttleSchedule = () => {
   const [showStationList, setShowStationList] = useState(false); // 역 선택 리스트 모달 표시 여부
   const [stations] = useState([
     { id: 1, name: '천안아산역' },
-    { id: 2, name: '아산역' },
+    { id: 2, name: '천안역' },
     // 다른 역 추가
   ]);
 
@@ -23,22 +23,40 @@ const ShuttleSchedule = () => {
 
   // 시간표 데이터 예시
   const scheduleData = [
-    { id: 1, station: '천안아산역', time: '8:10', destination: '아산역', arrivalTime: '8:25', status: '운행 중' },
-    { id: 2, station: '아산역', time: '8:20', destination: '천안아산역', arrivalTime: '8:35', status: '운행 중' },
+    { 
+      id: 1, 
+      station: '천안아산역', 
+      time: '8:10', 
+      destination: '아산역', 
+      arrivalTime: '8:25', 
+      status: '운행 중' 
+    },
+    { 
+      id: 2, 
+      station: '천안역', 
+      time: '8:20', 
+      destination: '천안아산역', 
+      arrivalTime: '8:35', 
+      status: '운행 중' 
+    },
     // 다른 시간표 데이터 추가
   ];
 
   // 선택된 역의 시간표만 필터링하는 함수
   const filteredScheduleData = scheduleData.filter(item => item.station === stations.find(station => station.id === selectedStation).name);
 
+  // 선택된 역에 따른 헤더 목록
+  const headers = {
+    1: ['아산 캠퍼스', '천안아산역', '아산 캠퍼스', '운행 여부'],
+    2: ['아산 캠퍼스', '천안역', '하이렉스파 건너편', '용암 마을', '아산 캠퍼스', '운행 여부'],
+  };
+
   // 시간표 아이템 렌더링 함수
   const renderScheduleItem = ({ item }) => (
     <View style={styles.row}>
-      <Text style={styles.cell}>{item.station}</Text>
-      <Text style={styles.cell}>{item.time}</Text>
-      <Text style={styles.cell}>{item.destination}</Text>
-      <Text style={styles.cell}>{item.arrivalTime}</Text>
-      <Text style={styles.cell}>{item.status}</Text>
+      {headers[selectedStation].map((header, index) => (
+        <Text key={index} style={styles.cell}>{header}</Text>
+      ))}
     </View>
   );
 
@@ -51,11 +69,9 @@ const ShuttleSchedule = () => {
 
       {/* 셔틀 시간표 헤더 */}
       <View style={[styles.row, { marginTop: 30 }]}>
-        <Text style={styles.cellHeader}>출발지</Text>
-        <Text style={styles.cellHeader}></Text>
-        <Text style={styles.cellHeader}>도착 및 출발</Text>
-        <Text style={styles.cellHeader}></Text>
-        <Text style={styles.cellHeader}>운행 여부</Text>
+        {headers[selectedStation].map((header, index) => (
+          <Text key={index} style={styles.cellHeader}>{header}</Text>
+        ))}
       </View>
 
       {/* 시간표 목록 */}
