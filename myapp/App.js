@@ -7,8 +7,8 @@ import Login from './src/Login';
 import Registration from './src/Registration';
 import Dashboard from './src/Dashboard';
 import Header from './components/Header';
-
 import TmapScreen from './src/TmapScreen';
+import ShuttleSchedule from './src/ShuttleSchedule';
 
 const Stack = createStackNavigator();
 const RootStack = createStackNavigator();
@@ -105,6 +105,22 @@ const AppStackScreen = () => (
       component={TmapScreen}
       options={{
         headerTitle: () => <Header name="TmapScreen" />,
+        headerStyle: {
+          height: 150,
+          borderBottomLeftRadius: 50,
+          borderBottomRightRadius: 50,
+          backgroundColor: '#00e4d0',
+          shadowColor: '#000',
+          elevation: 25,
+        },
+      }}
+    />
+
+<Stack.Screen
+      name="ShuttleSchedule"
+      component={ShuttleSchedule}
+      options={{
+        headerTitle: () => <Header name="버스 시간표" />,
         headerStyle: {
           height: 150,
           borderBottomLeftRadius: 50,
