@@ -6,7 +6,6 @@ import { firebase } from './config';
 import Login from './src/Login';
 import Registration from './src/Registration';
 import Dashboard from './src/Dashboard';
-import Home from './src/Home';
 import Header from './components/Header';
 
 import TmapScreen from './src/TmapScreen';
@@ -99,21 +98,7 @@ const AppStackScreen = () => (
         },
       }}
     />
-    <Stack.Screen
-      name="Home"
-      component={Home}
-      options={{
-        headerTitle: () => <Header name="Home" />,
-        headerStyle: {
-          height: 150,
-          borderBottomLeftRadius: 50,
-          borderBottomRightRadius: 50,
-          backgroundColor: '#00e4d0',
-          shadowColor: '#000',
-          elevation: 25,
-        },
-      }}
-    />
+  
 
     <Stack.Screen
       name="TmapScreen"
