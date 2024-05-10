@@ -45,3 +45,6 @@ yarn-error.*
 
 # firebase 오류 해결 -> npm install firebase@lateset
 # 구글 api 추가 -> npm install react-native-maps
+
+# 0510
+# npm install @react-native-picker/picker --save

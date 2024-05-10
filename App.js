@@ -6,8 +6,6 @@ import { firebase } from './config';
 import Login from './src/Login';
 import Registration from './src/Registration';
 import Dashboard from './src/Dashboard';
-
-import TmapScreen from './src/TmapScreen';
 import GoogleMap from './src/GoogleMap';
 
 const Stack = createStackNavigator();
@@ -54,7 +52,6 @@ const AuthStackScreen = () => (
 const AppStackScreen = () => (
   <Stack.Navigator>
     <Stack.Screen name="Dashboard" component={Dashboard} />
-    <Stack.Screen name="TmapScreen" component={TmapScreen} />
     <Stack.Screen name="GoogleMap" component={GoogleMap} />
   </Stack.Navigator>
 );

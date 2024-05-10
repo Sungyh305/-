@@ -11,14 +11,24 @@ const io = socketIo(server); // HTTP 서버를 기반으로 소켓 서버 생성
 io.on('connection', (socket) => {
   console.log('사용자(소켓) 연결');
 
-  // 클라이언트로부터 위치 정보를 받았을 때
   socket.on('userLocation', (location) => {
     console.log('User location:', location);
+    const { identifier, latitude, longitude } = location;
     // 위치 정보를 보낸 클라이언트를 제외한 모든 클라이언트에게 해당 위치 정보를 브로드캐스팅
-    socket.broadcast.emit('broadcastLocation', location);
+    socket.broadcast.emit('broadcastLocation', {
+      identifier,
+      latitude,
+      longitude,
+    });
   });
 
-  // 클라이언트와의 연결이 끊어졌을 때
+  // 사용자 연결 종료 시
+  socket.on('disconnectUser', (userId) => {
+    console.log(`사용자 ${userId} 연결 종료`);
+    // 클라이언트에게 해당 사용자의 식별자를 전송하여 마커 제거 요청 -> apk 만들어서 테스트 해봐야 함
+    io.emit('removeMarker', userId);
+  });
+
   socket.on('disconnect', () => {
     console.log('사용자 연결 종료');
   });
