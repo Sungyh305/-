@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { firebase } from '../config'
 
@@ -7,6 +7,11 @@ const Login = () => {
     const navigation = useNavigation();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    useEffect(() => {
+        setEmail('ghkdwlgh99@gmail.com');
+        setPassword('qwe123');
+    }, []);
 
     const loginUser = async (email, password) => {
         try {
@@ -20,21 +25,17 @@ const Login = () => {
     const forgetPassword = () => {
         firebase.auth().sendPasswordResetEmail(email)
         .then(() => {
-            alert("Password reset email sent")
+            alert("이메일을 정확히 입력해주세요.")
         }).catch((error) => {
             alert(error)
         })
     }
-
     return (
         <View style={styles.container}>
-            <Text style={{fontWeight: 'bold', fontSize: 26}}>
-                Login
-            </Text>
             <View style={{marginTop: 40}}>
                 <TextInput
                     style={styles.textInput}
-                    placeholder="Email"
+                    placeholder="email"
                     onChangeText={(email) => setEmail(email)}
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -42,7 +43,7 @@ const Login = () => {
                 />
                 <TextInput
                     style={styles.textInput}
-                    placeholder="Password"
+                    placeholder="password"
                     onChangeText={(password) => setPassword(password)}
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -53,7 +54,7 @@ const Login = () => {
                 onPress={() => loginUser(email, password)}
                 style={styles.button}
             >
-                <Text style={{fontWeight: 'bold', fontSize: 22}}>Login</Text>
+                <Text style={{fontWeight: 'bold', fontSize: 22}}>로그인</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => navigation.navigate('Registration')}

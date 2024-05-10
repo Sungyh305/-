@@ -1,21 +1,20 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState, useEffect } from 'react';
 import { firebase } from './config';
 
-import Login from "./src/Login";
-import Registration from "./src/Registration";
-import Dashboard from "./src/Dashboard";
-import TmapScreen from './src/TmapScreen';
+import Login from './src/Login';
+import Registration from './src/Registration';
+import Dashboard from './src/Dashboard';
+import GoogleMap from './src/GoogleMap';
 
 const Stack = createStackNavigator();
 const RootStack = createStackNavigator();
 
-function App(){
+function App() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
 
-  //Handle user state changes
   function onAuthStateChanged(user) {
     setUser(user);
     if (initializing) setInitializing(false);
@@ -45,27 +44,15 @@ function App(){
 
 const AuthStackScreen = () => (
   <Stack.Navigator>
-    <Stack.Screen
-      name="Login"
-      component={Login}
-    />
-    <Stack.Screen
-      name="Registration"
-      component={Registration}
-    />
+    <Stack.Screen name= "Login" component={Login} />
+    <Stack.Screen name="Registration" component={Registration} />
   </Stack.Navigator>
 );
 
 const AppStackScreen = () => (
   <Stack.Navigator>
-    <Stack.Screen
-      name="Dashboard"
-      component={Dashboard}
-    />
-    <Stack.Screen
-      name="TmapScreen"
-      component={TmapScreen}
-    />
+    <Stack.Screen name="Dashboard" component={Dashboard} />
+    <Stack.Screen name="GoogleMap" component={GoogleMap} />
   </Stack.Navigator>
 );
 
