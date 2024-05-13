@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, FlatList } from 'react-native';
 
 const ShuttleSchedule = ({ navigation }) => {
   const [selectedStation, setSelectedStation] = useState(1); // 초기 선택된 역의 id
   const [showStationList, setShowStationList] = useState(false); // 역 선택 리스트 모달 표시 여부
+  const [currentTime, setCurrentTime] = useState(new Date()); // 현재 시간 상태
+
+  useEffect(() => {
+    // 매 분마다 현재 시간 업데이트
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000); // 1분마다 업데이트
+
+    return () => clearInterval(timer); // 언마운트 시 타이머 정리
+  }, []);
+
   const [stations] = useState([
     { id: 1, name: '천안아산역' },
     { id: 2, name: '천안역' },
@@ -570,17 +581,40 @@ const ShuttleSchedule = ({ navigation }) => {
   const filteredScheduleData = scheduleData.filter(item => item.id === selectedStation);
 
   // 시간표 아이템 렌더링 함수
-  const renderScheduleItem = ({ item }) => (
+const renderScheduleItem = ({ item }) => {
+  // 현재 시간과 비교하여 스타일 조정
+  let textStyle = styles.cell;
+  if (item.time !== 'X') {
+    const scheduleTime = new Date();
+    const [hours, minutes] = item.time.split(':');
+    scheduleTime.setHours(parseInt(hours, 10));
+    scheduleTime.setMinutes(parseInt(minutes, 10));
+
+    if (scheduleTime < currentTime) {
+      textStyle = [styles.cell, { color: '#dddddd' }];
+    }
+  } else {
+    // "X"로 표시된 항목은 회색으로 표시되고, 선택할 수 없도록 함
+    textStyle = [styles.cell, { color: '#dddddd', opacity: 0.5 }];
+  }
+
+  // 선택할 수 없는 상태인 경우 onPress 이벤트를 null로 처리
+  const onPressHandler = item.time !== 'X' ? () => navigation.navigate('TrainSchedule', { scheduleItem: item }) : null;
+
+  return (
     <TouchableOpacity
       style={styles.row}
-      onPress={() => navigation.navigate('TrainSchedule', { scheduleItem: item })}
+      onPress={onPressHandler}
+      disabled={item.time === 'X'} // 선택할 수 없는 항목은 disabled 속성을 추가하여 클릭을 막음
     >
-      <Text style={styles.cell}>{item.time}</Text>
-      <Text style={styles.cell}>{item.middleTime}</Text>
-      <Text style={styles.cell}>{item.arrivalTime}</Text>
-      <Text style={styles.cell}>{item.status}</Text>
+      <Text style={textStyle}>{item.time}</Text>
+      <Text style={textStyle}>{item.middleTime}</Text>
+      <Text style={textStyle}>{item.arrivalTime}</Text>
+      <Text style={textStyle}>{item.status}</Text>
     </TouchableOpacity>
   );
+};
+
 
   return (
     <View style={styles.container}>
