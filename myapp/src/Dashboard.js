@@ -58,6 +58,13 @@ const Dashboard = () => {
           버스 시간표</Text>
       </TouchableOpacity>
       <TouchableOpacity
+        onPress={() => navigation.navigate('TrainSchedule')}
+        style={styles.button}
+      >
+        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
+          기차 시간표</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
         onPress={() => navigation.navigate('TmapScreen')}
         style={styles.button}
       >

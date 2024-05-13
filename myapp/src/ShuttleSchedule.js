@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, FlatList } from 'react-native';
 
-const ShuttleSchedule = () => {
+const ShuttleSchedule = ({ navigation }) => {
   const [selectedStation, setSelectedStation] = useState(1); // 초기 선택된 역의 id
   const [showStationList, setShowStationList] = useState(false); // 역 선택 리스트 모달 표시 여부
   const [stations] = useState([
@@ -19,12 +19,6 @@ const ShuttleSchedule = () => {
   const handleStationChange = (station) => {
     setSelectedStation(station.id); // 선택된 역의 id 업데이트
     setShowStationList(false); // 역 선택 리스트 모달 닫기
-  };
-
-  // 선택된 역에 따른 헤더 목록
-  const headers = {
-    1: ['아산 캠퍼스', '천안 아산역', '아산 캠퍼스', '금요일 운행 여부'],
-    2: ['아산 캠퍼스', '천안역', '하이렉 스파 건너편/    용암 마을', '아산 캠퍼스', '금요일 운행 여부'],
   };
 
   // 시간표 데이터 예시
@@ -563,22 +557,29 @@ const ShuttleSchedule = () => {
     { 
        
     },
-    // 다른 시간표 데이터 추가
+    // 나머지 시간표 데이터 추가
   ];
+
+  // 선택된 역에 따른 헤더 목록
+  const headers = {
+    1: ['아산 캠퍼스', '천안 아산역', '아산 캠퍼스', '금요일 운행 여부'],
+    2: ['아산 캠퍼스', '천안역', '하이렉 스파 건너편/    용암 마을', '아산 캠퍼스', '금요일 운행 여부'],
+  };
 
   // 선택된 역의 시간표만 필터링하는 함수
   const filteredScheduleData = scheduleData.filter(item => item.id === selectedStation);
 
   // 시간표 아이템 렌더링 함수
   const renderScheduleItem = ({ item }) => (
-    <View style={styles.row}>
+    <TouchableOpacity
+      style={styles.row}
+      onPress={() => navigation.navigate('TrainSchedule', { scheduleItem: item })}
+    >
       <Text style={styles.cell}>{item.time}</Text>
       <Text style={styles.cell}>{item.middleTime}</Text>
-      {/* id가 2인 경우만 approximately 표시 */}
-      {selectedStation === 2 && <Text style={styles.cell}>{item.approximately}</Text>}
       <Text style={styles.cell}>{item.arrivalTime}</Text>
       <Text style={styles.cell}>{item.status}</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
