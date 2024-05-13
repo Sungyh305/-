@@ -2,37 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, FlatList } from 'react-native';
 
 const ShuttleSchedule = ({ navigation }) => {
-  const [selectedStation, setSelectedStation] = useState(1); // 초기 선택된 역의 id
-  const [showStationList, setShowStationList] = useState(false); // 역 선택 리스트 모달 표시 여부
-  const [currentTime, setCurrentTime] = useState(new Date()); // 현재 시간 상태
+  const [selectedStation, setSelectedStation] = useState(1);
+  const [showStationList, setShowStationList] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
-    // 매 분마다 현재 시간 업데이트
     const timer = setInterval(() => {
       setCurrentTime(new Date());
-    }, 60000); // 1분마다 업데이트
+    }, 60000);
 
-    return () => clearInterval(timer); // 언마운트 시 타이머 정리
+    return () => clearInterval(timer);
   }, []);
 
   const [stations] = useState([
     { id: 1, name: '천안아산역' },
     { id: 2, name: '천안역' },
-    // 다른 역 추가
   ]);
 
-  // 역 선택 버튼이 눌렸을 때 실행되는 함수
-  const handleStationSelect = () => {
-    setShowStationList(true); // 역 선택 리스트 모달 표시
-  };
-
-  // 역 선택 리스트에서 역을 선택했을 때 실행되는 함수
-  const handleStationChange = (station) => {
-    setSelectedStation(station.id); // 선택된 역의 id 업데이트
-    setShowStationList(false); // 역 선택 리스트 모달 닫기
-  };
-
-  // 시간표 데이터 예시
   const scheduleData = [
     { 
       id: 1, //1
@@ -568,77 +554,87 @@ const ShuttleSchedule = ({ navigation }) => {
     { 
        
     },
-    // 나머지 시간표 데이터 추가
-  ];
+  ]
 
-  // 선택된 역에 따른 헤더 목록
   const headers = {
     1: ['아산 캠퍼스', '천안 아산역', '아산 캠퍼스', '금요일 운행 여부'],
     2: ['아산 캠퍼스', '천안역', '하이렉 스파 건너편/    용암 마을', '아산 캠퍼스', '금요일 운행 여부'],
   };
 
-  // 선택된 역의 시간표만 필터링하는 함수
   const filteredScheduleData = scheduleData.filter(item => item.id === selectedStation);
 
-  // 시간표 아이템 렌더링 함수
-const renderScheduleItem = ({ item }) => {
-  // 현재 시간과 비교하여 스타일 조정
-  let textStyle = styles.cell;
-  if (item.time !== 'X') {
-    const scheduleTime = new Date();
-    const [hours, minutes] = item.time.split(':');
-    scheduleTime.setHours(parseInt(hours, 10));
-    scheduleTime.setMinutes(parseInt(minutes, 10));
-
-    if (scheduleTime < currentTime) {
+  const renderScheduleItem = ({ item }) => {
+    let textStyle = styles.cell;
+    let scheduleTime;
+  
+    // time이 'X'가 아니고 현재 시간 이전의 시간들에 대해 색상 변경
+    if (item.time !== 'X') {
+      scheduleTime = new Date();
+      const [hours, minutes] = item.time.split(':');
+      scheduleTime.setHours(parseInt(hours, 10));
+      scheduleTime.setMinutes(parseInt(minutes, 10));
+  
+      if (scheduleTime < currentTime) {
+        textStyle = [styles.cell, { color: '#dddddd' }];
+      }
+    } else {
+      // time이 'X'인 경우에도 색상 변경
       textStyle = [styles.cell, { color: '#dddddd' }];
     }
-  } else {
-    // "X"로 표시된 항목은 회색으로 표시되고, 선택할 수 없도록 함
-    textStyle = [styles.cell, { color: '#dddddd', opacity: 0.5 }];
-  }
+  
+    // approximately에 대해서도 동일한 색상 변경 적용
+    if (item.approximately === 'X') {
+      textStyle = [styles.cell, { color: '#dddddd' }];
+    }
+  
+    const onPressHandler = item.time !== 'X' ? () => navigation.navigate('TrainSchedule', { scheduleItem: item }) : null;
+  
+    return (
+      <TouchableOpacity
+        style={styles.row}
+        onPress={onPressHandler}
+        disabled={item.time === 'X'}
+      >
+        
+        <Text style={textStyle}>{item.time}</Text>
+        <Text style={textStyle}>{item.middleTime}</Text>
+        {/* id가 2인 경우에만 approximately 표시 */}
+        {selectedStation === 2 && <Text style={textStyle}>{item.approximately}</Text>}
+        <Text style={textStyle}>{item.arrivalTime}</Text>
+        <Text style={textStyle}>{item.status}</Text>
+      </TouchableOpacity>
+    );
+  };
+  
 
-  // 선택할 수 없는 상태인 경우 onPress 이벤트를 null로 처리
-  const onPressHandler = item.time !== 'X' ? () => navigation.navigate('TrainSchedule', { scheduleItem: item }) : null;
+  const handleStationSelect = () => {
+    setShowStationList(true);
+  };
 
-  return (
-    <TouchableOpacity
-      style={styles.row}
-      onPress={onPressHandler}
-      disabled={item.time === 'X'} // 선택할 수 없는 항목은 disabled 속성을 추가하여 클릭을 막음
-    >
-      <Text style={textStyle}>{item.time}</Text>
-      <Text style={textStyle}>{item.middleTime}</Text>
-      <Text style={textStyle}>{item.arrivalTime}</Text>
-      <Text style={textStyle}>{item.status}</Text>
-    </TouchableOpacity>
-  );
-};
-
+  const handleStationChange = (station) => {
+    setSelectedStation(station.id);
+    setShowStationList(false);
+  };
 
   return (
     <View style={styles.container}>
-      {/* 역 선택 버튼 */}
       <TouchableOpacity style={styles.stationSelectButton} onPress={handleStationSelect}>
         <Text style={styles.stationSelectButtonText}>{stations.find(station => station.id === selectedStation).name}</Text>
       </TouchableOpacity>
 
-      {/* 셔틀 시간표 헤더 */}
       <View style={[styles.row, { marginTop: 30 }]}>
         {headers[selectedStation].map((header, index) => (
           <Text key={index} style={styles.cellHeader}>{header}</Text>
         ))}
       </View>
 
-      {/* 시간표 목록 */}
       <FlatList
         data={filteredScheduleData}
         renderItem={renderScheduleItem}
-        keyExtractor={(item, index) => index.toString()} // 인덱스를 사용하여 고유한 키 생성
+        keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={styles.scheduleList}
       />
 
-      {/* 역 선택 리스트 모달 */}
       <Modal visible={showStationList} animationType="slide" transparent={true}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -668,7 +664,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
-    paddingVertical: 5, // 여백 조정
+    paddingVertical: 5,
   },
   cellHeader: {
     flex: 1,
@@ -687,7 +683,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 15,
     borderRadius: 5,
-    zIndex: 1, // 텍스트 위로 버튼을 올리기 위한 설정
+    zIndex: 1,
   },
   stationSelectButtonText: {
     color: '#fff',
@@ -697,7 +693,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // 반투명한 배경
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
     width: '80%',
