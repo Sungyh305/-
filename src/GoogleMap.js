@@ -5,6 +5,7 @@ import socketIOClient from 'socket.io-client';
 import { Picker } from '@react-native-picker/picker';
 
 const SERVER_URL = 'https://profound-leech-engaging.ngrok-free.app';
+let newMarkerImage;
 
 const GoogleMap = () => {
   const [userMarkers, setUserMarkers] = useState({}); // 사용자 위치 마커 정보
@@ -18,6 +19,13 @@ const GoogleMap = () => {
       socket = socketIOClient(SERVER_URL);
       // 새로운 위치 데이터를 받아와서 마커 갱신
       socket.on('broadcastLocation', (location) => {
+        // 범위 id 구별하여 이미지 분리
+        if (location.key.startsWith('test')) {
+          newMarkerImage = require('../assets/Person_expo.png');
+        } else {
+          newMarkerImage = require('../assets/bus_expo.png');
+        }
+
         setUserMarkers((prevMarkers) => ({
           ...prevMarkers,
           [location.identifier]: location,
@@ -80,6 +88,7 @@ const GoogleMap = () => {
                 }}
                 title={`사용자 ${userId} 위치`}
                 description="여기 있어요!"
+                image={newMarkerImage}
               />
             )
         )}

@@ -55,9 +55,6 @@ const Dashboard = () => {
     } else {
       // GPS 중지 시
       clearInterval(intervalId);
-      if (socket) {
-        socket.disconnect();
-      }
       Alert.alert('GPS 연결이 종료되었습니다.');
     }
   };
@@ -68,6 +65,8 @@ const Dashboard = () => {
       const currentLocation = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.BestForNavigation,
       });
+
+      console.log('Current Location:', currentLocation); // 위치 데이터 콘솔 출력
 
       if (socket) {
         // 선택된 위치와 함께 위치 데이터 전송
@@ -104,7 +103,7 @@ const Dashboard = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-        Hello, {name.firstName}
+        {name.firstName}님 반갑습니다.
       </Text>
       {/* 드롭다운 메뉴 */}
       <Picker
@@ -131,9 +130,7 @@ const Dashboard = () => {
         }}
         style={styles.button}
       >
-        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
-          Change Password
-        </Text>
+        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>비밀번호 변경</Text>
       </TouchableOpacity>
       {/* 셔틀 버스 위치 보기 버튼 */}
       <TouchableOpacity
@@ -151,7 +148,7 @@ const Dashboard = () => {
         }}
         style={styles.button}
       >
-        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>Sign out</Text>
+        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>로그아웃</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
