@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
+import { Alert } from 'react-native';
 
 class TrainSchedule extends Component {
   constructor(props) {
@@ -177,7 +178,7 @@ class TrainSchedule extends Component {
   
       const items = data?.response?.body?.items?.item;
       if (!items) {
-        console.error('조회 결과가 없습니다.');
+        Alert.alert('알림', '더 이상 기차가 없습니다.');
         return;
       }
   
@@ -195,8 +196,10 @@ class TrainSchedule extends Component {
       this.setState({ trainInfo: trainInfo });
     } catch (error) {
       console.error('API 호출 중 오류 발생:', error);
+      Alert.alert('에러', '데이터를 불러오는 중 오류가 발생했습니다.');
     }
   };
+  
   
   formatDateTime = (dateTimeString) => {
     dateTimeString = String(dateTimeString); // 문자열로 변환
