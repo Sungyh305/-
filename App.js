@@ -1,12 +1,15 @@
+import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState, useEffect } from 'react';
 import { firebase } from './config';
 
+
 import Login from './src/Login';
 import Registration from './src/Registration';
 import Dashboard from './src/Dashboard';
 import GoogleMap from './src/GoogleMap';
+import Profile from './src/Profile';
 
 const Stack = createStackNavigator();
 const RootStack = createStackNavigator();
@@ -53,6 +56,7 @@ const AppStackScreen = () => (
   <Stack.Navigator>
     <Stack.Screen name="Dashboard" component={Dashboard} />
     <Stack.Screen name="GoogleMap" component={GoogleMap} />
+    <Stack.Screen name="Profile" component={Profile} />
   </Stack.Navigator>
 );
 
