@@ -35,6 +35,10 @@ const Dashboard = () => {
       });
   }, []);
 
+  const handleProfileButtonPress = () => {
+    navigation.navigate('Profile'); // 'Profile'은 프로필 화면의 route 이름입니다.
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
@@ -49,6 +53,12 @@ const Dashboard = () => {
         <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
           비밀번호 변경
         </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={handleProfileButtonPress}
+        style={styles.button}
+      >
+        <Text style={styles.buttonText}>프로필</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate('ShuttleSchedule')}

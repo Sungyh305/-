@@ -10,6 +10,7 @@ import Header from './components/Header';
 import TmapScreen from './src/TmapScreen';
 import ShuttleSchedule from './src/ShuttleSchedule';
 import TrainSchedule from './src/TrainSchedule';
+import Profile from './src/Profile';
 
 const Stack = createStackNavigator();
 const RootStack = createStackNavigator();
@@ -138,6 +139,22 @@ const AppStackScreen = () => (
       component={TrainSchedule}
       options={{
         headerTitle: () => <Header name="기차 시간표" />,
+        headerStyle: {
+          height: 150,
+          borderBottomLeftRadius: 50,
+          borderBottomRightRadius: 50,
+          backgroundColor: '#00e4d0',
+          shadowColor: '#000',
+          elevation: 25,
+        },
+      }}
+    />
+
+<Stack.Screen
+      name="Profile"
+      component={Profile}
+      options={{
+        headerTitle: () => <Header name="내 정보" />,
         headerStyle: {
           height: 150,
           borderBottomLeftRadius: 50,
