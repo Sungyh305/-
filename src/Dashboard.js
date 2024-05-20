@@ -229,7 +229,7 @@ const Dashboard = () => {
         </TouchableOpacity>
         {switchValue ? (
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 30 }}>
-            {locationNames[selectedLocation]}행으로 GPS를 송신중
+            {locationNames[selectedLocation]} 행으로 GPS 송신중
           </Text>
         ) : (
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 30 }}>
@@ -270,8 +270,9 @@ const Dashboard = () => {
                   height: 50,
                   width: 150,
                   fontWeight: 'bold',
-                  opacity: switchValue ? 0 : 1,
+                  opacity: switchValue ? 0.5 : 1,
                 }}
+                enabled={!switchValue}
                 onValueChange={(itemValue) => setSelectedLocation(itemValue)}
               >
                 <Picker.Item label="천안아산역" value="1" />
