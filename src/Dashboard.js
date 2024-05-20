@@ -10,18 +10,19 @@ import {
   View,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { firebase } from '../config';
-import socketIOClient from 'socket.io-client';
-import * as TaskManager from 'expo-task-manager';
-import * as Location from 'expo-location';
-import { Picker } from '@react-native-picker/picker';
+import { firebase } from '../config'; // Firebase 설정 가져오기
+import socketIOClient from 'socket.io-client'; // Socket.IO 클라이언트 라이브러리 가져오기
+import * as TaskManager from 'expo-task-manager'; // Expo 백그라운드 태스크 매니저 가져오기
+import * as Location from 'expo-location'; // Expo 위치 API 가져오기
+import { Picker } from '@react-native-picker/picker'; // React Native Picker 컴포넌트 가져오기
 
-const SERVER_URL = 'https://profound-leech-engaging.ngrok-free.app';
-const LOCATION_TASK_NAME = 'background-location-task';
+const SERVER_URL = 'https://profound-leech-engaging.ngrok-free.app'; // 서버 URL
+const LOCATION_TASK_NAME = 'background-location-task'; // 백그라운드 위치 태스크 이름
 
-const globalSocket = socketIOClient(SERVER_URL);
-let globalSelectedLocation = '1';
+const globalSocket = socketIOClient(SERVER_URL); // 전역 Socket.IO 클라이언트 인스턴스
+let globalSelectedLocation = '1'; // 전역 선택된 위치
 
+// Expo 백그라운드 위치 태스크 정의
 TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
   if (error) {
     console.error('TaskManager Error:', error);
@@ -37,7 +38,8 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
       .get();
 
     globalSocket.emit('userLocation', {
-      //email: user.data().email, //undefined 오류로 주석처리
+      // 사용자 위치 데이터를 서버로 전송
+      //email: user.data().email, // 이메일은 필요한 경우 주석 해제
       identifier: globalSelectedLocation,
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
@@ -47,12 +49,12 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
 
 const Dashboard = () => {
   const navigation = useNavigation();
-  const [switchValue, setSwitchValue] = useState(false); // GPS 사용 여부
-  const [user, setUser] = useState(''); // 사용자 정보
-  const [selectedLocation, setSelectedLocation] = useState('1');
-  const intervalId = useRef(null);
+  const [switchValue, setSwitchValue] = useState(false); // GPS 사용 여부 상태
+  const [user, setUser] = useState(''); // 사용자 정보 상태
+  const [selectedLocation, setSelectedLocation] = useState('1'); // 선택된 위치 상태
+  const intervalId = useRef(null); // 인터벌 ID useRef로 저장
   const [backgroundPermissionDenied, setBackgroundPermissionDenied] =
-    useState(false);
+    useState(false); // 백그라운드 권한 거부 상태
 
   const locationNames = {
     1: '천안아산역',
@@ -60,7 +62,7 @@ const Dashboard = () => {
     3: '천안터미널',
   };
 
-  // 비동기 함수를 통해 사용자 데이터 가져오기
+  // 사용자 데이터 가져오기
   useEffect(() => {
     firebase
       .firestore()
@@ -79,6 +81,7 @@ const Dashboard = () => {
       });
   }, []);
 
+  // 소켓 연결 설정
   useEffect(() => {
     if (!globalSocket.connected) {
       globalSocket.connect();
@@ -91,15 +94,17 @@ const Dashboard = () => {
     };
   }, []);
 
+  // 선택된 위치 변경 시 전역 변수 업데이트
   useEffect(() => {
     globalSelectedLocation = selectedLocation;
   }, [selectedLocation]);
 
-  // GPS 스위치
+  // GPS 스위치 토글 시 동작
   const toggleSwitch = async (value) => {
     setSwitchValue(value);
 
     if (value) {
+      // GPS 사용을 ON으로 변경할 때
       let { status: foregroundStatus } =
         await Location.requestForegroundPermissionsAsync();
       if (foregroundStatus !== 'granted') {
@@ -140,7 +145,7 @@ const Dashboard = () => {
         showsBackgroundLocationIndicator: true,
       });
 
-      // 보낸 위치가 범위 밖일 시 오류 메시지 출력
+      // 범위를 벗어났을 때 오류 메시지 출력
       if (globalSocket) {
         globalSocket.on('LocationError', (point) => {
           toggleSwitch(false);
@@ -153,7 +158,7 @@ const Dashboard = () => {
         });
       }
     } else {
-      // GPS 중지 시
+      // GPS 사용을 OFF로 변경할 때
       clearInterval(intervalId.current);
       console.log('GPS 중지');
       Alert.alert('GPS 연결이 종료되었습니다.');
@@ -194,8 +199,10 @@ const Dashboard = () => {
     }
   };
 
+  // 백그라운드 위치 권한 거부 시 처리
   useEffect(() => {
     if (backgroundPermissionDenied) {
+      // 알림 팝업 표시
       Alert.alert(
         '백그라운드 위치 권한 요청',
         '앱을 사용하기 위해서는 백그라운드 위치 권한이 필요합니다. 설정에서 위치 권한을 항상 허용으로 변경해주세요.',
@@ -203,15 +210,16 @@ const Dashboard = () => {
           { text: '취소' },
           {
             text: '설정으로 이동',
-            onPress: () => Linking.openSettings(),
+            onPress: () => Linking.openSettings(), // 설정으로 이동하는 함수 호출
           },
         ]
       );
-      setSwitchValue(false);
-      setBackgroundPermissionDenied(false);
+      setSwitchValue(false); // GPS 스위치 값을 false로 변경
+      setBackgroundPermissionDenied(false); // 백그라운드 권한 거부 상태를 초기화
     }
   }, [backgroundPermissionDenied]);
 
+  // 화면 렌더링
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <View style={styles.container}>
