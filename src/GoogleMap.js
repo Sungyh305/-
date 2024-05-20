@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Polyline } from 'react-native-maps'; // Polyline 추가
 import socketIOClient from 'socket.io-client';
 import { Picker } from '@react-native-picker/picker';
 
@@ -10,6 +10,23 @@ let newMarkerImage;
 const GoogleMap = () => {
   const [userMarkers, setUserMarkers] = useState({}); // 사용자 위치 마커 정보
   const [selectedIdentifier, setSelectedIdentifier] = useState('1'); // 선택된 식별자 상태 추가
+
+  // Polyline의 마커 좌표
+  const PolylineCoordinates = [
+    { latitude: 36.800437, longitude: 127.071803 },
+    { latitude: 36.798035, longitude: 127.071851 },
+    { latitude: 36.798035, longitude: 127.077994 },
+    { latitude: 36.797625, longitude: 127.079018 },
+    { latitude: 36.797561, longitude: 127.081822 },
+    { latitude: 36.797511, longitude: 127.085860 },
+    { latitude: 36.797735, longitude: 127.086208 },
+    { latitude: 36.799700, longitude: 127.085987 },
+    { latitude: 36.800278, longitude: 127.085666 },
+    { latitude: 36.800411, longitude: 127.086790 },
+    { latitude: 36.797952, longitude: 127.087223 },
+    { latitude: 36.795607, longitude: 127.087547 },
+    // 좌표 추가
+  ];
 
   useEffect(() => {
     let socket;
@@ -72,6 +89,13 @@ const GoogleMap = () => {
           longitudeDelta: 0.01,
         }}
       >
+        {/* polyline 추가 */}
+        <Polyline
+          coordinates={PolylineCoordinates}
+          strokeWidth={4}
+          strokeColor="rgba(255, 165, 0, 0.5)"
+        />
+
         {/* 사용자 마커 표시 */}
         {Object.keys(userMarkers).map(
           (userId) =>
