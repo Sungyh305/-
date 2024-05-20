@@ -28,15 +28,15 @@ const GoogleMap = () => {
 
         setUserMarkers((prevMarkers) => ({
           ...prevMarkers,
-          [location.identifier]: location,
+          [location.userId]: location,
         }));
       });
 
       // 사용자 연결이 종료되었을 때 해당 사용자의 마커 제거
-      socket.on('userDisconnected', (identifier) => {
+      socket.on('removeMarker', (userId) => {
         setUserMarkers((prevMarkers) => {
           const updatedMarkers = { ...prevMarkers };
-          delete updatedMarkers[identifier];
+          delete updatedMarkers[userId];
           return updatedMarkers;
         });
       });

@@ -39,7 +39,7 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
 
     globalSocket.emit('userLocation', {
       // 사용자 위치 데이터를 서버로 전송
-      //email: user.data().email, // undefined 오류로 주석처리
+      email: user.data().email, // undefined 오류로 주석처리
       identifier: globalSelectedLocation,
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
@@ -160,9 +160,14 @@ const Dashboard = () => {
     } else {
       // GPS 사용을 OFF로 변경할 때
       clearInterval(intervalId.current);
+      intervalId.current = null;
       console.log('GPS 중지');
       Alert.alert('GPS 연결이 종료되었습니다.');
       // 백그라운드 위치 추적 중지
+      if (globalSocket) {
+        globalSocket.emit('disconnectUser', globalSocket.id);
+      }
+
       await Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
     }
   };

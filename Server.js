@@ -45,6 +45,7 @@ io.on('connection', (socket) => {
           identifier,
           latitude,
           longitude,
+          userId: socket.id,
         });
         break;
       }
@@ -60,7 +61,7 @@ io.on('connection', (socket) => {
   // 사용자 연결 종료 시
   socket.on('disconnectUser', (userId) => {
     console.log(`사용자 ${userId} 연결 종료`);
-    // 클라이언트에게 해당 사용자의 식별자를 전송하여 마커 제거 요청 -> apk 만들어서 테스트 해봐야 함
+    // 클라이언트에게 해당 사용자의 식별자를 전송하여 마커 제거 요청
     io.emit('removeMarker', userId);
   });
 
