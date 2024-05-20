@@ -11,9 +11,6 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
     "ios": {
       "supportsTablet": true
     },
@@ -27,15 +24,22 @@
           "apiKey": "AIzaSyDcT2FPLOsWCCgeKJgH0MVT9ehPiWe4IxI"
         }
       },
-      "package": "com.hyeonu.myapp"
+      "package": "com.hyeonu.myapp",
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION", "ACCESS_BACKGROUND_LOCATION"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "ace6ec57-d920-4ff6-aabf-9be45694264b"
+        "projectId": "11804cf6-cd28-4615-bae6-4711e9cd7817"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/11804cf6-cd28-4615-bae6-4711e9cd7817"
     }
   }
 }

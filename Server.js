@@ -28,12 +28,12 @@ io.on('connection', (socket) => {
   console.log('사용자(소켓) 연결');
 
   socket.on('userLocation', (location) => {
-    console.log('Received Location:', location); // 위치 데이터 콘솔 출력
     // 사용자가 보낸 위치가 범위 안에 있는지 확인
-    // 범위 안에 있는 위치만 다른 사용자에게 전달
+    let locationInRange = false;
     for (const range of ranges) {
       const key = isInRange(location.latitude, location.longitude, range);
-      if (key != false) {
+      if (key !== false) {
+        locationInRange = true;
         //firebase 연동 포인트 지급
         console.log(
           `사용자 입력 좌표 (${location.latitude}, ${location.longitude})는 범위에 포함됩니다.`
@@ -48,6 +48,12 @@ io.on('connection', (socket) => {
         });
         break;
       }
+    }
+
+    if (!locationInRange) {
+      console.log(
+        `사용자 입력 좌표 (${location.latitude}, ${location.longitude})는 범위에 포함되지 않습니다.`
+      );
     }
   });
 

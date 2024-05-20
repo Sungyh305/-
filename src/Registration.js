@@ -4,6 +4,8 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
+  SafeAreaView,
+  Image,
 } from 'react-native';
 import React, { useState } from 'react';
 import { firebase } from '../config';
@@ -11,86 +13,73 @@ import { firebase } from '../config';
 const Registration = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [name, setName] = useState('');
 
-  registerUser = async (email, password, firstName, lastName) => {
-    await firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        firebase
-          .auth()
-          .currentUser.sendEmailVerification({
-            handleCodeInApp: true,
-            url: 'https://login-943f1.firebaseapp.com',
-          })
-          .then(() => {
-            alert('Verification email sent');
-          })
-          .catch((error) => {
-            alert(error.message);
-          })
-          .then(() => {
-            firebase
-              .firestore()
-              .collection('users')
-              .doc(firebase.auth.currentUser.uid)
-              .set({
-                firstName,
-                lastName,
-                email,
-              });
-          })
-          .catch((error) => {
-            alert(error.message);
-          });
-      })
-      .catch((error) => {
-        alert(error.message);
+  const registerUser = async (email, password, name) => {
+    try {
+      // Firebase Authentication을 사용하여 사용자 생성
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
+      // 사용자 생성 후 Firestore에 사용자 정보 추가
+      await firebase
+        .firestore()
+        .collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .set({
+          email,
+          name,
+          point: 0,
+        });
+      // 이메일 확인을 위한 이메일 발송
+      await firebase.auth().currentUser.sendEmailVerification({
+        handleCodeInApp: true,
+        url: 'https://login-943f1.firebaseapp.com',
       });
+      // 회원가입 성공 메시지 표시
+      alert('Verification email sent');
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={{ fontWeight: 'bold', fontSize: 23 }}>Register Here</Text>
-      <View style={{ marginTop: 40 }}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="First Name"
-          onChangeText={(firstName) => setFirstName(firstName)}
-          autoCorrect={false}
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder="Last Name"
-          onChangeText={(lastName) => setLastName(lastName)}
-          autoCorrect={false}
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder="Email"
-          onChangeText={(email) => setEmail(email)}
-          autoCapitalize="none"
-          autoCorrect={false}
-          keyboardType="email-address"
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder="Password"
-          onChangeText={(password) => setPassword(password)}
-          autoCapitalize="none"
-          autoCorrect={false}
-          secureTextEntry={true}
-        />
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'rgb(255, 255, 255)' }}>
+      <View style={styles.container}>
+        <View style={{ marginTop: 40 }}>
+          <Image
+            style={styles.image}
+            source={require('../assets/Bus_where_r_u_going.png')}
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Email"
+            onChangeText={(email) => setEmail(email)}
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardType="email-address"
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Password"
+            onChangeText={(password) => setPassword(password)}
+            autoCapitalize="none"
+            autoCorrect={false}
+            secureTextEntry={true}
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Name"
+            onChangeText={(name) => setName(name)}
+            autoCorrect={false}
+          />
+        </View>
+        <TouchableOpacity
+          onPress={() => registerUser(email, password, name)}
+          style={styles.button}
+        >
+          <Text style={{ fontWeight: 'bold', fontSize: 18 }}>회원가입</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        onPress={() => registerUser(email, password, firstName, lastName)}
-        style={styles.button}
-      >
-        <Text style={{ fontWeight: 'bold', fontSize: 22 }}>Register</Text>
-      </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -100,9 +89,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 100,
+    justifyContent: 'center',
+  },
+  image: {
+    height: 200,
+    width: 200,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    right: 60,
+    top: -200,
+    resizeMode: 'contain',
   },
   textInput: {
+    top: 50,
     paddingTop: 20,
     paddingBottom: 10,
     width: 320,
@@ -113,12 +113,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    marginTop: 50,
-    height: 70,
-    width: 250,
+    height: 45,
+    width: 125,
     backgroundColor: '#86CC57',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20,
+    borderRadius: 6,
+    position: 'absolute',
+    right: 20,
+    top: 600,
   },
 });

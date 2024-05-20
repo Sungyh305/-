@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import socketIOClient from 'socket.io-client';
 import { Picker } from '@react-native-picker/picker';
