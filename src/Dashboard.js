@@ -39,7 +39,7 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
 
     globalSocket.emit('userLocation', {
       // 사용자 위치 데이터를 서버로 전송
-      //email: user.data().email, // 이메일은 필요한 경우 주석 해제
+      //email: user.data().email, // undefined 오류로 주석처리
       identifier: globalSelectedLocation,
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
@@ -170,16 +170,12 @@ const Dashboard = () => {
   // 위치 전송 함수
   const sendLocation = async () => {
     try {
-      console.log('Sending location from background...');
-
       const currentLocation = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.BestForNavigation,
       });
 
-      console.log('Current location:', currentLocation);
-
       if (globalSocket) {
-        console.log('Socket is connected. Sending location:', {
+        console.log('Sending location:', {
           identifier: selectedLocation,
           latitude: currentLocation.coords.latitude,
           longitude: currentLocation.coords.longitude,
