@@ -1,47 +1,65 @@
+const ranges = require('./src/dataset.js'); 
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 
-// Express 애플리케이션을 생성
+const port = process.env.PORT || 3000; // 환경 변수에 포트가 지정되어 있지 않으면 기본값으로 3000 사용
 const app = express();
-const server = http.createServer(app);
-const io = socketIo(server);
+const server = http.createServer(app); // Express 애플리케이션을 기반으로 HTTP 서버 생성
+const io = socketIo(server); // HTTP 서버를 기반으로 소켓 서버 생성
 
-// 루트 경로에 대한 GET 요청을 처리하여 서버가 실행 중임을 표시
-app.get('/', (req, res) => {
-  res.send('서버가 실행 중입니다.');
-});
+// 받아온 좌표가 범위 안에 있는지 확인하는 함수
+function isInRange(latitude, longitude, range) {
+  const point1 = range.points[0];
+  const point2 = range.points[1];
+  if (latitude < point1.latitude || 
+    latitude > point2.latitude || 
+    longitude < point1.longitude|| 
+    longitude > point2.longitude) {
+    return false;
+  }
+  return range.id;
+}
 
-// 연결된 클라이언트를 저장할 객체를 선언
-const connectedClients = {};
-
-// Socket.IO 연결을 처리하는 이벤트 핸들러를 정의
+// 소켓 연결 이벤트 처리
 io.on('connection', (socket) => {
-  console.log('클라이언트가 연결되었습니다.');
+  console.log('사용자(소켓) 연결');
 
-  // 클라이언트 고유한 식별자를 생성하고 연결된 클라이언트 객체를 저장
-  const clientId = socket.id;
-  connectedClients[clientId] = socket;
-
-  // 클라이언트로부터 위치 데이터를 수신하는 이벤트 핸들러를 정의
-  socket.on('sendLocation', (locationData) => {
-    console.log('클라이언트로부터 위치 데이터를 수신했습니다:', locationData);
-
-    // 위치 데이터를 처리한 후 해당 클라이언트에게 위치 정보를 다시 전송
-    io.to(socket.id).emit('locationUpdate', locationData);
-    console.log('locationUpdate 이벤트가 발생했습니다:', locationData);
+  socket.on('userLocation', (location) => {
+    // 사용자가 보낸 위치가 범위 안에 있는지 확인
+    // 범위 안에 있는 위치만 다른 사용자에게 전달
+    for (const range of ranges) {
+      const key = isInRange(location.latitude, location.longitude, range);
+      if (key != false) {
+        //firebase 연동 포인트 지급
+        console.log(`사용자 입력 좌표 (${location.latitude}, ${location.longitude})는 범위에 포함됩니다.`);
+        const { identifier, latitude, longitude } = location;
+        // 위치 정보를 보낸 클라이언트를 제외한 모든 클라이언트에게 해당 위치 정보를 브로드캐스팅
+        socket.broadcast.emit('broadcastLocation', {
+          key,
+          identifier,
+          latitude,
+          longitude,
+        });
+        break;
+      }
+    }
+    
   });
 
-  // 클라이언트 연결이 해제될 때 실행되는 이벤트 핸들러를 정의
+  // 사용자 연결 종료 시
+  socket.on('disconnectUser', (userId) => {
+    console.log(`사용자 ${userId} 연결 종료`);
+    // 클라이언트에게 해당 사용자의 식별자를 전송하여 마커 제거 요청 -> apk 만들어서 테스트 해봐야 함
+    io.emit('removeMarker', userId);
+  });
+
   socket.on('disconnect', () => {
-    console.log('클라이언트가 연결 해제되었습니다.');
-    // 연결 해제된 클라이언트를 connectedClients 객체에서 제거
-    delete connectedClients[clientId];
+    console.log('사용자 연결 종료');
   });
 });
 
-// 서버를 시작하고 지정된 포트에서 대기
-const port = process.env.PORT || 3000;
+// 서버를 지정한 포트로 실행
 server.listen(port, () => {
-  console.log(`서버가 ${port}번 포트에서 실행중입니다.`);
+  console.log(`서버가 ${port}번 포트에서 실행 중입니다.`);
 });
