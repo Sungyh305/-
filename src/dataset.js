@@ -412,6 +412,132 @@ const ranges = [
       { latitude: 36.794527,longitude: 127.101490}
     ]
   },
+  {
+    id: "range57",
+    points: [
+      { latitude: 36.794501,longitude: 127.101029},
+      { latitude: 36.793895,longitude: 127.101667}
+    ]
+  },
+  {
+    id: "range58",
+    points: [
+      { latitude: 36.793861,longitude: 127.101200},
+      { latitude: 36.793240,longitude: 127.101833}
+    ]
+  },
+  {
+    id: "range59",
+    points: [
+      { latitude: 36.793189,longitude: 127.101388},
+      { latitude: 36.792596,longitude: 127.102021}
+    ]
+  },
+  {
+    id: "range60",
+    points: [
+      { latitude: 36.792536,longitude: 127.101581},
+      { latitude: 36.791861,longitude: 127.102236}
+    ]
+  },
+  {
+    id: "range61",
+    points: [
+      { latitude: 36.792351,longitude: 127.102236},
+      { latitude: 36.792583,longitude: 127.102514}
+    ]
+  },
+  {
+    id: "range62",
+    points: [
+      { latitude: 36.792437,longitude: 127.102547},
+      { latitude: 36.792682,longitude: 127.103029}
+    ]
+  },
+  {
+    id: "range63",
+    points: [
+      { latitude: 36.792531,longitude: 127.103029},
+      { latitude: 36.792780,longitude: 127.103491}
+    ]
+  },
+  {
+    id: "range64",
+    points: [
+      { latitude: 36.792613,longitude: 127.103523},
+      { latitude: 36.792866,longitude: 127.103888}
+    ]
+  },
+  {
+    id: "range65",
+    points: [
+      { latitude: 36.792879,longitude: 127.103609},
+      { latitude: 36.792952,longitude: 127.103941}
+    ]
+  },
+  {
+    id: "range66",
+    points: [
+      { latitude: 36.792952,longitude: 127.103941},
+      { latitude: 36.793296,longitude: 127.103614}
+    ]
+  },
+  {
+    id: "bus_stop2",
+    points: [
+      { latitude: 36.793313,longitude: 127.103984},
+      { latitude: 36.793605,longitude: 127.103518}
+    ]
+  },
+  {
+    id: "bus_stop3",
+    points: [
+      { latitude: 36.793652,longitude: 127.103893},
+      { latitude: 36.794297,longitude: 127.103319}
+    ]
+  },
+  {
+    id: "bus_stop4",
+    points: [
+      { latitude: 36.794357,longitude: 127.103689},
+      { latitude: 36.794593,longitude: 127.103244}
+    ]
+  },
+  {
+    id: "bus_stop5",
+    points: [
+      { latitude: 36.794632,longitude: 127.103609},
+      { latitude: 36.795126,longitude: 127.103099}
+    ]
+  },
+  {
+    id: "range 67",
+    points: [
+      { latitude: 36.795139,longitude: 127.103442},
+      { latitude: 36.795306,longitude: 127.103036}
+    ]
+  },
+  {
+    id: "range 68",
+    points: [
+      { latitude: 36.795319,longitude: 127.103331},
+      { latitude: 36.795590,longitude: 127.102950}
+    ]
+  },
+  {
+    id: "range 69",
+    points: [
+      { latitude: 36.795590,longitude: 127.102950},
+      { latitude: 36.795371,longitude: 127.101931}
+    ]
+  },
+  {
+    id: "range 70",
+    points: [
+      { latitude: 36.795499,longitude: 127.101909},
+      { latitude: 36.795259,longitude: 127.101319}
+    ]
+  },
 ];
 
 module.exports = ranges;
