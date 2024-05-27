@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Text,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   Alert,
   Image,
   View,
+  Linking,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../config'; // Firebase 설정 가져오기
@@ -19,7 +20,7 @@ import { Picker } from '@react-native-picker/picker'; // React Native Picker 컴
 const SERVER_URL = 'https://profound-leech-engaging.ngrok-free.app'; // 서버 URL
 const LOCATION_TASK_NAME = 'background-location-task'; // 백그라운드 위치 태스크 이름
 
-const globalSocket = socketIOClient(SERVER_URL); // 전역 Socket.IO 클라이언트 인스턴스
+let globalSocket = null; // 전역 Socket.IO 클라이언트 인스턴스
 let globalSelectedLocation = '1'; // 전역 선택된 위치
 
 // Expo 백그라운드 위치 태스크 정의
@@ -31,19 +32,31 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
   if (data) {
     const { locations } = data;
     const location = locations[0];
-    const user = await firebase
+    console.log('Background location:', location);
+
+    // 스위치 상태 확인
+    const user = firebase.auth().currentUser;
+    if (!user) {
+      console.log('User not authenticated');
+      return;
+    }
+
+    // Firestore에서 사용자 데이터 가져오기
+    const userData = await firebase
       .firestore()
       .collection('users')
-      .doc(firebase.auth().currentUser.uid)
+      .doc(user.uid)
       .get();
 
-    globalSocket.emit('userLocation', {
-      // 사용자 위치 데이터를 서버로 전송
-      email: user.data().email, // undefined 오류로 주석처리
-      identifier: globalSelectedLocation,
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-    });
+    if (globalSocket && globalSocket.connected) {
+      globalSocket.emit('userLocation', {
+        // 사용자 위치 데이터를 서버로 전송
+        email: userData.data().email,
+        identifier: globalSelectedLocation,
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+    }
   }
 });
 
@@ -52,7 +65,6 @@ const Dashboard = () => {
   const [switchValue, setSwitchValue] = useState(false); // GPS 사용 여부 상태
   const [user, setUser] = useState(''); // 사용자 정보 상태
   const [selectedLocation, setSelectedLocation] = useState('1'); // 선택된 위치 상태
-  const intervalId = useRef(null); // 인터벌 ID useRef로 저장
   const [backgroundPermissionDenied, setBackgroundPermissionDenied] =
     useState(false); // 백그라운드 권한 거부 상태
 
@@ -81,23 +93,24 @@ const Dashboard = () => {
       });
   }, []);
 
-  // 소켓 연결 설정
-  useEffect(() => {
-    if (!globalSocket.connected) {
-      globalSocket.connect();
-    }
-
-    return () => {
-      if (globalSocket) {
-        globalSocket.disconnect();
-      }
-    };
-  }, []);
-
   // 선택된 위치 변경 시 전역 변수 업데이트
   useEffect(() => {
     globalSelectedLocation = selectedLocation;
   }, [selectedLocation]);
+
+  useEffect(() => {
+    const initializeLocationUpdates = async () => {
+      // 앱이 초기화될 때, 백그라운드 위치 업데이트가 이미 실행 중인지 확인하고 중지
+      const isBackgroundUpdateRunning =
+        await Location.hasStartedLocationUpdatesAsync(LOCATION_TASK_NAME);
+      if (isBackgroundUpdateRunning) {
+        await Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
+        console.log('Stopped background location updates on initial load');
+      }
+    };
+
+    initializeLocationUpdates();
+  }, []);
 
   // GPS 스위치 토글 시 동작
   const toggleSwitch = async (value) => {
@@ -134,19 +147,12 @@ const Dashboard = () => {
         return;
       }
 
-      // 5초 간격으로 위치 전송
-      intervalId.current = setInterval(sendLocation, 5000);
-
-      // 백그라운드 위치 추적 시작
-      await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-        accuracy: Location.Accuracy.BestForNavigation,
-        timeInterval: 5000,
-        distanceInterval: 0,
-        showsBackgroundLocationIndicator: true,
-      });
-
       // 범위를 벗어났을 때 오류 메시지 출력
-      if (globalSocket) {
+      if (!globalSocket) {
+        globalSocket = socketIOClient(SERVER_URL);
+        globalSocket.connect();
+
+        globalSocket.off('LocationError');
         globalSocket.on('LocationError', (point) => {
           toggleSwitch(false);
           Alert.alert(
@@ -157,46 +163,40 @@ const Dashboard = () => {
           );
         });
       }
+
+      // 백그라운드 위치 업데이트 시작
+      try {
+        const isBackgroundUpdateRunning =
+          await Location.hasStartedLocationUpdatesAsync(LOCATION_TASK_NAME);
+        if (!isBackgroundUpdateRunning) {
+          await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+            accuracy: Location.Accuracy.BestForNavigation,
+            timeInterval: 6000, // 6초마다 위치 업데이트
+            distanceInterval: 0, // 거리 변화가 없어도 위치 업데이트
+            showsBackgroundLocationIndicator: true,
+          });
+
+          console.log('Started background location updates');
+        }
+      } catch (error) {
+        console.error('Error starting background location updates:', error);
+      }
     } else {
       // GPS 사용을 OFF로 변경할 때
-      clearInterval(intervalId.current);
-      intervalId.current = null;
-      console.log('GPS 중지');
-      Alert.alert('GPS 연결이 종료되었습니다.');
-      // 백그라운드 위치 추적 중지
+      const isBackgroundUpdateRunning =
+        await Location.hasStartedLocationUpdatesAsync(LOCATION_TASK_NAME);
+      if (isBackgroundUpdateRunning) {
+        await Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
+        console.log('Stopped background location updates');
+      }
+
       if (globalSocket) {
         globalSocket.emit('disconnectUser', globalSocket.id);
+        globalSocket.disconnect();
+        globalSocket = null;
       }
 
-      await Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
-    }
-  };
-
-  // 위치 전송 함수
-  const sendLocation = async () => {
-    try {
-      const currentLocation = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.BestForNavigation,
-      });
-
-      if (globalSocket) {
-        console.log('Sending location:', {
-          identifier: selectedLocation,
-          latitude: currentLocation.coords.latitude,
-          longitude: currentLocation.coords.longitude,
-        });
-        // 선택된 위치와 함께 위치 데이터 전송
-        globalSocket.emit('userLocation', {
-          email: user.email,
-          identifier: selectedLocation,
-          latitude: currentLocation.coords.latitude,
-          longitude: currentLocation.coords.longitude,
-        });
-      } else {
-        console.log('Socket is not connected. Location data cannot be sent.');
-      }
-    } catch (error) {
-      console.error('Error sending location:', error);
+      Alert.alert('GPS 연결이 종료되었습니다.');
     }
   };
 
