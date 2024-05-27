@@ -8,6 +8,7 @@ import Registration from './src/Registration';
 import Dashboard from './src/Dashboard';
 import Profile from './src/Profile';
 import GoogleMap from './src/GoogleMap';
+import ShuttleSchedule from './src/ShuttleSchedule';
 import TrainSchedule from './src/TrainSchedule';
 import Notice from './src/Notice';
 
@@ -89,14 +90,14 @@ const AppStackScreen = () => (
         headerTitle: '',
       }}
     />
-    {/*<Stack.Screen
+    <Stack.Screen
       name="ShuttleSchedule"
       component={ShuttleSchedule}
       options={{
         headerTitle: '셔틀 버스 시간표',
         headerTitleAlign: 'center',
       }}
-    />*/}
+    />
     <Stack.Screen
       name="TrainSchedule"
       component={TrainSchedule}
