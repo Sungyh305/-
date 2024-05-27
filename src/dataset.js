@@ -1,4 +1,4 @@
-const ranges = [
+const ranges = [ //천안아산역
   {
     id: "bus_stop1",
     points: [
@@ -536,6 +536,14 @@ const ranges = [
     points: [
       { latitude: 36.795499,longitude: 127.101909},
       { latitude: 36.795259,longitude: 127.101319}
+    ]
+  },
+  // 천안역
+  {
+    id: "bus_stop1",
+    points: [
+      { latitude: 36.800334, longitude: 127.071074 },
+      { latitude: 36.800560, longitude: 127.072097 }
     ]
   },
 ];
