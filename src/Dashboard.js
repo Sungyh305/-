@@ -11,7 +11,7 @@ import {
   Linking,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { firebase } from '../config'; // Firebase 설정 가져오기
+import { firebase } from '../config';
 import socketIOClient from 'socket.io-client'; // Socket.IO 클라이언트 라이브러리 가져오기
 import * as TaskManager from 'expo-task-manager'; // Expo 백그라운드 태스크 매니저 가져오기
 import * as Location from 'expo-location'; // Expo 위치 API 가져오기
@@ -21,9 +21,9 @@ const SERVER_URL = 'https://profound-leech-engaging.ngrok-free.app'; // 서버 U
 const LOCATION_TASK_NAME = 'background-location-task'; // 백그라운드 위치 태스크 이름
 
 let globalSocket = null; // 전역 Socket.IO 클라이언트 인스턴스
-let globalSelectedLocation = '1'; // 전역 선택된 위치
+let globalSelectedLocation = '1'; // 전역 선택된 위치 (default 1)
 
-// Expo 백그라운드 위치 태스크 정의
+// 백그라운드 위치 추적 태스크 정의
 TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
   if (error) {
     console.error('TaskManager Error:', error);
@@ -34,7 +34,7 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
     const location = locations[0];
     console.log('Background location:', location);
 
-    // 스위치 상태 확인
+    // 사용자 인증 정보 확인
     const user = firebase.auth().currentUser;
     if (!user) {
       console.log('User not authenticated');
@@ -48,6 +48,7 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
       .doc(user.uid)
       .get();
 
+    // Socket이 연결되어 있다면 위치 데이터 전송
     if (globalSocket && globalSocket.connected) {
       globalSocket.emit('userLocation', {
         // 사용자 위치 데이터를 서버로 전송
@@ -68,6 +69,7 @@ const Dashboard = () => {
   const [backgroundPermissionDenied, setBackgroundPermissionDenied] =
     useState(false); // 백그라운드 권한 거부 상태
 
+  // 위치 이름 매핑 객체
   const locationNames = {
     1: '천안아산역',
     2: '천안역',
@@ -98,9 +100,9 @@ const Dashboard = () => {
     globalSelectedLocation = selectedLocation;
   }, [selectedLocation]);
 
+  // 컴포넌트가 처음 로드될 때 위치 업데이트 초기화
   useEffect(() => {
     const initializeLocationUpdates = async () => {
-      // 앱이 초기화될 때, 백그라운드 위치 업데이트가 이미 실행 중인지 확인하고 중지
       const isBackgroundUpdateRunning =
         await Location.hasStartedLocationUpdatesAsync(LOCATION_TASK_NAME);
       if (isBackgroundUpdateRunning) {
@@ -114,89 +116,109 @@ const Dashboard = () => {
 
   // GPS 스위치 토글 시 동작
   const toggleSwitch = async (value) => {
-    setSwitchValue(value);
+    setSwitchValue(value); // 스위치 상태 업데이트
 
     if (value) {
-      // GPS 사용을 ON으로 변경할 때
-      let { status: foregroundStatus } =
-        await Location.requestForegroundPermissionsAsync();
-      if (foregroundStatus !== 'granted') {
-        Alert.alert(
-          '권한 오류',
-          '앱을 사용하기 위해서는 위치 권한이 필요합니다.'
-        );
-        setSwitchValue(false);
-        return;
-      }
-
-      let { status: backgroundStatus } =
-        await Location.requestBackgroundPermissionsAsync();
-      if (backgroundStatus !== 'granted') {
-        setBackgroundPermissionDenied(true);
-        return;
-      }
-
-      let gpsEnabled = await Location.hasServicesEnabledAsync();
-      if (!gpsEnabled) {
-        Alert.alert(
-          'GPS 활성화 요청',
-          'GPS가 꺼져 있습니다. 앱을 사용하기 위해서는 GPS를 활성화해주세요.',
-          [{ text: '확인' }]
-        );
-        setSwitchValue(false);
-        return;
-      }
-
-      // 범위를 벗어났을 때 오류 메시지 출력
-      if (!globalSocket) {
-        globalSocket = socketIOClient(SERVER_URL);
-        globalSocket.connect();
-
-        globalSocket.off('LocationError');
-        globalSocket.on('LocationError', (point) => {
-          toggleSwitch(false);
-          Alert.alert(
-            '알림',
-            `범위를 벗어났습니다.\nGPS를 다시 설정해주세요.\n(적립된 포인트: ${point.point})`,
-            [{ text: '확인' }],
-            { cancelable: false }
-          );
-        });
-      }
-
-      // 백그라운드 위치 업데이트 시작
       try {
+        // 포어그라운드 위치 권한 요청
+        let { status: foregroundStatus } =
+          await Location.requestForegroundPermissionsAsync();
+        if (foregroundStatus !== 'granted') {
+          Alert.alert(
+            '권한 오류',
+            '앱을 사용하기 위해서는 위치 권한이 필요합니다.'
+          );
+          setSwitchValue(false);
+          return;
+        }
+
+        // 백그라운드 위치 권한 요청
+        let { status: backgroundStatus } =
+          await Location.requestBackgroundPermissionsAsync();
+        if (backgroundStatus !== 'granted') {
+          setBackgroundPermissionDenied(true); // 권한 거부 상태 설정
+          return;
+        }
+
+        // GPS 활성화 여부 확인
+        let gpsEnabled = await Location.hasServicesEnabledAsync();
+        if (!gpsEnabled) {
+          Alert.alert(
+            'GPS 활성화 요청',
+            'GPS가 꺼져 있습니다. 앱을 사용하기 위해서는 GPS를 활성화해주세요.',
+            [{ text: '확인' }]
+          );
+          setSwitchValue(false);
+          return;
+        }
+
+        // Socket.IO 초기화
+        if (!globalSocket) {
+          globalSocket = socketIOClient(SERVER_URL);
+          globalSocket.connect();
+
+          globalSocket.off('LocationError');
+          globalSocket.on('LocationError', (point) => {
+            toggleSwitch(false);
+            Alert.alert(
+              '알림',
+              `범위를 벗어났습니다.\nGPS를 다시 설정해주세요.\n(적립된 포인트: ${point.point})`,
+              [{ text: '확인' }],
+              { cancelable: false }
+            );
+          });
+        }
+
+        // 백그라운드 위치 업데이트 시작
         const isBackgroundUpdateRunning =
           await Location.hasStartedLocationUpdatesAsync(LOCATION_TASK_NAME);
         if (!isBackgroundUpdateRunning) {
           await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
             accuracy: Location.Accuracy.BestForNavigation,
-            timeInterval: 6000, // 6초마다 위치 업데이트
-            distanceInterval: 0, // 거리 변화가 없어도 위치 업데이트
+            timeInterval: 6000,
+            distanceInterval: 0,
             showsBackgroundLocationIndicator: true,
+            foregroundService: {
+              notificationTitle: '위치 추적 중',
+              notificationBody: '앱이 백그라운드에서 위치를 추적하고 있습니다.',
+              notificationColor: '#ff0000',
+            },
           });
-
           console.log('Started background location updates');
         }
       } catch (error) {
-        console.error('Error starting background location updates:', error);
+        console.error('Error starting location updates:', error);
+        Alert.alert(
+          '오류',
+          `위치 서비스를 시작하는 중 오류가 발생했습니다. 다시 시도해주세요.\n상세 오류: ${error.message}`
+        );
+        setSwitchValue(false);
       }
     } else {
-      // GPS 사용을 OFF로 변경할 때
-      const isBackgroundUpdateRunning =
-        await Location.hasStartedLocationUpdatesAsync(LOCATION_TASK_NAME);
-      if (isBackgroundUpdateRunning) {
-        await Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
-        console.log('Stopped background location updates');
-      }
+      try {
+        // 백그라운드 위치 업데이트 중지
+        const isBackgroundUpdateRunning =
+          await Location.hasStartedLocationUpdatesAsync(LOCATION_TASK_NAME);
+        if (isBackgroundUpdateRunning) {
+          await Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
+          console.log('Stopped background location updates');
+        }
 
-      if (globalSocket) {
-        globalSocket.emit('disconnectUser', globalSocket.id);
-        globalSocket.disconnect();
-        globalSocket = null;
-      }
+        // Socket.IO 연결 해제
+        if (globalSocket) {
+          globalSocket.emit('disconnectUser', globalSocket.id);
+          globalSocket.disconnect();
+          globalSocket = null;
+        }
 
-      Alert.alert('GPS 연결이 종료되었습니다.');
+        Alert.alert('GPS 연결이 종료되었습니다.');
+      } catch (error) {
+        console.error('Error stopping location updates:', error);
+        Alert.alert(
+          '오류',
+          '위치 서비스를 중지하는 중 오류가 발생했습니다. 다시 시도해주세요.'
+        );
+      }
     }
   };
 
