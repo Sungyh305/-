@@ -540,10 +540,80 @@ const ranges = [ //천안아산역
   },
   // 천안역
   {
-    id: "bus_stop1",
+    id: "range a",
     points: [
-      { latitude: 36.800334, longitude: 127.071074 },
-      { latitude: 36.800560, longitude: 127.072097 }
+      { latitude: 36.800203,longitude: 127.100145},
+      { latitude: 36.800834,longitude: 127.101127}
+    ]
+  },
+  {
+    id: "range b",
+    points: [
+      { latitude: 36.800491,longitude: 127.101153},
+      { latitude: 36.800942,longitude: 127.101703}
+    ]
+  },
+  {
+    id: "range c",
+    points: [
+      { latitude: 36.800603,longitude: 127.101730},
+      { latitude: 36.801058,longitude: 127.102241}
+    ]
+  },
+  {
+    id: "range d",
+    points: [
+      { latitude: 36.800705,longitude: 127.102256},
+      { latitude: 36.801147,longitude: 127.102739}
+    ]
+  },
+  {
+    id: "range e",
+    points: [
+      { latitude: 36.800817,longitude: 127.102771},
+      { latitude: 36.801302,longitude: 127.103467}
+    ]
+  },
+  {
+    id: "range f",
+    points: [
+      { latitude: 36.800950,longitude: 127.103499},
+      { latitude: 36.801434,longitude: 127.104252}
+    ]
+  },
+  {
+    id: "range g",
+    points: [
+      { latitude: 36.801129,longitude: 127.104268},
+      { latitude: 36.801613,longitude: 127.105117}
+    ]
+  },
+  {
+    id: "range h",
+    points: [
+      { latitude: 36.801286,longitude: 127.105122},
+      { latitude: 36.801764,longitude: 127.106049}
+    ]
+  },
+  {
+    id: "range i",
+    points: [
+      { latitude: 36.801463,longitude: 127.106012},
+      { latitude: 36.801893,longitude: 127.106772}
+    ]
+  },
+  {
+    id: "range j",
+    points: [
+      { latitude: 36.801580,longitude: 127.106751},
+      { latitude: 36.801974,longitude: 127.107254}
+    ]
+  },
+  {
+    id: "range k",
+    points: [
+      { latitude: 36.801580,longitude: 127.106751},
+      { latitude: 36.801974,longitude: 127.107254}
     ]
   },
 ];
