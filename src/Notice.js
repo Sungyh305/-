@@ -4,6 +4,8 @@ import {Text, StyleSheet, View, TouchableOpacity, Modal} from 'react-native';
 const Notice = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [displayText, setDisplayText] = useState("");
+  const [displayheaderText, setDisplayheaderText] = useState("");
+  const [inquirymodalVisible, setInquiryModalVisible] = useState(false);
   const key = useRef(null);
 
   const noticeText = () => {
@@ -16,10 +18,21 @@ const Notice = () => {
 - 지도가 느리게 렌더링되는 문제 수정\n- 마커가 두 개로 겹쳐 보이는 문제 수정\n");
     }
   }
+  const noticeHeaderText = () => {
+    if(key.current == '1') {
+      setDisplayheaderText("버스! 어디가? 사용설명서(필독)");
+    } else if(key.current == '2') {
+      setDisplayheaderText("버스! 어디가? 정기 업데이트");
+    }
+  }
 
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.box_view} onPress={() => {key.current = 1, noticeText(), setModalVisible(true)}}>
+        <TouchableOpacity style={styles.box_view} onPress={() => {
+          key.current = 1
+          noticeHeaderText()
+          noticeText()
+          setModalVisible(true)}}>
           <View style={styles.header_view}>
             <Text style={styles.header_text}>버스! 어디가? 사용설명서(필독)</Text>
             <Text style={styles.date_text}>2024-05-17(금)</Text>
@@ -29,7 +42,11 @@ const Notice = () => {
             2. 셔틀 버스 시간표 및 KTX 시간표 확인 가능{'\n'}
             3. 지정된 위치 안에서 GPS 위치 전송 버튼을 누를 시 포인트 지급   ...</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.box_view} onPress={() => {key.current = 2, noticeText(), setModalVisible(true)}}>
+        <TouchableOpacity style={styles.box_view} onPress={() => {
+          key.current = 2
+          noticeHeaderText()
+          noticeText()
+          setModalVisible(true)}}>
           <View style={styles.header_view}>
             <Text style={styles.header_text}>버스! 어디가? 정기 업데이트</Text>
             <Text style={styles.date_text}>2024-05-17(금)</Text>
@@ -40,7 +57,8 @@ const Notice = () => {
             - ...
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.inquiry_view}>
+        <TouchableOpacity style={styles.inquiry_view} onPress={() => {
+          setInquiryModalVisible(true)}}>
           <Text style={styles.inquiry_text}>1:1 및 버그 문의</Text>
         </TouchableOpacity>
         <Modal
@@ -54,13 +72,33 @@ const Notice = () => {
           <View style={styles.modal_view}>
             <View style={styles.modal_content}>
               <View style={styles.modal_header_view}>
-                <Text style={styles.header_text}>버스! 어디가? 사용설명서(필독)</Text>
+                <Text style={styles.header_text}>{displayheaderText}</Text>
                 <Text style={styles.date_text}>2024-05-17(금)</Text>
               </View>
               <Text style={styles.modal_body_text}>{displayText}</Text>
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.button_text}>확인</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={inquirymodalVisible}
+          onRequestClose={() => {
+            setModalVisible(!inquirymodalVisible);
+          }}
+        >
+          <View style={styles.modal_view}>
+            <View style={styles.modal_content}>
+              <Text style={styles.modal_inquiry_text}>jikolp89@naver.com {'\n'}이메일로 문의주시기 바랍니다.</Text>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => setInquiryModalVisible(false)}
               >
                 <Text style={styles.button_text}>확인</Text>
               </TouchableOpacity>
@@ -130,6 +168,13 @@ const styles = StyleSheet.create({
   inquiry_text: {
     fontSize: 17,
     fontWeight: 'bold',
+  },
+  modal_inquiry_text: {
+    width: 350,
+    fontSize: 17,
+    padding: 15,
+    lineHeight: 30,
+    textAlign: 'center',
   },
   button_text: {
     fontSize: 17,

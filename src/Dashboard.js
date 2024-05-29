@@ -7,88 +7,185 @@ import {
   Switch,
   Alert,
   Image,
-  View
+  View,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { firebase } from '../config';
-import socketIOClient from 'socket.io-client';
-import * as Location from 'expo-location';
-import { Picker } from '@react-native-picker/picker';
+import { firebase } from '../config'; // Firebase 설정 가져오기
+import * as TaskManager from 'expo-task-manager'; // Expo 백그라운드 태스크 매니저 가져오기
+import * as Location from 'expo-location'; // Expo 위치 API 가져오기
+import { Picker } from '@react-native-picker/picker'; // React Native Picker 컴포넌트 가져오기
+import globalSocket from './Socket'; // 외부에서 socket 가져오기
 
-const SERVER_URL = 'https://advanced-sawfish-faithful.ngrok-free.app/';
+const LOCATION_TASK_NAME = 'background-location-task'; // 백그라운드 위치 태스크 이름
+let globalSelectedLocation = '1'; // 전역 선택된 위치
 
-const Dashboard = () => {
-  const navigation = useNavigation();
-  const [switchValue, setSwitchValue] = useState(false); // GPS 사용 여부
-  const [user, setUser] = useState(''); // 사용자 정보
-  const [socket, setSocket] = useState(null); // 소켓 연결
-  const [selectedLocation, setSelectedLocation] = useState('1'); // 선택된 위치
-  intervalId = useRef(null); // 위치 전송 간격 ID
-
-  // 비동기 함수를 통해 사용자 데이터 가져오기
-  useEffect(() => {
-    firebase
+// Expo 백그라운드 위치 태스크 정의
+TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
+  if (error) {
+    console.error('TaskManager Error:', error);
+    return;
+  }
+  if (data) {
+    const { locations } = data;
+    const location = locations[0];
+    const user = await firebase
       .firestore()
       .collection('users')
       .doc(firebase.auth().currentUser.uid)
-      .get()
-      .then((snapshot) => {
-        if (snapshot.exists) {
-          setUser(snapshot.data());
+      .get();
+
+    globalSocket.emit('userLocation', {
+      // 사용자 위치 데이터를 서버로 전송
+      email: user.data().email,
+      identifier: globalSelectedLocation,
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    });
+  }
+});
+
+const Dashboard = ({ route }) => {
+  const navigation = useNavigation();
+  const [switchValue, setSwitchValue] = useState(false); // GPS 사용 여부 상태
+  const [user, setUser] = useState(''); // 사용자 정보 상태
+  const [selectedLocation, setSelectedLocation] = useState('1'); // 선택된 위치 상태
+  const intervalId = useRef(null); // 인터벌 ID useRef로 저장
+  const [backgroundPermissionDenied, setBackgroundPermissionDenied] =
+    useState(false); // 백그라운드 권한 거부 상태
+
+  const locationNames = {
+    1: '천안아산역',
+    2: '천안역',
+    3: '천안터미널',
+  };
+
+  // 사용자 데이터 가져오기
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userDoc = await firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).get();
+        if (userDoc.exists) {
+          setUser(userDoc.data());
         } else {
           console.log('User does not exist');
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error('Error fetching user data:', error);
-      });
-  }, []);
-
-  useEffect(() => {
-    const connectSocket = () => {
-      const newSocket = socketIOClient(SERVER_URL);
-      setSocket(newSocket);
+      }
     };
 
-    connectSocket();
+    fetchUserData();
+  }, []);
 
-    // 컴포넌트 언마운트 시 소켓 연결 해제
+  // Dashboard 컴포넌트에서 route.params로 전달된 데이터 확인 후 업데이트
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userDoc = await firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).get();
+        if (userDoc.exists) {
+          setUser(userDoc.data());
+        } else {
+          console.log('User does not exist');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, [route.params]);
+
+  // 소켓 연결 설정
+  useEffect(() => {
+    if (!globalSocket.connected) {
+      globalSocket.connect();
+    }
+
     return () => {
-      if (socket) {
-        socket.disconnect();
+      if (globalSocket) {
+        globalSocket.emit('disconnectuser');
+        globalSocket.disconnect();
       }
     };
   }, []);
 
-  // GPS 스위치
+  // 선택된 위치 변경 시 전역 변수 업데이트
+  useEffect(() => {
+    globalSelectedLocation = selectedLocation;
+  }, [selectedLocation]);
+
+  // GPS 스위치 토글 시 동작
   const toggleSwitch = async (value) => {
     setSwitchValue(value);
+
     if (value) {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
+      // GPS 사용을 ON으로 변경할 때
+      let { status: foregroundStatus } =
+        await Location.requestForegroundPermissionsAsync();
+      if (foregroundStatus !== 'granted') {
+        Alert.alert(
+          '권한 오류',
+          '앱을 사용하기 위해서는 위치 권한이 필요합니다.'
+        );
+        setSwitchValue(false);
+        return;
+      }
+
+      let { status: backgroundStatus } =
+        await Location.requestBackgroundPermissionsAsync();
+      if (backgroundStatus !== 'granted') {
+        setBackgroundPermissionDenied(true);
+        return;
+      }
+
+      let gpsEnabled = await Location.hasServicesEnabledAsync();
+      if (!gpsEnabled) {
+        Alert.alert(
+          'GPS 활성화 요청',
+          'GPS가 꺼져 있습니다. 앱을 사용하기 위해서는 GPS를 활성화해주세요.',
+          [{ text: '확인' }]
+        );
+        setSwitchValue(false);
         return;
       }
 
       // 5초 간격으로 위치 전송
-      intervalId.current = setInterval(sendLocation, 5000)
-      
-      // 보낸 위치가 범위 밖일 시 오류 메시지 출력
-      if(socket) {
-        socket.on('LocationError', (point) => {
+      intervalId.current = setInterval(sendLocation, 5000);
+
+      // 백그라운드 위치 추적 시작
+      await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+        accuracy: Location.Accuracy.BestForNavigation,
+        timeInterval: 5000,
+        distanceInterval: 0,
+        showsBackgroundLocationIndicator: true,
+      });
+
+      // 범위를 벗어났을 때 오류 메시지 출력
+      if (globalSocket) {
+        globalSocket.on('LocationError', (point) => {
           toggleSwitch(false);
           Alert.alert(
             '알림',
             `범위를 벗어났습니다.\nGPS를 다시 설정해주세요.\n(적립된 포인트: ${point.point})`,
-            [{text: '확인',}],
+            [{ text: '확인' }],
             { cancelable: false }
           );
         });
       }
     } else {
-      // GPS 중지 시
+      // GPS 사용을 OFF로 변경할 때
       clearInterval(intervalId.current);
-      console.log("GPS 중지");
-      Alert.alert('GPS 연결이 종료되었습니다.');
+      intervalId.current = null;
+      console.log('GPS 중지');
+      Alert.alert(
+        '알림',
+        `GPS 연결이 종료되었습니다.`);
+      // 백그라운드 위치 추적 중지
+      if (globalSocket) {
+        globalSocket.emit('disconnectUser', globalSocket.id);
+      }
+
+      await Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
     }
   };
 
@@ -98,36 +195,60 @@ const Dashboard = () => {
       const currentLocation = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.BestForNavigation,
       });
-      if (socket && socket.connected) {
+
+      if (globalSocket) {
         // 선택된 위치와 함께 위치 데이터 전송
-        socket.emit('userLocation', {
+        globalSocket.emit('userLocation', {
           email: user.email,
           identifier: selectedLocation,
           latitude: currentLocation.coords.latitude,
           longitude: currentLocation.coords.longitude,
         });
+      } else {
+        console.log('Socket is not connected. Location data cannot be sent.');
       }
-      
     } catch (error) {
       console.error('Error sending location:', error);
     }
   };
-  const tset2 = () => {
-    console.log("test");
-  };
 
+  // 백그라운드 위치 권한 거부 시 처리
+  useEffect(() => {
+    if (backgroundPermissionDenied) {
+      // 알림 팝업 표시
+      Alert.alert(
+        '백그라운드 위치 권한 요청',
+        '앱을 사용하기 위해서는 백그라운드 위치 권한이 필요합니다. 설정에서 위치 권한을 항상 허용으로 변경해주세요.',
+        [
+          { text: '취소' },
+          {
+            text: '설정으로 이동',
+            onPress: () => Linking.openSettings(), // 설정으로 이동하는 함수 호출
+          },
+        ]
+      );
+      setSwitchValue(false); // GPS 스위치 값을 false로 변경
+      setBackgroundPermissionDenied(false); // 백그라운드 권한 거부 상태를 초기화
+    }
+  }, [backgroundPermissionDenied]);
+
+  // 화면 렌더링
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <View style={styles.container}>
+        {/* 프로필 이미지 표시 */}
         <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <Image
-            style={styles.Image}
-            source={require('../assets/user.png')}
-          />
+          <Image style={styles.Image} source={user && user.photoURL ? { uri: user.photoURL } : user && user.image ? user.image : require('../assets/user.png')} />
         </TouchableOpacity>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 30, }}>
-          {user.name}님 반갑습니다.
-        </Text>
+        {switchValue ? (
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 30 }}>
+            {locationNames[selectedLocation]} 행으로 GPS 송신중
+          </Text>
+        ) : (
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 30 }}>
+            {user.name}님 반갑습니다.
+          </Text>
+        )}
         <View style={styles.outerContainer}>
           <View style={styles.middleContainer}>
             {/* 셔틀 시간표 보기 버튼 */}
@@ -137,38 +258,40 @@ const Dashboard = () => {
                   style={styles.View_bus_image}
                   source={require('../assets/shuttle_bus.png')}
                 />
-                <Text style={styles.Text}>
-                  셔틀 버스{'\n'}시간표 보기
-                </Text>
+                <Text style={styles.Text}>셔틀 버스{'\n'}시간표 보기</Text>
               </View>
             </TouchableOpacity>
             {/* 기차 시간표 보기 버튼 */}
-            <TouchableOpacity onPress={() => navigation.navigate('TrainSchedule')}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('TrainSchedule')}
+            >
               <View style={styles.View_train}>
                 <Image
                   style={styles.View_bus_image}
                   source={require('../assets/train.png')}
                 />
-                <Text style={styles.Text}>
-                  기차 시간표 보기
-                </Text>
+                <Text style={styles.Text}>기차 시간표 보기</Text>
               </View>
             </TouchableOpacity>
           </View>
           <View style={styles.middleContainer}>
-            {/* GPS 송신 버튼 */}
             <View style={styles.GPS_switch}>
               {/* 드롭다운 메뉴 */}
               <Picker
                 selectedValue={selectedLocation}
-                style={{ height: 50, width: 150, fontWeight: 'bold'}}
+                style={{
+                  height: 50,
+                  width: 150,
+                  fontWeight: 'bold',
+                  opacity: switchValue ? 0 : 1,
+                }}
                 onValueChange={(itemValue) => setSelectedLocation(itemValue)}
               >
                 <Picker.Item label="천안아산역" value="1" />
                 <Picker.Item label="천안역" value="2" />
                 <Picker.Item label="천안터미널" value="3" />
               </Picker>
-              {/* GPS 토글 스위치 */}
+
               <Switch
                 trackColor={{ false: '#767577', true: '#81b0ff' }}
                 thumbColor={switchValue ? '#f5dd4b' : '#f4f3f4'}
@@ -176,10 +299,9 @@ const Dashboard = () => {
                 onValueChange={toggleSwitch}
                 value={switchValue}
               />
-              <Text style={styles.Text}>
-                GPS 위치 전송
-              </Text>
+              <Text style={styles.Text}>GPS 위치 전송</Text>
             </View>
+
             {/* 셔틀 버스 위치 보기 버튼 */}
             <TouchableOpacity onPress={() => navigation.navigate('GoogleMap')}>
               <View style={styles.View_bus}>
@@ -187,9 +309,7 @@ const Dashboard = () => {
                   style={styles.View_bus_image}
                   source={require('../assets/bus_location.png')}
                 />
-                <Text style={styles.Text}>
-                  셔틀 버스{'\n'}위치 보기
-                </Text>
+                <Text style={styles.Text}>셔틀 버스{'\n'}위치 보기</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -200,12 +320,14 @@ const Dashboard = () => {
               style={styles.notice_image}
               source={require('../assets/notice.png')}
             />
-            <Text style={{
-              fontSize: 18,
-              textAlign: 'center',
-              fontWeight: 'bold',
-              padding: 2,
-            }}>
+            <Text
+              style={{
+                fontSize: 18,
+                textAlign: 'center',
+                fontWeight: 'bold',
+                padding: 2,
+              }}
+            >
               공지사항
             </Text>
           </View>
@@ -297,7 +419,7 @@ const styles = StyleSheet.create({
   },
   notice_image: {
     height: 40,
-    width : 40,
+    width: 40,
     marginEnd: 10,
   },
 });
