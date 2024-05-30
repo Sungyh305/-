@@ -60,6 +60,7 @@ const GoogleMap = () => {
     { latitude: 36.794721, longitude: 127.085651 },
     { latitude: 36.795607, longitude: 127.087547 },
   ];
+
   // 천안역
   const PolylineCoordinates03 = [
     { latitude: 36.800437, longitude: 127.071803 },
@@ -154,7 +155,6 @@ const GoogleMap = () => {
     // 소켓 연결
     const connectSocket = () => {
       socket = socketIOClient(SERVER_URL);
-      // 새로운 위치 데이터를 받아와서 마커 갱신
 
       socket.on('connect', () => {
         console.log('Socket connected');
@@ -164,12 +164,13 @@ const GoogleMap = () => {
         console.log('Socket disconnected');
       });
 
+      // 새로운 위치 데이터를 받아와서 마커 갱신
       socket.on('broadcastLocation', (location) => {
         // 범위 id 구별하여 이미지 분리
-        if (location.key.startsWith('test')) {
+        if (location.key.startsWith('bus_stop')) {
           newMarkerImage = require('../assets/Person_expo.png');
         } else {
-          newMarkerImage = require('../assets/bus_expo.png');
+          newMarkerImage = require('../assets/bus_apk.png');
         }
 
         setUserMarkers((prevMarkers) => ({

@@ -25,6 +25,7 @@
         }
       },
       "package": "com.hyeonu.myapp",
+      "networkSecurityConfig": "./android/app/src/main/res/xml/network_security_config.xml",
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",

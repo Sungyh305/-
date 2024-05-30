@@ -8,6 +8,16 @@ const app = express();
 const server = http.createServer(app); // Express 애플리케이션을 기반으로 HTTP 서버 생성
 const io = socketIo(server); // HTTP 서버를 기반으로 소켓 서버 생성
 
+const admin = require('firebase-admin');
+// 서비스 계정 키를 다운로드하고 이를 서버에서 사용할 수 있도록 환경 변수로 설정
+const serviceAccount = require('./login-943f1-firebase-adminsdk-fou33-3f4f87aa6b.json');
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+const db = admin.firestore();
+let point = 0;
+let destination = ''; //목적지
+
 // 받아온 좌표가 범위 안에 있는지 확인하는 함수
 function isInRange(latitude, longitude, range) {
   const point1 = range.points[0];
@@ -23,18 +33,37 @@ function isInRange(latitude, longitude, range) {
   return range.id;
 }
 
+const addPointLog = async (email, date, destination, points) => {
+  try {
+    const pointLog = {
+      date,
+      destination,
+      points,
+    };
+    await db
+      .collection('users')
+      .where('email', '==', email)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.collection('pointLogs').add(pointLog);
+        });
+      });
+    console.log('포인트 지급 내역 추가 성공');
+  } catch (error) {
+    console.error('Error adding point log:', error);
+  }
+};
+
 // 소켓 연결 이벤트 처리
 io.on('connection', (socket) => {
   console.log('사용자(소켓) 연결');
 
   socket.on('userLocation', (location) => {
-    // 사용자가 보낸 위치가 범위 안에 있는지 확인
-    let locationInRange = false;
+    // 사용자가 보낸 위치가 범위 안에 있는지 확인 후 코드 수행
     for (const range of ranges) {
       const key = isInRange(location.latitude, location.longitude, range);
-      if (key !== false) {
-        locationInRange = true;
-        //firebase 연동 포인트 지급
+      if (key != false) {
         console.log(
           `사용자 입력 좌표 (${location.latitude}, ${location.longitude})는 범위에 포함됩니다.`
         );
@@ -47,14 +76,50 @@ io.on('connection', (socket) => {
           longitude,
           userId: socket.id,
         });
+        // firebase 연동 포인트 지급
+        db.collection('users')
+          .where('email', '==', location.email)
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              const userData = doc.data();
+              const userPoint = userData.point;
+
+              const updatedPoint = userPoint + 0.5;
+              point = point + 0.5;
+
+              db.collection('users')
+                .doc(doc.id)
+                .update({
+                  point: updatedPoint,
+                })
+                .then(() => {
+                  console.log('User point:', userPoint);
+                })
+                .catch((error) => {
+                  console.error('Error updating user point:', error);
+                });
+            });
+          })
+          .catch((error) => {
+            console.error('Error fetching user data:', error);
+          });
         break;
       }
-    }
-
-    if (!locationInRange) {
-      console.log(
-        `사용자 입력 좌표 (${location.latitude}, ${location.longitude})는 범위에 포함되지 않습니다.`
-      );
+      // for문을 다 돌아서 마지막 범위까지 일치하지 않으면 사용자에게 전달
+      else if (ranges.indexOf(range) === ranges.length - 1) {
+        socket.emit('LocationError', { point });
+        //addPointLog()
+        if (location.identifier == 1) {
+          destination = '천안아산역';
+        } else if (location.identifier == 2) {
+          destination = '천안역';
+        } else {
+          destination = '천안터미널';
+        }
+        addPointLog(location.email, new Date(), destination, point);
+        point = 0;
+      }
     }
   });
 
@@ -63,10 +128,7 @@ io.on('connection', (socket) => {
     console.log(`사용자 ${userId} 연결 종료`);
     // 클라이언트에게 해당 사용자의 식별자를 전송하여 마커 제거 요청
     io.emit('removeMarker', userId);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('사용자 연결 종료');
+    socket.emit('removeMarker', userId);
   });
 });
 

@@ -61,7 +61,7 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
   }
 });
 
-const Dashboard = () => {
+const Dashboard = ({ route }) => {
   const navigation = useNavigation();
   const [switchValue, setSwitchValue] = useState(false); // GPS 사용 여부 상태
   const [user, setUser] = useState(''); // 사용자 정보 상태
@@ -78,22 +78,47 @@ const Dashboard = () => {
 
   // 사용자 데이터 가져오기
   useEffect(() => {
-    firebase
-      .firestore()
-      .collection('users')
-      .doc(firebase.auth().currentUser.uid)
-      .get()
-      .then((snapshot) => {
-        if (snapshot.exists) {
-          setUser(snapshot.data());
+    const fetchUserData = async () => {
+      try {
+        const userDoc = await firebase
+          .firestore()
+          .collection('users')
+          .doc(firebase.auth().currentUser.uid)
+          .get();
+        if (userDoc.exists) {
+          setUser(userDoc.data());
         } else {
           console.log('User does not exist');
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error('Error fetching user data:', error);
-      });
+      }
+    };
+
+    fetchUserData();
   }, []);
+
+  // Dashboard 컴포넌트에서 route.params로 전달된 데이터 확인 후 업데이트
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userDoc = await firebase
+          .firestore()
+          .collection('users')
+          .doc(firebase.auth().currentUser.uid)
+          .get();
+        if (userDoc.exists) {
+          setUser(userDoc.data());
+        } else {
+          console.log('User does not exist');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, [route.params]);
 
   // 선택된 위치 변경 시 전역 변수 업데이트
   useEffect(() => {
@@ -114,6 +139,7 @@ const Dashboard = () => {
     initializeLocationUpdates();
   }, []);
 
+  let manualSwitchOff = false; // 수동으로 스위치를 끄는지 여부를 추적하는 상태 변수
   // GPS 스위치 토글 시 동작
   const toggleSwitch = async (value) => {
     setSwitchValue(value); // 스위치 상태 업데이트
@@ -159,11 +185,19 @@ const Dashboard = () => {
 
           globalSocket.off('LocationError');
           globalSocket.on('LocationError', (point) => {
-            toggleSwitch(false);
+            console.log('LocationError event received:', point);
             Alert.alert(
               '알림',
               `범위를 벗어났습니다.\nGPS를 다시 설정해주세요.\n(적립된 포인트: ${point.point})`,
-              [{ text: '확인' }],
+              [
+                {
+                  text: '확인',
+                  onPress: () => {
+                    manualSwitchOff = false;
+                    toggleSwitch(false);
+                  },
+                },
+              ],
               { cancelable: false }
             );
           });
@@ -195,6 +229,7 @@ const Dashboard = () => {
         setSwitchValue(false);
       }
     } else {
+      manualSwitchOff = true; // 수동으로 스위치를 끌 때 설정
       try {
         // 백그라운드 위치 업데이트 중지
         const isBackgroundUpdateRunning =
@@ -211,7 +246,31 @@ const Dashboard = () => {
           globalSocket = null;
         }
 
-        Alert.alert('GPS 연결이 종료되었습니다.');
+        if (manualSwitchOff) {
+          // 사용자가 수동으로 스위치를 종료할 때 적립된 포인트 확인 및 알림
+          const user = firebase.auth().currentUser;
+          if (user) {
+            const userData = await firebase
+              .firestore()
+              .collection('users')
+              .doc(user.uid)
+              .get();
+
+            if (userData.exists) {
+              const points = userData.data().point;
+              Alert.alert(
+                'GPS 연결이 종료되었습니다.',
+                `적립된 포인트: ${points}`
+              );
+            } else {
+              Alert.alert(
+                '오류',
+                '사용자 데이터를 가져오는 중 오류가 발생했습니다.'
+              );
+            }
+          }
+          manualSwitchOff = false; // 상태 초기화
+        }
       } catch (error) {
         console.error('Error stopping location updates:', error);
         Alert.alert(
@@ -246,8 +305,18 @@ const Dashboard = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <View style={styles.container}>
+        {/* 프로필 이미지 표시 */}
         <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <Image style={styles.Image} source={require('../assets/user.png')} />
+          <Image
+            style={styles.Image}
+            source={
+              user && user.photoURL
+                ? { uri: user.photoURL }
+                : user && user.image
+                ? user.image
+                : require('../assets/user.png')
+            }
+          />
         </TouchableOpacity>
         {switchValue ? (
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 30 }}>
@@ -261,7 +330,9 @@ const Dashboard = () => {
         <View style={styles.outerContainer}>
           <View style={styles.middleContainer}>
             {/* 셔틀 시간표 보기 버튼 */}
-            <TouchableOpacity onPress={() => navigation.navigate('Shuttle')}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ShuttleSchedule')}
+            >
               <View style={styles.View_shuttle}>
                 <Image
                   style={styles.View_bus_image}
