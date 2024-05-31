@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps'; // Polyline 추가
 import socketIOClient from 'socket.io-client';
 import { Picker } from '@react-native-picker/picker';
@@ -58,7 +58,8 @@ const GoogleMap = () => {
     { latitude: 36.794987, longitude: 127.085567 },
     { latitude: 36.794721, longitude: 127.085651 },
     { latitude: 36.795607, longitude: 127.087547 }
-  ]
+  ];
+
   // 천안역
   const PolylineCoordinates03 = [
     { latitude: 36.800437, longitude: 127.071803 },
@@ -107,9 +108,9 @@ const GoogleMap = () => {
     { latitude: 36.807332, longitude: 127.132702 },
     { latitude: 36.799799, longitude: 127.131344 },
     { latitude: 36.799415, longitude: 127.129589 },
-    { latitude: 36.799871, longitude: 127.126555 }
-
-  ]
+    { latitude: 36.799871, longitude: 127.126555 },
+    { latitude: 36.809964, longitude: 127.143952 }
+  ];
 
   // 천안터미널
   const PolylineCoordinates04 = [
@@ -156,7 +157,7 @@ const GoogleMap = () => {
     { latitude: 36.819710, longitude: 127.151655 },
     { latitude: 36.820563, longitude: 127.151979 },
     { latitude: 36.824650, longitude: 127.152991 }
-  ]
+  ];
 
   useEffect(() => {
     let socket;
@@ -168,19 +169,19 @@ const GoogleMap = () => {
       socket.on('broadcastLocation', (location) => {
         // 범위 id 구별하여 이미지 분리
         if (location.key.startsWith('test')) {newMarkerImage = require('../assets/Person_expo.png');}
-        else {newMarkerImage = require('../assets/bus_icon.png');}
+        else {newMarkerImage = require('../assets/bus_expo.png');}
 
         setUserMarkers((prevMarkers) => ({
           ...prevMarkers,
-          [location.identifier]: location,
+          [location.userId]: location,
         }));
       });
 
       // 사용자 연결이 종료되었을 때 해당 사용자의 마커 제거
-      socket.on('userDisconnected', (identifier) => {
+      socket.on('removeMarker', (userId) => {
         setUserMarkers((prevMarkers) => {
           const updatedMarkers = { ...prevMarkers };
-          delete updatedMarkers[identifier];
+          delete updatedMarkers[userId];
           return updatedMarkers;
         });
       });
@@ -252,7 +253,6 @@ const GoogleMap = () => {
             strokeColor="rgba(235, 42, 42, 1)"
           />
         )}
-        
 
         {/* 사용자 마커 표시 */}
         {Object.keys(userMarkers).map(
@@ -269,7 +269,7 @@ const GoogleMap = () => {
                 description="여기 있어요!"
                 image={newMarkerImage}
               />
-            )
+          )
         )}
       </MapView>
     </View>

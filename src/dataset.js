@@ -1,4 +1,4 @@
-const ranges = [
+const ranges = [ //천안아산역
   {
     id: "bus_stop1",
     points: [
@@ -538,6 +538,876 @@ const ranges = [
       { latitude: 36.795259,longitude: 127.101319}
     ]
   },
+  // 천안역 불당대로 사거리(펜타포트 위 부터)
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.800203,longitude: 127.100145},
+      { latitude: 36.800834,longitude: 127.101127}
+    ]
+  },
+  {
+    id: "range b",
+    points: [
+      { latitude: 36.800491,longitude: 127.101153},
+      { latitude: 36.800942,longitude: 127.101703}
+    ]
+  },
+  {
+    id: "range c",
+    points: [
+      { latitude: 36.800603,longitude: 127.101730},
+      { latitude: 36.801058,longitude: 127.102241}
+    ]
+  },
+  {
+    id: "range d",
+    points: [
+      { latitude: 36.800705,longitude: 127.102256},
+      { latitude: 36.801147,longitude: 127.102739}
+    ]
+  },
+  {
+    id: "range e",
+    points: [
+      { latitude: 36.800817,longitude: 127.102771},
+      { latitude: 36.801302,longitude: 127.103467}
+    ]
+  },
+  {
+    id: "range f",
+    points: [
+      { latitude: 36.800950,longitude: 127.103499},
+      { latitude: 36.801434,longitude: 127.104252}
+    ]
+  },
+  {
+    id: "range g",
+    points: [
+      { latitude: 36.801129,longitude: 127.104268},
+      { latitude: 36.801613,longitude: 127.105117}
+    ]
+  },
+  {
+    id: "range h",
+    points: [
+      { latitude: 36.801286,longitude: 127.105122},
+      { latitude: 36.801764,longitude: 127.106049}
+    ]
+  },
+  {
+    id: "range i",
+    points: [
+      { latitude: 36.801463,longitude: 127.106012},
+      { latitude: 36.801893,longitude: 127.106772}
+    ]
+  },
+  {
+    id: "range j",
+    points: [
+      { latitude: 36.801580,longitude: 127.106751},
+      { latitude: 36.801974,longitude: 127.107254}
+    ]
+  },
+  {
+    id: "range k",
+    points: [
+      { latitude: 36.801580,longitude: 127.106751},
+      { latitude: 36.801974,longitude: 127.107254}
+    ]
+  },
+  {
+    id: "range l",
+    points: [
+      { latitude: 36.801718,longitude: 127.107611},
+      { latitude: 36.802087,longitude: 127.108142}
+    ]
+  },
+  {
+    id: "range m",
+    points: [
+      { latitude: 36.801769,longitude: 127.108148},
+      { latitude: 36.802143,longitude: 127.108963}
+    ]
+  },
+  {
+    id: "range n",
+    points: [
+      { latitude: 36.801838,longitude: 127.108958},
+      { latitude: 36.802169,longitude: 127.109585}
+    ]
+  },
+  {
+    id: "range o",
+    points: [
+      { latitude: 36.801859,longitude: 127.109580},
+      { latitude: 36.802160,longitude: 127.109929}
+    ]
+  },
+  {
+    id: "range p",
+    points: [
+      { latitude: 36.801846,longitude: 127.109929},
+      { latitude: 36.802143,longitude: 127.110648}
+    ]
+  },
+  {
+    id: "range q",
+    points: [
+      { latitude: 36.802143,longitude: 127.110648},
+      { latitude: 36.801808,longitude: 127.111662}
+    ]
+  },
+  {
+    id: "range r",
+    points: [
+      { latitude: 36.802096,longitude: 127.111667},
+      { latitude: 36.801718,longitude: 127.112665}
+    ]
+  },
+  {
+    id: "range s",
+    points: [
+      { latitude: 36.802001,longitude: 127.112681},
+      { latitude: 36.801627,longitude: 127.113389}
+    ]
+  },
+  {
+    id: "range t",
+    points: [
+      { latitude: 36.801920,longitude: 127.113367},
+      { latitude: 36.801537,longitude: 127.114108}
+    ]
+  },
+  {
+    id: "range u",
+    points: [
+      { latitude: 36.801821,longitude: 127.114156},
+      { latitude: 36.801468,longitude: 127.114709}
+    ]
+  },
+  {
+    id: "range v",
+    points: [
+      { latitude: 36.801756,longitude: 127.114725},
+      { latitude: 36.801352,longitude: 127.115540}
+    ]
+  },
+  {
+    id: "range w",
+    points: [
+      { latitude: 36.801640,longitude: 127.115561},
+      { latitude: 36.801266,longitude: 127.116307}
+    ]
+  },
+  {
+    id: "range x",
+    points: [
+      { latitude: 36.801554,longitude: 127.116318},
+      { latitude: 36.801163,longitude: 127.117063}
+    ]
+  },
+  {
+    id: "range y",
+    points: [
+      { latitude: 36.801465,longitude: 127.117100},
+      { latitude: 36.801108,longitude: 127.117652}
+    ]
+  },
+  {
+    id: "range z",
+    points: [
+      { latitude: 36.801405,longitude: 127.117679},
+      { latitude: 36.801027,longitude: 127.118248}
+    ]
+  },
+  {
+    id: "range a2",
+    points: [
+      { latitude: 36.801323,longitude: 127.118280},
+      { latitude: 36.800915,longitude: 127.119047}
+    ]
+  },
+  {
+    id: "range a3",
+    points: [
+      { latitude: 36.801215,longitude: 127.119062},
+      { latitude: 36.800874,longitude: 127.119499}
+    ]
+  },
+  {
+    id: "range a4",
+    points: [
+      { latitude: 36.801162,longitude: 127.119520},
+      { latitude: 36.800792,longitude: 127.120062}
+    ]
+  },
+  {
+    id: "range a5",
+    points: [
+      { latitude: 36.801078,longitude: 127.120078},
+      { latitude: 36.800711,longitude: 127.120680}
+    ]
+  },
+  {
+    id: "range a6",
+    points: [
+      { latitude: 36.801003,longitude: 127.120706},
+      { latitude: 36.800651,longitude: 127.121066}
+    ]
+  },
+  {
+    id: "range a7",
+    points: [
+      { latitude: 36.800947,longitude: 127.121082},
+      { latitude: 36.800578,longitude: 127.121527}
+    ]
+  },
+  {
+    id: "range a8",
+    points: [
+      { latitude: 36.800870,longitude: 127.121552},
+      { latitude: 36.800509,longitude: 127.121981}
+    ]
+  },
+  {
+    id: "range a9",
+    points: [
+      { latitude: 36.800810,longitude: 127.122008},
+      { latitude: 36.800389,longitude: 127.122694}
+    ]
+  },
+  {
+    id: "range a10",
+    points: [
+      { latitude: 36.800690,longitude: 127.122732},
+      { latitude: 36.800329,longitude: 127.123070}
+    ]
+  },
+  {
+    id: "range a11",
+    points: [
+      { latitude: 36.800612,longitude: 127.123091},
+      { latitude: 36.800256,longitude: 127.123456}
+    ]
+  },
+  {
+    id: "range a12",
+    points: [
+      { latitude: 36.800561,longitude: 127.123462},
+      { latitude: 36.800157,longitude: 127.124068}
+    ]
+  },
+  {
+    id: "range a13",
+    points: [
+      { latitude: 36.800441,longitude: 127.124089},
+      { latitude: 36.800050,longitude: 127.124706}
+    ]
+  },
+  {
+    id: "range a14",
+    points: [
+      { latitude: 36.800333,longitude: 127.124738},
+      { latitude: 36.799990,longitude: 127.125071}
+    ]
+  },
+  {
+    id: "range a15",
+    points: [
+      { latitude: 36.800264,longitude: 127.125103},
+      { latitude: 36.799874,longitude: 127.125693}
+    ]
+  },
+  {
+    id: "range a16",
+    points: [
+      { latitude: 36.800157,longitude: 127.125725},
+      { latitude: 36.799831,longitude: 127.126074}
+    ]
+  },
+  {
+    id: "range a17",
+    points: [
+      { latitude: 36.800086,longitude: 127.126085},
+      { latitude: 36.799622,longitude: 127.126933}
+    ]
+  },
+  {
+    id: "range a18",
+    points: [
+      { latitude: 36.799906,longitude: 127.126975},
+      { latitude: 36.799519,longitude: 127.127394}
+    ]
+  },
+  {
+    id: "range a19",
+    points: [
+      { latitude: 36.799751,longitude: 127.127444},
+      { latitude: 36.799342,longitude: 127.127856}
+    ]
+  },
+  {
+    id: "range a20",
+    points: [
+      { latitude: 36.7996775,longitude: 127.1278855},
+      { latitude: 36.799103,longitude: 127.128382}
+    ]
+  },
+  {
+    id: "range a21",
+    points: [
+      { latitude: 36.799618,longitude: 127.128404},
+      { latitude: 36.798798,longitude: 127.128865}
+    ]
+  },
+  {
+    id: "range a21",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a22",
+    points: [
+      { latitude: 36.799154,longitude: 127.128935},
+      { latitude: 36.798458,longitude: 127.129305}
+    ]
+  },
+  {
+    id: "range a23",
+    points: [
+      { latitude: 36.798858,longitude: 127.129385},
+      { latitude: 36.798050,longitude: 127.129831}
+    ]
+  },
+  {
+    id: "range a24",
+    points: [
+      { latitude: 36.798458,longitude: 127.129927},
+      { latitude: 36.797466,longitude: 127.130957}
+    ]
+  },
+  {
+    id: "range a25",
+    points: [
+      { latitude: 36.798493,longitude: 127.130705},
+      { latitude: 36.798643,longitude: 127.131065}
+    ]
+  },
+  {
+    id: "range a26",
+    points: [
+      { latitude: 36.798683,longitude: 127.130817},
+      { latitude: 36.799095,longitude: 127.131337}
+    ]
+  },
+  {
+    id: "range a27",
+    points: [
+      { latitude: 36.799156,longitude: 127.131122},
+      { latitude: 36.799472,longitude: 127.131368}
+    ]
+  },
+  {
+    id: "range a28",
+    points: [
+      { latitude: 36.799096,longitude: 127.131332},
+      { latitude: 36.799376,longitude: 127.131718}
+    ]
+  },
+  {
+    id: "range a29",
+    points: [
+      { latitude: 36.799285,longitude: 127.131723},
+      { latitude: 36.799560,longitude: 127.132222}
+    ]
+  },
+  {
+    id: "range a30",
+    points: [
+      { latitude: 36.799444,longitude: 127.132238},
+      { latitude: 36.799732,longitude: 127.132705}
+    ]
+  },
+  {
+    id: "range a31",
+    points: [
+      { latitude: 36.799741,longitude: 127.132726},
+      { latitude: 36.799882,longitude: 127.133140}
+    ]
+  },
+  {
+    id: "range a32",
+    points: [
+      { latitude: 36.799771,longitude: 127.133161},
+      { latitude: 36.800003,longitude: 127.133547}
+    ]
+  },
+  {
+    id: "range a33",
+    points: [
+      { latitude: 36.799908,longitude: 127.133563},
+      { latitude: 36.800127,longitude: 127.133912}
+    ]
+  },
+  {
+    id: "range a34",
+    points: [
+      {latitude: 36.800026,longitude: 127.133933},
+      { latitude: 36.134144,longitude: 127.134144}
+    ]
+  },
+  {
+    id: "range a35",
+    points: [
+      { latitude: 36.800108,longitude: 127.134187},
+      { latitude: 36.800366,longitude: 127.134638}
+    ]
+  },
+  {
+    id: "range a36",
+    points: [
+      { latitude: 36.800239,longitude: 127.134631},
+      { latitude: 36.800557,longitude: 127.135119}
+    ]
+  },
+  {
+    id: "range a37",
+    points: [
+      { latitude: 36.800432,longitude: 127.135130},
+      { latitude: 36.800925,longitude: 127.135945}
+    ]
+  },
+  {
+    id: "range a38",
+    points: [
+      { latitude: 36.800835,longitude: 127.135981},
+      { latitude: 36.801148,longitude: 127.136330}
+    ]
+  },
+  {
+    id: "range a39",
+    points: [
+      { latitude: 36.801033,longitude: 127.136340},
+      { latitude: 36.801359,longitude: 127.136763}
+    ]
+  },
+  {
+    id: "range a40",
+    points: [
+      { latitude: 36.801243,longitude: 127.136790},
+      { latitude: 36.801557,longitude: 127.137134}
+    ]
+  },
+  {
+    id: "range a41",
+    points: [
+      { latitude: 36.801428,longitude: 127.137144},
+      { latitude: 36.801793,longitude: 127.137627}
+    ]
+  },
+  {
+    id: "range a42",
+    points: [
+      { latitude: 36.801682,longitude: 127.137638},
+      { latitude: 36.801964,longitude: 127.138152}
+    ]
+  },
+  {
+    id: "range a43",
+    points: [
+      { latitude: 36.801861,longitude: 127.138163},
+      { latitude: 36.802149,longitude: 127.138715}
+    ]
+  },
+  {
+    id: "range a44",
+    points: [
+      { latitude: 36.802029,longitude: 127.138704},
+      { latitude: 36.802318,longitude: 127.139273}
+    ]
+  },
+  {
+    id: "range a45",
+    points: [
+      { latitude: 36.802206,longitude: 127.139268},
+      { latitude: 36.802469,longitude: 127.139950}
+    ]
+  },
+  {
+    id: "range a46",
+    points: [
+      { latitude: 36.802362,longitude: 127.139961},
+      { latitude: 36.802603,longitude: 127.140975}
+    ]
+  },
+  {
+    id: "range a47",
+    points: [
+      { latitude: 36.802487,longitude: 127.140980},
+      { latitude: 36.802714,longitude: 127.141817}
+    ]
+  },
+  {
+    id: "range a48",
+    points: [
+      { latitude: 36.802618,longitude: 127.141810},
+      { latitude: 36.802854,longitude: 127.142770}
+    ]
+  },
+  {
+    id: "range a49",
+    points: [
+      { latitude: 36.802747,longitude: 127.142770},
+      { latitude: 36.803039,longitude: 127.143489}
+    ]
+  },
+  {
+    id: "range a50",
+    points: [
+      { latitude: 36.803056,longitude: 127.143538},
+      { latitude: 36.804272,longitude: 127.142760}
+    ]
+  },
+  {
+    id: "range a51",
+    points: [
+      { latitude: 36.804349,longitude: 127.143500},
+      { latitude: 36.804834,longitude: 127.142679}
+    ]
+  },
+  {
+    id: "range a52",
+    points: [
+      { latitude: 36.804859,longitude: 127.143423},
+      { latitude: 36.805705,longitude: 127.142559}
+    ]
+  },
+  {
+    id: "range a53",
+    points: [
+      { latitude: 36.805709,longitude: 127.143283},
+      { latitude: 36.806691,longitude: 127.142420}
+    ]
+  },
+  {
+    id: "range a54",
+    points: [
+      { latitude: 36.806678,longitude: 127.143278},
+      { latitude: 36.808855,longitude: 127.142264}
+    ]
+  },
+  {
+    id: "range a55",
+    points: [
+      { latitude: 36.808855,longitude: 127.142264},
+      { latitude: 36.809426,longitude: 127.142505}
+    ]
+  },
+  {
+    id: "range a56",
+    points: [
+      { latitude: 36.808838,longitude: 127.143058},
+      { latitude: 36.809345,longitude: 127.143364}
+    ]
+  },
+  {
+    id: "range a57",
+    points: [
+      { latitude: 36.809435,longitude: 127.142404},
+      { latitude: 36.809998,longitude: 127.142581}
+    ]
+  },
+  {
+    id: "range a58",
+    points: [
+      { latitude: 36.809371,longitude: 127.143235},
+      { latitude: 36.809985,longitude: 127.143423}
+    ]
+  },
+  {
+    id: "range a59",
+    points: [
+      { latitude: 36.809422,longitude: 127.143444},
+      { latitude: 36.810127,longitude: 127.144013}
+    ]
+  },
+  {
+    id: "bus_stop6",
+    points: [
+      { latitude: 36.809968,longitude: 127.143439},
+      { latitude: 36.810234,longitude: 127.142500}
+    ]
+  },
+  {
+    id: "range a60",
+    points: [
+      { latitude: 36.799520,longitude: 127.128868},
+      { latitude: 36.799348,longitude: 127.129431}
+    ]
+  },
+  {
+    id: "range a61",
+    points: [
+      { latitude: 36.799348,longitude: 127.129431},
+      { latitude: 36.799549,longitude: 127.129977}
+    ]
+  },
+  {
+    id: "range a62",
+    points: [
+      { latitude: 36.799435,longitude: 127.129980},
+      { latitude: 36.799676,longitude: 127.130484}
+    ]
+  },
+  {
+    id: "range a63",
+    points: [
+      { latitude: 36.799557,longitude: 127.130516},
+      { latitude: 36.799802,longitude: 127.130988}
+    ]
+  },
+  {
+    id: "range a64",
+    points: [
+      { latitude: 36.799471,longitude: 127.130998},
+      { latitude: 36.799944,longitude: 127.131583}
+    ]
+  },
+  {
+    id: "range a65",
+    points: [
+      { latitude: 36.799922,longitude: 127.131165},
+      { latitude: 36.800627,longitude: 127.131701}
+    ]
+  },
+  {
+    id: "range a66",
+    points: [
+      { latitude: 36.800653,longitude: 127.131331},
+      { latitude: 36.801215,longitude: 127.131728}
+    ]
+  },
+  {
+    id: "range a67",
+    points: [
+      { latitude: 36.801220,longitude: 127.131524},
+      { latitude: 36.801757,longitude: 127.131782}
+    ]
+  },
+  {
+    id: "range a68",
+    points: [
+      { latitude: 36.801787,longitude: 127.131631},
+      { latitude: 36.802357,longitude: 127.131878}
+    ]
+  },
+  {
+    id: "range a69",
+    points: [
+      { latitude: 36.802356,longitude: 127.131737},
+      { latitude: 36.802791,longitude: 127.131957}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+  {
+    id: "range a",
+    points: [
+      { latitude: 36.,longitude: 127.},
+      { latitude: 36.,longitude: 127.}
+    ]
+  },
+// 이 아래에 천안터미널 넣어주세요
 ];
 
 module.exports = ranges;
