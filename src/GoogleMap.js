@@ -97,7 +97,18 @@ const GoogleMap = () => {
     { latitude: 36.808937, longitude: 127.143127 },
     { latitude: 36.809173, longitude: 127.143175 },
     { latitude: 36.809430, longitude: 127.143363 },
-    { latitude: 36.809964, longitude: 127.143952 }
+    { latitude: 36.809964, longitude: 127.143952 },
+    { latitude: 36.810442, longitude: 127.140841 },
+    { latitude: 36.803001, longitude: 127.139080 },
+    { latitude: 36.802353, longitude: 127.139547 },
+    { latitude: 36.803001, longitude: 127.139080 },
+    { latitude: 36.803001, longitude: 127.139080 },
+    { latitude: 36.806895, longitude: 127.139945 },
+    { latitude: 36.807332, longitude: 127.132702 },
+    { latitude: 36.799799, longitude: 127.131344 },
+    { latitude: 36.799415, longitude: 127.129589 },
+    { latitude: 36.799871, longitude: 127.126555 }
+
   ]
 
   // 천안터미널
