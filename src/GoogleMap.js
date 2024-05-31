@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import socketIOClient from 'socket.io-client';
-import { Picker } from '@react-native-picker/picker';
+import { IdentifierContext } from './IdentifierContext';
 
 const SERVER_URL = 'https://profound-leech-engaging.ngrok-free.app';
 let newMarkerImage;
 
 const GoogleMap = () => {
   const [userMarkers, setUserMarkers] = useState({}); // 사용자 위치 마커 정보
-  const [selectedIdentifier, setSelectedIdentifier] = useState('1'); // 선택된 식별자 상태 추가
+  const { selectedIdentifier } = useContext(IdentifierContext); // Context를 통해 선택된 식별자 사용
   const [region, setRegion] = useState({}); // 지도 초기 위치 설정
 
   // (천안아산)Polyline의 마커 좌표
@@ -229,8 +229,8 @@ const GoogleMap = () => {
           break;
         default:
           setRegion({
-            latitude: 36.80026,
-            longitude: 127.071411,
+            latitude: 36.798778,
+            longitude: 127.074977,
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           });
@@ -242,17 +242,6 @@ const GoogleMap = () => {
 
   return (
     <View style={styles.screen}>
-      {/* 드롭다운 메뉴 */}
-      <Picker
-        selectedValue={selectedIdentifier}
-        style={{ height: 50, width: 200 }}
-        onValueChange={(itemValue) => setSelectedIdentifier(itemValue)}
-      >
-        <Picker.Item label="천안아산역" value="1" />
-        <Picker.Item label="천안역" value="2" />
-        <Picker.Item label="천안터미널" value="3" />
-      </Picker>
-
       {/* 지도 표시 */}
       <MapView style={styles.map} region={region}>
         {/* 천안아산역 */}
@@ -310,8 +299,6 @@ const GoogleMap = () => {
   );
 };
 
-export default GoogleMap;
-
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -320,3 +307,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+export default GoogleMap;
