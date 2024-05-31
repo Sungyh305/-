@@ -4,6 +4,8 @@ import { Text, StyleSheet, View, TouchableOpacity, Modal } from 'react-native';
 const Notice = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [displayText, setDisplayText] = useState('');
+  const [displayheaderText, setDisplayheaderText] = useState('');
+  const [inquirymodalVisible, setInquiryModalVisible] = useState(false);
   const key = useRef(null);
 
   const noticeText = () => {
@@ -20,13 +22,23 @@ const Notice = () => {
       );
     }
   };
+  const noticeHeaderText = () => {
+    if (key.current == '1') {
+      setDisplayheaderText('버스! 어디가? 사용설명서(필독)');
+    } else if (key.current == '2') {
+      setDisplayheaderText('버스! 어디가? 정기 업데이트');
+    }
+  };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.box_view}
         onPress={() => {
-          (key.current = 1), noticeText(), setModalVisible(true);
+          key.current = 1;
+          noticeHeaderText();
+          noticeText();
+          setModalVisible(true);
         }}
       >
         <View style={styles.header_view}>
@@ -42,7 +54,10 @@ const Notice = () => {
       <TouchableOpacity
         style={styles.box_view}
         onPress={() => {
-          (key.current = 2), noticeText(), setModalVisible(true);
+          key.current = 2;
+          noticeHeaderText();
+          noticeText();
+          setModalVisible(true);
         }}
       >
         <View style={styles.header_view}>
@@ -54,7 +69,12 @@ const Notice = () => {
           문제 수정{'\n'}- ...
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.inquiry_view}>
+      <TouchableOpacity
+        style={styles.inquiry_view}
+        onPress={() => {
+          setInquiryModalVisible(true);
+        }}
+      >
         <Text style={styles.inquiry_text}>1:1 및 버그 문의</Text>
       </TouchableOpacity>
       <Modal
@@ -68,15 +88,35 @@ const Notice = () => {
         <View style={styles.modal_view}>
           <View style={styles.modal_content}>
             <View style={styles.modal_header_view}>
-              <Text style={styles.header_text}>
-                버스! 어디가? 사용설명서(필독)
-              </Text>
+              <Text style={styles.header_text}>{displayheaderText}</Text>
               <Text style={styles.date_text}>2024-05-17(금)</Text>
             </View>
             <Text style={styles.modal_body_text}>{displayText}</Text>
             <TouchableOpacity
               style={styles.button}
               onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.button_text}>확인</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={inquirymodalVisible}
+        onRequestClose={() => {
+          setModalVisible(!inquirymodalVisible);
+        }}
+      >
+        <View style={styles.modal_view}>
+          <View style={styles.modal_content}>
+            <Text style={styles.modal_inquiry_text}>
+              jikolp89@naver.com {'\n'}이메일로 문의주시기 바랍니다.
+            </Text>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => setInquiryModalVisible(false)}
             >
               <Text style={styles.button_text}>확인</Text>
             </TouchableOpacity>
@@ -146,6 +186,13 @@ const styles = StyleSheet.create({
   inquiry_text: {
     fontSize: 17,
     fontWeight: 'bold',
+  },
+  modal_inquiry_text: {
+    width: 350,
+    fontSize: 17,
+    padding: 15,
+    lineHeight: 30,
+    textAlign: 'center',
   },
   button_text: {
     fontSize: 17,

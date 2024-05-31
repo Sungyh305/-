@@ -68,6 +68,7 @@ const Dashboard = ({ route }) => {
   const [selectedLocation, setSelectedLocation] = useState('1'); // 선택된 위치 상태
   const [backgroundPermissionDenied, setBackgroundPermissionDenied] =
     useState(false); // 백그라운드 권한 거부 상태
+  const [initialPoints, setInitialPoints] = useState(0); // 스위치를 켜는 시점의 포인트
 
   // 위치 이름 매핑 객체
   const locationNames = {
@@ -203,6 +204,19 @@ const Dashboard = ({ route }) => {
           });
         }
 
+        const user = firebase.auth().currentUser;
+        if (user) {
+          const userData = await firebase
+            .firestore()
+            .collection('users')
+            .doc(user.uid)
+            .get();
+
+          if (userData.exists) {
+            setInitialPoints(userData.data().point); // 초기 포인트 설정
+          }
+        }
+
         // 백그라운드 위치 업데이트 시작
         const isBackgroundUpdateRunning =
           await Location.hasStartedLocationUpdatesAsync(LOCATION_TASK_NAME);
@@ -212,11 +226,11 @@ const Dashboard = ({ route }) => {
             timeInterval: 6000,
             distanceInterval: 0,
             showsBackgroundLocationIndicator: true,
-            foregroundService: {
-              notificationTitle: '위치 추적 중',
-              notificationBody: '앱이 백그라운드에서 위치를 추적하고 있습니다.',
-              notificationColor: '#ff0000',
-            },
+            // foregroundService: {
+            //   notificationTitle: '위치 추적 중',
+            //   notificationBody: '앱이 백그라운드에서 위치를 추적하고 있습니다.',
+            //   notificationColor: '#ff0000',
+            // },
           });
           console.log('Started background location updates');
         }
@@ -256,11 +270,13 @@ const Dashboard = ({ route }) => {
               .doc(user.uid)
               .get();
 
+            // 사용자 포인트 차이를 계산하여 알림 표시
             if (userData.exists) {
-              const points = userData.data().point;
+              const finalPoints = userData.data().point;
+              const pointsEarned = finalPoints - initialPoints;
               Alert.alert(
                 'GPS 연결이 종료되었습니다.',
-                `적립된 포인트: ${points}`
+                `적립된 포인트: ${pointsEarned}`
               );
             } else {
               Alert.alert(

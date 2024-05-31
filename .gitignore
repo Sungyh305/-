@@ -48,3 +48,8 @@ yarn-error.*
 
 # 0510
 # npm install @react-native-picker/picker --save
+
+# expo eject
+# LocationForegroundService.java 추가
+# withAndroidManifest.js 추가
+# AndroidManifest.xml 수정

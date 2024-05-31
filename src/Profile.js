@@ -10,7 +10,6 @@ import {
   TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import globalSocket from './Socket';
 import { firebase } from '../config';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
@@ -57,11 +56,6 @@ const Profile = () => {
   // 로그아웃 함수
   const logout = async () => {
     try {
-      // 소켓 연결 종료
-      if (globalSocket) {
-        globalSocket.emit('disconnectuser');
-        globalSocket.disconnect();
-      }
       // Firebase 로그아웃
       await firebase.auth().signOut();
     } catch (error) {
