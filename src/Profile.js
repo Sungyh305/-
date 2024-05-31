@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Alert, Image, Modal, TextInput } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Alert, Image, Modal, TextInput, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import globalSocket from './Socket';
 import { firebase } from '../config';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
+
+const { width, height } = Dimensions.get('window');
 
 const Profile = () => {
   const [user, setUser] = useState(''); // 사용자 정보 상태
@@ -42,12 +43,6 @@ const Profile = () => {
   // 로그아웃 함수
   const logout = async () => {
     try {
-      // 소켓 연결 종료
-      if (globalSocket) {
-        globalSocket.emit('disconnectuser');
-        globalSocket.disconnect();
-      }
-      // Firebase 로그아웃
       await firebase.auth().signOut();
     } catch (error) {
       console.error('Error logging out:', error);
@@ -140,25 +135,35 @@ const Profile = () => {
       <View style={styles.userInfoSection}>
         <TouchableOpacity style={styles.userRow} onPress={selectPhoto}>
           {userPhoto ? (
-            <Image source={userPhoto} style={{ width: 120, height: 120, borderRadius: 60 }} />
+            <Image source={userPhoto} style={{ width: width * 0.34, height: width * 0.34, borderRadius: 60 }} />
           ) : (
             <Icon name="account-circle" size={120} color="grey" />
           )}
         </TouchableOpacity>
       </View>
       <View style={styles.details}>
-        <View style={{ alignItems: 'center', padding: 5 }}>
+        <View style={{ alignItems: 'center' }}>
           <Text style={styles.detailText}>이   름</Text>
           <Text style={styles.detailText}>이메일</Text>
           <Text style={styles.detailText}>포인트</Text>
+          <Text style={styles.detailText}>쿠   폰</Text>
         </View>
-        <View style={{ alignItems: 'left', paddingRight: 5 }}>
+        <View style={{ alignItems: 'left' }}>
           <Text style={styles.detailText}>{user.name}</Text>
           <Text style={styles.detailemailText}>{user.email}</Text>
           <Text style={styles.detailText}>{user.point}</Text>
+          <FlatList
+            data={user.coupons}
+            renderItem={({ item }) => (
+              <View style={styles.list}>
+                <Text style={styles.detailText}>{item}</Text>
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
         </View>
       </View>
-      <TouchableOpacity style={styles.point}>
+      <TouchableOpacity style={styles.point} onPress={() => navigation.navigate('PointHistory')}>
         <View>
           <Text style={styles.pointText}>포인트 적립 내역 및 상점</Text>
         </View>
@@ -166,7 +171,7 @@ const Profile = () => {
       <TouchableOpacity style={styles.button} onPress={changePassword}>
         <Text style={styles.buttonText}>비밀번호 변경</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={{ alignItems: 'flex-end', marginStart: 230 }} onPress={logout}>
+      <TouchableOpacity style={{ alignItems: 'flex-end', marginStart: width * 0.65 }} onPress={logout}>
         <Text style={styles.buttonText}>로그아웃</Text>
       </TouchableOpacity>
       <Modal
@@ -212,26 +217,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
-    paddingTop: 20,
+    paddingTop: height * 0.03,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
     justifyContent: 'space-between',
-    paddingLeft: 20,
-    paddingRight: 20,
-    marginBottom: 20,
+    marginBottom: height * 0.04,
   },
   iconButtonRight: {
-    padding: 10,
+    padding: width * 0.03,
     position: 'absolute',
-    right: 20,
+    right: width * 0.05,
   },
   userInfoSection: {
     alignItems: 'center',
     width: '100%',
-    marginBottom: 40,
+    marginBottom: height * 0.04,
   },
   userRow: {
     flexDirection: 'row',
@@ -243,39 +246,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: '#A5E0CA',
+    padding: width * 0.015,
     borderRadius: 8,
-    marginBottom: 40,
+    marginBottom: height * 0.04,
   },
   detailText: {
     fontSize: 20,
-    padding: 10,
+    padding: width * 0.03,
     textAlign: 'left',
   },
   detailemailText: {
     fontSize: 17,
-    padding: 10,
+    padding: width * 0.03,
+    paddingTop: height * 0.02,
+    paddingBottom: height * 0.015,
     textAlign: 'left',
     flexWrap: 'wrap',
   },
   point: {
     width: '90%',
-    height: 80,
+    height: height * 0.1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#A5E0CA',
     borderRadius: 8,
-    marginBottom: 20,
+    marginBottom: width * 0.02,
   },
   pointText: {
     fontSize: 20,
-    padding: 10,
     textAlign: 'center',
   },
   button: {
     alignItems: 'flex-end',
-    marginTop: 100,
-    marginStart: 195,
-    paddingBottom: 15,
+    marginTop: height * 0.1,
+    marginStart: width * 0.55,
+    paddingBottom: width * 0.05,
   },
   buttonText: {
     fontSize: 18,
@@ -287,37 +292,40 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modal_content: {
-    width: 350,
-    height: 200,
+    width: width * 0.95,
+    height: height * 0.25,
     borderRadius: 8,
-    paddingTop: 10,
+    paddingTop: width * 0.03,
     backgroundColor: '#A5E0CA',
-    marginBottom: 20,
+    marginBottom: width * 0.05,
     alignItems: 'center',
     elevation: 5,
     borderColor: 'black',
     borderWidth: 0.5,
   },
   textInput: {
-    paddingTop: 20,
-    paddingBottom: 10,
-    width: 300,
+    paddingTop: width * 0.055,
+    paddingBottom: width * 0.03,
+    width: width * 0.85,
     fontSize: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#000',
-    marginBottom: 10,
+    marginBottom: width * 0.03,
     textAlign: 'center',
   },
   modal_button: {
-    width: 100,
-    padding: 15,
+    width: width * 0.3,
+    padding: width * 0.04,
     backgroundColor: '#4BB863',
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 30,
-    marginHorizontal: 15,
+    marginTop: width * 0.08,
+    marginHorizontal: width * 0.04,
     borderColor: 'black',
     borderWidth: 0.5,
+  },
+  list: {
+    width: '100%',
   },
 });
 
