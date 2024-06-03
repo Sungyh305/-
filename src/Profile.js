@@ -4,22 +4,31 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Dimensions,
   Alert,
   Image,
   Modal,
   TextInput,
+  FlatList,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { firebase } from '../config';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 
-const Profile = () => {
+const { width, height } = Dimensions.get('window');
+
+const Profile = ({ route }) => {
   const [user, setUser] = useState(''); // 사용자 정보 상태
   const [userPhoto, setUserPhoto] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [couponmodalVisible, setcouponModalVisible] = useState(false);
   const [newname, setNewname] = useState('');
   const navigation = useNavigation();
+  const [shuttleBusCount, setShuttleBusCount] = useState(0);
+  const [konaKingCount, setKonaKingCount] = useState(0);
+  const [cuGiftCard3000Count, setCuGiftCard3000Count] = useState(0);
+  const [cuGiftCard5000Count, setCuGiftCard5000Count] = useState(0);
 
   // 사용자 데이터 가져오기
   useEffect(() => {
@@ -32,6 +41,27 @@ const Profile = () => {
           .get();
         if (userDoc.exists) {
           setUser(userDoc.data());
+          const coupons = userDoc.data().coupons;
+          if (coupons && coupons.length > 0) {
+            coupons.forEach((coupon) => {
+              switch (coupon) {
+                case '셔틀버스 1회 이용권':
+                  setShuttleBusCount((prevCount) => prevCount + 1);
+                  break;
+                case '코나킹 3000원 쿠폰':
+                  setKonaKingCount((prevCount) => prevCount + 1);
+                  break;
+                case 'CU 3000원 기프티콘':
+                  setCuGiftCard3000Count((prevCount) => prevCount + 1);
+                  break;
+                case 'CU 5000원 기프티콘':
+                  setCuGiftCard5000Count((prevCount) => prevCount + 1);
+                  break;
+                default:
+                  break;
+              }
+            });
+          }
         } else {
           console.log('User does not exist');
         }
@@ -53,10 +83,51 @@ const Profile = () => {
     fetchUserData();
   }, []);
 
+  // Dashboard 컴포넌트에서 route.params로 전달된 데이터 확인 후 업데이트
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userDoc = await firebase
+          .firestore()
+          .collection('users')
+          .doc(firebase.auth().currentUser.uid)
+          .get();
+        if (userDoc.exists) {
+          setUser(userDoc.data());
+          if (route.params && route.params.couponname) {
+            const { couponname } = route.params;
+            switch (couponname) {
+              case '셔틀버스 1회 이용권':
+                setShuttleBusCount((prevCount) => prevCount + 1);
+                break;
+              case '코나킹 3000원 쿠폰':
+                setKonaKingCount((prevCount) => prevCount + 1);
+                console.log('ok');
+                break;
+              case 'CU 3000원 기프티콘':
+                setCuGiftCard3000Count((prevCount) => prevCount + 1);
+                break;
+              case 'CU 5000원 기프티콘':
+                setCuGiftCard5000Count((prevCount) => prevCount + 1);
+                break;
+              default:
+                break;
+            }
+          }
+        } else {
+          console.log('User does not exist');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, [route.params]);
+
   // 로그아웃 함수
   const logout = async () => {
     try {
-      // Firebase 로그아웃
       await firebase.auth().signOut();
     } catch (error) {
       console.error('Error logging out:', error);
@@ -176,7 +247,11 @@ const Profile = () => {
           {userPhoto ? (
             <Image
               source={userPhoto}
-              style={{ width: 120, height: 120, borderRadius: 60 }}
+              style={{
+                width: width * 0.34,
+                height: width * 0.34,
+                borderRadius: 60,
+              }}
             />
           ) : (
             <Icon name="account-circle" size={120} color="grey" />
@@ -184,18 +259,31 @@ const Profile = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.details}>
-        <View style={{ alignItems: 'center', padding: 5 }}>
+        <View style={{ alignItems: 'center' }}>
           <Text style={styles.detailText}>이 름</Text>
           <Text style={styles.detailText}>이메일</Text>
           <Text style={styles.detailText}>포인트</Text>
+          <Text style={styles.detailText}>쿠 폰</Text>
         </View>
-        <View style={{ alignItems: 'left', paddingRight: 5 }}>
+        <View style={{ alignItems: 'left' }}>
           <Text style={styles.detailText}>{user.name}</Text>
           <Text style={styles.detailemailText}>{user.email}</Text>
           <Text style={styles.detailText}>{user.point}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              setcouponModalVisible(true);
+            }}
+          >
+            <Text style={styles.detailText}>
+              보유 갯수 : {user.coupons ? user.coupons.length : 0}개
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
-      <TouchableOpacity style={styles.point}>
+      <TouchableOpacity
+        style={styles.point}
+        onPress={() => navigation.navigate('PointHistory')}
+      >
         <View>
           <Text style={styles.pointText}>포인트 적립 내역 및 상점</Text>
         </View>
@@ -204,7 +292,7 @@ const Profile = () => {
         <Text style={styles.buttonText}>비밀번호 변경</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={{ alignItems: 'flex-end', marginStart: 230 }}
+        style={{ alignItems: 'flex-end', marginStart: width * 0.65 }}
         onPress={logout}
       >
         <Text style={styles.buttonText}>로그아웃</Text>
@@ -243,6 +331,37 @@ const Profile = () => {
           </View>
         </View>
       </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={couponmodalVisible}
+        onRequestClose={() => {
+          setModalVisible(!couponmodalVisible);
+        }}
+      >
+        <View style={styles.modal_view}>
+          <View style={styles.modal_coupon_content}>
+            <Text style={styles.detailText}>
+              셔틀버스 1회 이용권 : {shuttleBusCount}개
+            </Text>
+            <Text style={styles.detailText}>
+              코나킹 3000원 쿠폰 : {konaKingCount}개
+            </Text>
+            <Text style={styles.detailText}>
+              CU 3000원 기프티콘 : {cuGiftCard3000Count}개
+            </Text>
+            <Text style={styles.detailText}>
+              CU 5000원 기프티콘 : {cuGiftCard5000Count}개
+            </Text>
+            <TouchableOpacity
+              style={styles.modal_button}
+              onPress={() => setcouponModalVisible(false)}
+            >
+              <Text style={styles.buttonText}>확인</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -252,26 +371,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
-    paddingTop: 20,
+    paddingTop: height * 0.03,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
     justifyContent: 'space-between',
-    paddingLeft: 20,
-    paddingRight: 20,
-    marginBottom: 20,
+    marginBottom: height * 0.04,
   },
   iconButtonRight: {
-    padding: 10,
+    padding: width * 0.03,
     position: 'absolute',
-    right: 20,
+    right: width * 0.05,
   },
   userInfoSection: {
     alignItems: 'center',
     width: '100%',
-    marginBottom: 40,
+    marginBottom: height * 0.04,
   },
   userRow: {
     flexDirection: 'row',
@@ -283,39 +400,40 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: '#A5E0CA',
+    padding: width * 0.015,
     borderRadius: 8,
-    marginBottom: 40,
+    marginBottom: height * 0.04,
   },
   detailText: {
     fontSize: 20,
-    padding: 10,
+    padding: width * 0.03,
     textAlign: 'left',
   },
   detailemailText: {
     fontSize: 17,
-    padding: 10,
+    padding: width * 0.03,
+    paddingTop: height * 0.02,
+    paddingBottom: height * 0.015,
     textAlign: 'left',
     flexWrap: 'wrap',
   },
   point: {
     width: '90%',
-    height: 80,
+    height: height * 0.1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#A5E0CA',
     borderRadius: 8,
-    marginBottom: 20,
+    marginBottom: width * 0.02,
   },
   pointText: {
     fontSize: 20,
-    padding: 10,
     textAlign: 'center',
   },
   button: {
-    alignItems: 'flex-end',
-    marginTop: 100,
-    marginStart: 195,
-    paddingBottom: 15,
+    marginTop: height * 0.1,
+    marginStart: width * 0.55,
+    paddingBottom: width * 0.05,
   },
   buttonText: {
     fontSize: 18,
@@ -327,37 +445,51 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modal_content: {
-    width: 350,
-    height: 200,
+    width: width * 0.95,
+    height: height * 0.25,
     borderRadius: 8,
-    paddingTop: 10,
+    paddingTop: width * 0.03,
     backgroundColor: '#A5E0CA',
-    marginBottom: 20,
+    marginBottom: width * 0.05,
+    alignItems: 'center',
+    elevation: 5,
+    borderColor: 'black',
+    borderWidth: 0.5,
+  },
+  modal_coupon_content: {
+    width: width * 0.95,
+    height: height * 0.4,
+    borderRadius: 8,
+    paddingTop: width * 0.03,
+    backgroundColor: '#A5E0CA',
     alignItems: 'center',
     elevation: 5,
     borderColor: 'black',
     borderWidth: 0.5,
   },
   textInput: {
-    paddingTop: 20,
-    paddingBottom: 10,
-    width: 300,
+    paddingTop: width * 0.055,
+    paddingBottom: width * 0.03,
+    width: width * 0.85,
     fontSize: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#000',
-    marginBottom: 10,
+    marginBottom: width * 0.03,
     textAlign: 'center',
   },
   modal_button: {
-    width: 100,
-    padding: 15,
+    width: width * 0.3,
+    padding: width * 0.04,
     backgroundColor: '#4BB863',
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 30,
-    marginHorizontal: 15,
+    marginTop: width * 0.08,
+    marginHorizontal: width * 0.04,
     borderColor: 'black',
     borderWidth: 0.5,
+  },
+  list: {
+    width: '100%',
   },
 });
 

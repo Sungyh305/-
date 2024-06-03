@@ -16,7 +16,7 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 let point = 0;
-let destination = ''; //목적지
+let content = ''; //포인트 적립 내용
 
 // 받아온 좌표가 범위 안에 있는지 확인하는 함수
 function isInRange(latitude, longitude, range) {
@@ -33,11 +33,11 @@ function isInRange(latitude, longitude, range) {
   return range.id;
 }
 
-const addPointLog = async (email, date, destination, points) => {
+const addPointLog = async (email, date, content, points) => {
   try {
     const pointLog = {
       date,
-      destination,
+      content,
       points,
     };
     await db
@@ -109,15 +109,16 @@ io.on('connection', (socket) => {
       // for문을 다 돌아서 마지막 범위까지 일치하지 않으면 사용자에게 전달
       else if (ranges.indexOf(range) === ranges.length - 1) {
         socket.emit('LocationError', { point });
-        //addPointLog()
         if (location.identifier == 1) {
-          destination = '천안아산역';
+          content = '천안아산역 노선 탑승';
         } else if (location.identifier == 2) {
-          destination = '천안역';
+          content = '천안역 노선 탑승';
         } else {
-          destination = '천안터미널';
+          content = '천안터미널 노선 탑승';
         }
-        addPointLog(location.email, new Date(), destination, point);
+        if (point != 0) {
+          addPointLog(location.email, new Date(), content, point);
+        }
         point = 0;
       }
     }

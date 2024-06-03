@@ -140,7 +140,29 @@ const Dashboard = ({ route }) => {
     initializeLocationUpdates();
   }, []);
 
-  let manualSwitchOff = false; // 수동으로 스위치를 끄는지 여부를 추적하는 상태 변수
+  const addPointLog = async (email, date, content, points) => {
+    try {
+      const pointLog = {
+        date,
+        content,
+        points,
+      };
+      await firebase
+        .firestore()
+        .collection('users')
+        .where('email', '==', email)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            doc.ref.collection('pointLogs').add(pointLog);
+          });
+        });
+      console.log('포인트 지급 내역 추가 성공');
+    } catch (error) {
+      console.error('Error adding point log:', error);
+    }
+  };
+
   // GPS 스위치 토글 시 동작
   const toggleSwitch = async (value) => {
     setSwitchValue(value); // 스위치 상태 업데이트
@@ -189,12 +211,11 @@ const Dashboard = ({ route }) => {
             console.log('LocationError event received:', point);
             Alert.alert(
               '알림',
-              `범위를 벗어났습니다.\nGPS를 다시 설정해주세요.\n(적립된 포인트: ${point.point})`,
+              `범위를 벗어났습니다.\nGPS를 다시 설정해주세요.)`,
               [
                 {
                   text: '확인',
                   onPress: () => {
-                    manualSwitchOff = false;
                     toggleSwitch(false);
                   },
                 },
@@ -226,11 +247,6 @@ const Dashboard = ({ route }) => {
             timeInterval: 6000,
             distanceInterval: 0,
             showsBackgroundLocationIndicator: true,
-            // foregroundService: {
-            //   notificationTitle: '위치 추적 중',
-            //   notificationBody: '앱이 백그라운드에서 위치를 추적하고 있습니다.',
-            //   notificationColor: '#ff0000',
-            // },
           });
           console.log('Started background location updates');
         }
@@ -243,7 +259,6 @@ const Dashboard = ({ route }) => {
         setSwitchValue(false);
       }
     } else {
-      manualSwitchOff = true; // 수동으로 스위치를 끌 때 설정
       try {
         // 백그라운드 위치 업데이트 중지
         const isBackgroundUpdateRunning =
@@ -260,32 +275,42 @@ const Dashboard = ({ route }) => {
           globalSocket = null;
         }
 
-        if (manualSwitchOff) {
-          // 사용자가 수동으로 스위치를 종료할 때 적립된 포인트 확인 및 알림
-          const user = firebase.auth().currentUser;
-          if (user) {
-            const userData = await firebase
-              .firestore()
-              .collection('users')
-              .doc(user.uid)
-              .get();
+        // 스위치를 종료될 때 적립된 포인트 확인 및 알림
+        const user = firebase.auth().currentUser;
+        if (user) {
+          const userData = await firebase
+            .firestore()
+            .collection('users')
+            .doc(user.uid)
+            .get();
 
-            // 사용자 포인트 차이를 계산하여 알림 표시
-            if (userData.exists) {
-              const finalPoints = userData.data().point;
-              const pointsEarned = finalPoints - initialPoints;
-              Alert.alert(
-                'GPS 연결이 종료되었습니다.',
-                `적립된 포인트: ${pointsEarned}`
-              );
+          // 사용자 포인트 차이를 계산하여 알림 표시
+          if (userData.exists) {
+            const finalPoints = userData.data().point;
+            const pointsEarned = finalPoints - initialPoints;
+
+            if ((globalSelectedLocation = 1)) {
+              content = '천안아산역 노선 탑승';
+            } else if ((globalSelectedLocation = 2)) {
+              content = '천안역 노선 탑승';
             } else {
-              Alert.alert(
-                '오류',
-                '사용자 데이터를 가져오는 중 오류가 발생했습니다.'
-              );
+              content = '천안터미널 노선 탑승';
             }
+
+            if (pointsEarned != 0) {
+              addPointLog(user.email, new Date(), content, pointsEarned);
+            }
+
+            Alert.alert(
+              'GPS 연결이 종료되었습니다.',
+              `적립된 포인트: ${pointsEarned}`
+            );
+          } else {
+            Alert.alert(
+              '오류',
+              '사용자 데이터를 가져오는 중 오류가 발생했습니다.'
+            );
           }
-          manualSwitchOff = false; // 상태 초기화
         }
       } catch (error) {
         console.error('Error stopping location updates:', error);
@@ -336,7 +361,7 @@ const Dashboard = ({ route }) => {
         </TouchableOpacity>
         {switchValue ? (
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 30 }}>
-            {locationNames[selectedLocation]} 행으로 GPS 송신중
+            {locationNames[selectedLocation]} 노선으로 GPS 송신중
           </Text>
         ) : (
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 30 }}>

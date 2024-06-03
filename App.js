@@ -14,6 +14,7 @@ import GoogleMap from './src/GoogleMap';
 import ShuttleSchedule from './src/ShuttleSchedule';
 import TrainSchedule from './src/TrainSchedule';
 import Notice from './src/Notice';
+import PointHistory from './src/PointHistory';
 
 const Stack = createStackNavigator();
 const RootStack = createStackNavigator();
@@ -117,6 +118,14 @@ const AppStackScreen = () => (
       options={{
         headerTitleAlign: 'center',
         headerTitle: '공지사항',
+      }}
+    />
+    <Stack.Screen
+      name="PointHistory"
+      component={PointHistory}
+      options={{
+        headerTitleAlign: 'center',
+        headerTitle: '',
       }}
     />
   </Stack.Navigator>

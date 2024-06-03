@@ -21,14 +21,6 @@ const ranges = [
       { latitude: 36.799305, longitude: 127.076220 }
     ]
   },*/
-  /*{
-    // 기숙사 위치
-    id: 'test3',
-    points: [
-      { latitude: 36.795632, longitude: 127.068843 },
-      { latitude: 36.796646, longitude: 127.070119 },
-    ],
-  },*/
   {
     id: 'range1',
     points: [
