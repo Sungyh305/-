@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, PixelRatio, FlatList, Image, Modal, Alert } from 'react-native';
 import { firebase } from '../config';
+import { useNavigation } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -11,6 +12,7 @@ const PointHistory = () => {
     const [displayText, setDisplayText] = useState("");
     const [couponname, setCouponName] = useState("");
     const [couponprice, setCouponPrice] = useState("");
+    const navigation = useNavigation();
     const [selectedIndex, setSelectedIndex] = useState(0); // 텍스트 클릭 시 이벤트
     const [pointLogs, setPointLogs] = useState([]); // 포인트 로그 상태
     const shopItems = [
@@ -85,25 +87,19 @@ const PointHistory = () => {
                 point: user.point - couponprice
             });
 
+            const pointLogsRef = userDocRef.collection('pointLogs').doc();
+            const buycoupon = couponname + " 구매";
+            const pointsUsed = -couponprice + ' P';
+            await pointLogsRef.set({
+                date: new Date,
+                content: buycoupon,
+                points: pointsUsed,
+            });
+
             Alert.alert('알림', '쿠폰을 구매하였습니다.', [
                 {
                     text: '확인',
-                    onPress: () => {
-                        // 사용자 정보를 다시 가져와서 화면에 보여주는 포인트 업데이트
-                        const fetchUserData = async () => {
-                            try {
-                                const userDoc = await firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).get();
-                                if (userDoc.exists) {
-                                    setUser(userDoc.data());
-                                } else {
-                                    console.log('User does not exist');
-                                }
-                            } catch (error) {
-                                console.error('Error fetching user data:', error);
-                            }
-                        };
-                        fetchUserData();
-                    }
+                    onPress: () => { navigation.navigate('Profile', { couponname }) },
                 }
             ]);
             setModalVisible(false)
@@ -129,14 +125,17 @@ const PointHistory = () => {
     // 텍스트 선택 시 이벤트 출력
     const renderBodyContent = () => {
         if (selectedIndex === 0) {
+            // 시간 순서대로 정렬된 pointLogs 배열 생성
+            const sortedPointLogs = pointLogs.slice().sort((a, b) => b.date.seconds - a.date.seconds);
+
             return (
                 <FlatList
-                data={pointLogs}
+                data={sortedPointLogs}
                 renderItem={({ item }) => (
                   <View style={styles.pointlogs}>
-                    <Text style={styles.pointstext}>날   짜 : {new Date(item.date.seconds * 1000).toLocaleDateString()} {new Date(item.date.seconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-                    <Text style={styles.pointstext}>행선지 : {item.destination}</Text>
-                    <Text style={styles.pointstext}>적립 포인트 : {item.points}</Text>
+                    <Text style={styles.pointstext}>날   짜  :  {new Date(item.date.seconds * 1000).toLocaleDateString()} {new Date(item.date.seconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+                    <Text style={styles.pointstext}>내   용  :  {item.content}</Text>
+                    <Text style={styles.pointstext}>적립 포인트  :  {item.points}</Text>
                   </View>
                 )}
                 keyExtractor={(item, index) => index.toString()}

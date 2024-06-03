@@ -7,12 +7,17 @@ import { useNavigation } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
 
-const Profile = () => {
+const Profile = ({ route }) => {
   const [user, setUser] = useState(''); // 사용자 정보 상태
   const [userPhoto, setUserPhoto] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [couponmodalVisible, setcouponModalVisible] = useState(false);
   const [newname, setNewname] = useState('');
   const navigation = useNavigation();
+  const [shuttleBusCount, setShuttleBusCount] = useState(0);
+  const [konaKingCount, setKonaKingCount] = useState(0);
+  const [cuGiftCard3000Count, setCuGiftCard3000Count] = useState(0);
+  const [cuGiftCard5000Count, setCuGiftCard5000Count] = useState(0);
 
   // 사용자 데이터 가져오기
   useEffect(() => {
@@ -21,6 +26,27 @@ const Profile = () => {
         const userDoc = await firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).get();
         if (userDoc.exists) {
           setUser(userDoc.data());
+          const coupons = userDoc.data().coupons;
+          if (coupons && coupons.length > 0) {
+            coupons.forEach(coupon => {
+              switch (coupon) {
+                case '셔틀버스 1회 이용권':
+                  setShuttleBusCount(prevCount => prevCount + 1);
+                  break;
+                case '코나킹 3000원 쿠폰':
+                  setKonaKingCount(prevCount => prevCount + 1);
+                  break;
+                case 'CU 3000원 기프티콘':
+                  setCuGiftCard3000Count(prevCount => prevCount + 1);
+                  break;
+                case 'CU 5000원 기프티콘':
+                  setCuGiftCard5000Count(prevCount => prevCount + 1);
+                  break;
+                default:
+                  break;
+              }
+            });
+          }
         } else {
           console.log('User does not exist');
         }
@@ -39,6 +65,44 @@ const Profile = () => {
 
     fetchUserData();
   }, []);
+
+  // Dashboard 컴포넌트에서 route.params로 전달된 데이터 확인 후 업데이트
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userDoc = await firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).get();
+        if (userDoc.exists) {
+          setUser(userDoc.data());
+          if (route.params && route.params.couponname) {
+            const { couponname } = route.params;
+            switch (couponname) {
+              case '셔틀버스 1회 이용권':
+                setShuttleBusCount(prevCount => prevCount + 1);
+                break;
+              case '코나킹 3000원 쿠폰':
+                setKonaKingCount(prevCount => prevCount + 1);
+                console.log('ok');
+                break;
+              case 'CU 3000원 기프티콘':
+                setCuGiftCard3000Count(prevCount => prevCount + 1);
+                break;
+              case 'CU 5000원 기프티콘':
+                setCuGiftCard5000Count(prevCount => prevCount + 1);
+                break;
+              default:
+                break;
+            }
+          }
+        } else {
+          console.log('User does not exist');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, [route.params]);
 
   // 로그아웃 함수
   const logout = async () => {
@@ -152,15 +216,9 @@ const Profile = () => {
           <Text style={styles.detailText}>{user.name}</Text>
           <Text style={styles.detailemailText}>{user.email}</Text>
           <Text style={styles.detailText}>{user.point}</Text>
-          <FlatList
-            data={user.coupons}
-            renderItem={({ item }) => (
-              <View style={styles.list}>
-                <Text style={styles.detailText}>{item}</Text>
-              </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
+          <TouchableOpacity onPress={() => { setcouponModalVisible(true); }}>
+            <Text style={styles.detailText}>보유 갯수 : {user.coupons ? user.coupons.length : 0}개</Text>
+          </TouchableOpacity>
         </View>
       </View>
       <TouchableOpacity style={styles.point} onPress={() => navigation.navigate('PointHistory')}>
@@ -205,6 +263,29 @@ const Profile = () => {
                 <Text style={styles.buttonText}>확인</Text>
               </TouchableOpacity>
             </View>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+      animationType="slide"
+      transparent={true}
+      visible={couponmodalVisible}
+      onRequestClose={() => {
+        setModalVisible(!couponmodalVisible);
+      }}
+      >
+        <View style={styles.modal_view}>
+          <View style={styles.modal_coupon_content}>
+            <Text style={styles.detailText}>셔틀버스 1회 이용권 : {shuttleBusCount}개</Text>
+            <Text style={styles.detailText}>코나킹 3000원 쿠폰 : {konaKingCount}개</Text>
+            <Text style={styles.detailText}>CU 3000원 기프티콘 : {cuGiftCard3000Count}개</Text>
+            <Text style={styles.detailText}>CU 5000원 기프티콘 : {cuGiftCard5000Count}개</Text>
+            <TouchableOpacity
+              style={styles.modal_button}
+              onPress={() => setcouponModalVisible(false)}
+            >
+              <Text style={styles.buttonText}>확인</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -277,7 +358,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    alignItems: 'flex-end',
     marginTop: height * 0.1,
     marginStart: width * 0.55,
     paddingBottom: width * 0.05,
@@ -298,6 +378,17 @@ const styles = StyleSheet.create({
     paddingTop: width * 0.03,
     backgroundColor: '#A5E0CA',
     marginBottom: width * 0.05,
+    alignItems: 'center',
+    elevation: 5,
+    borderColor: 'black',
+    borderWidth: 0.5,
+  },
+  modal_coupon_content: {
+    width: width * 0.95,
+    height: height * 0.4,
+    borderRadius: 8,
+    paddingTop: width * 0.03,
+    backgroundColor: '#A5E0CA',
     alignItems: 'center',
     elevation: 5,
     borderColor: 'black',
