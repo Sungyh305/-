@@ -15,7 +15,7 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 const db = admin.firestore();
-let point = 0;
+const userPoints = {}; // 사용자별 포인트를 추적하기 위한 객체
 let content = ''; //포인트 적립 내용
 
 // 받아온 좌표가 범위 안에 있는지 확인하는 함수
@@ -59,6 +59,9 @@ const addPointLog = async (email, date, content, points) => {
 io.on('connection', (socket) => {
   console.log('사용자(소켓) 연결');
 
+  // 사용자의 초기 포인트 설정
+  userPoints[socket.id] = 0;
+
   socket.on('userLocation', (location) => {
     // 사용자가 보낸 위치가 범위 안에 있는지 확인 후 코드 수행
     for (const range of ranges) {
@@ -86,7 +89,7 @@ io.on('connection', (socket) => {
               const userPoint = userData.point;
 
               const updatedPoint = userPoint + 0.5;
-              point = point + 0.5;
+              userPoints[socket.id] += 0.5; // 사용자별 포인트 증가
 
               db.collection('users')
                 .doc(doc.id)
@@ -108,7 +111,7 @@ io.on('connection', (socket) => {
       }
       // for문을 다 돌아서 마지막 범위까지 일치하지 않으면 사용자에게 전달
       else if (ranges.indexOf(range) === ranges.length - 1) {
-        socket.emit('LocationError', { point });
+        socket.emit('LocationError', { point: userPoints[socket.id] });
         if (location.identifier == 1) {
           content = '천안아산역 노선 탑승';
         } else if (location.identifier == 2) {
@@ -116,10 +119,15 @@ io.on('connection', (socket) => {
         } else {
           content = '천안터미널 노선 탑승';
         }
-        if (point != 0) {
-          addPointLog(location.email, new Date(), content, point);
+        if (userPoints[socket.id] != 0) {
+          addPointLog(
+            location.email,
+            new Date(),
+            content,
+            userPoints[socket.id]
+          );
         }
-        point = 0;
+        userPoints[socket.id] = 0;
       }
     }
   });
@@ -130,6 +138,9 @@ io.on('connection', (socket) => {
     // 클라이언트에게 해당 사용자의 식별자를 전송하여 마커 제거 요청
     io.emit('removeMarker', userId);
     socket.emit('removeMarker', userId);
+
+    // 연결 종료 시 해당 사용자의 포인트 초기화
+    delete userPoints[socket.id];
   });
 });
 

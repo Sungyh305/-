@@ -9,6 +9,7 @@ import {
   Image,
   View,
   Linking,
+  Dimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../config';
@@ -19,9 +20,11 @@ import { Picker } from '@react-native-picker/picker'; // React Native Picker 컴
 
 const SERVER_URL = 'https://profound-leech-engaging.ngrok-free.app'; // 서버 URL
 const LOCATION_TASK_NAME = 'background-location-task'; // 백그라운드 위치 태스크 이름
+const { width, height } = Dimensions.get('window');
 
 let globalSocket = null; // 전역 Socket.IO 클라이언트 인스턴스
 let globalSelectedLocation = '1'; // 전역 선택된 위치 (default 1)
+let initialPoints = 0; // 전역 변수로 설정
 
 // 백그라운드 위치 추적 태스크 정의
 TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
@@ -68,7 +71,6 @@ const Dashboard = ({ route }) => {
   const [selectedLocation, setSelectedLocation] = useState('1'); // 선택된 위치 상태
   const [backgroundPermissionDenied, setBackgroundPermissionDenied] =
     useState(false); // 백그라운드 권한 거부 상태
-  const [initialPoints, setInitialPoints] = useState(0); // 스위치를 켜는 시점의 포인트
 
   // 위치 이름 매핑 객체
   const locationNames = {
@@ -78,46 +80,29 @@ const Dashboard = ({ route }) => {
   };
 
   // 사용자 데이터 가져오기
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const userDoc = await firebase
-          .firestore()
-          .collection('users')
-          .doc(firebase.auth().currentUser.uid)
-          .get();
-        if (userDoc.exists) {
-          setUser(userDoc.data());
-        } else {
-          console.log('User does not exist');
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
+  const fetchUserData = async () => {
+    try {
+      const userDoc = await firebase
+        .firestore()
+        .collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .get();
+      if (userDoc.exists) {
+        setUser(userDoc.data());
+      } else {
+        console.log('User does not exist');
       }
-    };
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchUserData();
   }, []);
 
   // Dashboard 컴포넌트에서 route.params로 전달된 데이터 확인 후 업데이트
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const userDoc = await firebase
-          .firestore()
-          .collection('users')
-          .doc(firebase.auth().currentUser.uid)
-          .get();
-        if (userDoc.exists) {
-          setUser(userDoc.data());
-        } else {
-          console.log('User does not exist');
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-
     fetchUserData();
   }, [route.params]);
 
@@ -200,6 +185,22 @@ const Dashboard = ({ route }) => {
           setSwitchValue(false);
           return;
         }
+        // 사용자 데이터 가져오기
+        const user = firebase.auth().currentUser;
+        if (user) {
+          const userData = await firebase
+            .firestore()
+            .collection('users')
+            .doc(user.uid)
+            .get();
+          if (userData.exists) {
+            initialPoints = userData.data().point; // 초기 포인트 설정
+          } else {
+            console.log('User does not exist');
+            setSwitchValue(false);
+            return;
+          }
+        }
 
         // Socket.IO 초기화
         if (!globalSocket) {
@@ -207,11 +208,25 @@ const Dashboard = ({ route }) => {
           globalSocket.connect();
 
           globalSocket.off('LocationError');
-          globalSocket.on('LocationError', (point) => {
+          globalSocket.on('LocationError', async (point) => {
             console.log('LocationError event received:', point);
+
+            // 백그라운드 위치 전송 중지
+            const isBackgroundUpdateRunning =
+              await Location.hasStartedLocationUpdatesAsync(LOCATION_TASK_NAME);
+            if (isBackgroundUpdateRunning) {
+              await Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
+              console.log(
+                'Stopped background location updates on LocationError'
+              );
+            }
+
+            // 스위치 끄기
+            setSwitchValue(false);
+
             Alert.alert(
               '알림',
-              `범위를 벗어났습니다.\nGPS를 다시 설정해주세요.)`,
+              `범위를 벗어났습니다.\nGPS를 다시 설정해주세요.`,
               [
                 {
                   text: '확인',
@@ -223,19 +238,6 @@ const Dashboard = ({ route }) => {
               { cancelable: false }
             );
           });
-        }
-
-        const user = firebase.auth().currentUser;
-        if (user) {
-          const userData = await firebase
-            .firestore()
-            .collection('users')
-            .doc(user.uid)
-            .get();
-
-          if (userData.exists) {
-            setInitialPoints(userData.data().point); // 초기 포인트 설정
-          }
         }
 
         // 백그라운드 위치 업데이트 시작
@@ -464,60 +466,60 @@ export default Dashboard;
 const styles = StyleSheet.create({
   container: {
     alignItems: 'flex-end',
-    marginTop: 10,
-    paddingRight: 20,
+    marginTop: height * 0.015,
+    paddingRight: width * 0.055,
   },
   outerContainer: {
     alignItems: 'center',
-    paddingTop: 20,
+    paddingTop: height * 0.02,
   },
   middleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingBottom: 20,
+    paddingBottom: height * 0.027,
   },
   Image: {
-    width: 90,
-    height: 90,
+    width: width * 0.27,
+    height: width * 0.27,
     borderRadius: 50,
-    marginBottom: 30,
+    marginBottom: height * 0.04,
   },
   View_shuttle: {
-    width: 150,
-    height: 150,
+    width: width * 0.42,
+    height: width * 0.42,
     alignItems: 'center',
     backgroundColor: '#86CC57',
-    padding: 20,
+    padding: width * 0.05,
     borderRadius: 8,
-    marginHorizontal: 20,
+    marginHorizontal: width * 0.055,
   },
   View_train: {
-    width: 150,
-    height: 150,
+    width: width * 0.42,
+    height: width * 0.42,
     alignItems: 'center',
     backgroundColor: '#86CC57',
-    padding: 20,
+    padding: width * 0.05,
     borderRadius: 8,
   },
   View_bus: {
-    width: 150,
-    height: 150,
+    width: width * 0.42,
+    height: width * 0.42,
     alignItems: 'center',
     backgroundColor: '#86CC57',
-    padding: 15,
+    padding: width * 0.04,
     borderRadius: 8,
   },
   View_bus_image: {
     resizeMode: 'contain',
   },
   GPS_switch: {
-    width: 150,
-    height: 150,
+    width: width * 0.42,
+    height: width * 0.42,
     alignItems: 'center',
     backgroundColor: '#86CC57',
     borderRadius: 8,
-    marginHorizontal: 20,
+    marginHorizontal: width * 0.055,
   },
   Text: {
     fontSize: 18,
@@ -525,23 +527,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingTop: 8,
   },
-  button: {
-    marginTop: 50,
-    height: 70,
-    width: 250,
-    backgroundColor: '#86CC57',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 20,
-  },
   View_notice: {
     flexDirection: 'row',
-    marginTop: 100,
-    marginEnd: 100,
+    marginTop: height * 0.12,
+    marginEnd: width * 0.3,
   },
   notice_image: {
-    height: 40,
-    width: 40,
-    marginEnd: 10,
+    height: height * 0.05,
+    width: width * 0.12,
+    marginEnd: width * 0.03,
   },
 });
