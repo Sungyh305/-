@@ -108,7 +108,9 @@ class TrainSchedule extends Component {
           depPlandTime: this.formatDateTime(item.depplandtime),
           arrPlace: item.arrplacename,
           arrPlandTime: this.formatDateTime(item.arrplandtime),
-          fare: item.adultcharge
+          fare: item.adultcharge,
+          trainName: item.traingradename,
+          trainNo: item.trainno
         }));
 
       console.log('API 호출 결과:', trainInfo);
@@ -135,45 +137,60 @@ class TrainSchedule extends Component {
 
     return (
       <View style={styles.container}>
+        <Text
+        style={styles.text}>
+
+        </Text>
         <View style={styles.PickerContainer}>
         <Picker
           style={styles.input}
           selectedValue={selectedDepCity}
           onValueChange={this.handleDepCityChange}>
-          <Picker.Item label="출발 도시 선택" value="" />
-          <Picker.Item key="천안아산역" value="NATH10960" label="천안아산역" />
+          <Picker.Item label="출발 도시" value="" />
+          <Picker.Item label="천안아산역" value="NATH10960" />
           <Picker.Item label="천안역" value="NAT010971" />
         </Picker>
-        </View>
-        <View style={styles.PickerContainer}>
-        {selectedDepCity && (
+        {selectedDepCity ? (
           <Picker
             style={styles.input}
             selectedValue={selectedCity}
             onValueChange={this.handleCityChange}>
-            <Picker.Item label="도착 도시 선택" value="" />
+            <Picker.Item label="도착 도시" value="" />
             {cityStationData.map((city, index) => (
               <Picker.Item key={index} label={city.cityName} value={city.cityName} />
             ))}
           </Picker>
-          )}
-        </View>
-        <View style={styles.PickerContainer}>
-          {selectedCity && (
+          ) : (
+            <Picker
+            style={styles.input}
+            selectedValue={selectedCity}
+            onValueChange={this.handleCityChange}>
+            <Picker.Item label="도착 도시" value="" />
+            </Picker>
+          )
+          }
+          {selectedCity ? (
             <Picker
               style={styles.input}
               selectedValue={selectedStation}
               onValueChange={this.handleStationChange}>
-              <Picker.Item label="도착 기차역 선택" value="" />
+              <Picker.Item label="도착 기차역" value="" />
               {cityStationData.find(city => city.cityName === selectedCity).stations.map((station, index) => (
                 <Picker.Item key={index} label={station.nodeName} value={station.nodeId} />
               ))}
             </Picker>
-          )}
-        </View>
-        <View style={styles.dateContainer}>
+          ) : (
+            <Picker
+            style={styles.input}
+            selectedValue={selectedCity}
+            onValueChange={this.handleCityChange}>
+            <Picker.Item label="도착 기차역" value="" />
+            </Picker>
+          )
+          }
+          <View style={styles.dateContainer}>
           <TouchableOpacity onPress={() => this.setState({ showDatePicker: true })}>
-            <View style={styles.dateButton}>
+            <View style={styles.Button}>
               <Text style={styles.text}>출발 날짜 선택</Text>
             </View>
           </TouchableOpacity>
@@ -188,11 +205,14 @@ class TrainSchedule extends Component {
             />
           )}
         </View >
+        </View>
+        <View style={styles.ButtonContainer}>
         <TouchableOpacity onPress={this.fetchTrainInfo}>
-          <View style={styles.searchButton}>
+          <View style={styles.SearchButton}>
             <Text style={styles.text}>검색</Text>
           </View>
         </TouchableOpacity>
+        </View>
         {loading && (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color="#0000ff" />
@@ -203,11 +223,11 @@ class TrainSchedule extends Component {
           <ScrollView style={styles.scrollContainer}>
             {trainInfo.map((info, index) => (
               <View key={index} style={styles.trainItem}>
-                <Text>출발역: {info.depPlace}</Text>
+                <Text>출발역: {info.depPlace} {(info.trainName)}</Text>
                 <Text>출발시각: {info.depPlandTime}</Text>
                 <Text>도착역: {info.arrPlace}</Text>
                 <Text>도착시각: {info.arrPlandTime}</Text>
-                <Text>운임: {info.fare}</Text>
+                <Text>운임: {info.fare} 기차번호: {info.trainNo}</Text>
               </View>
             ))}
           </ScrollView>
@@ -218,21 +238,27 @@ class TrainSchedule extends Component {
 }
 
 const styles = StyleSheet.create({
-  searchButton: {
+  Button: {
     alignItems: 'center',
     backgroundColor: '#86CC57',
-    padding: 10,
-    borderRadius: 8,
-    marginHorizontal: 20,
+    padding: 7,
+    borderRadius: 5,
+    borderColor : 'gray'
   },
-  dateButton: {
+  SearchButton: {
     alignItems: 'center',
     backgroundColor: '#86CC57',
-    padding: 10,
-    borderRadius: 8,
-    marginHorizontal: 20,
+    padding: 7,
+    borderRadius: 5,
+    borderColor : 'gray',
+    width: 100,
+  },
+  ButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'top'
   },
   PickerContainer: {
+    width: '90%',
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: 'gray',
@@ -240,20 +266,20 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   text: {
-    fontSize: 16,
+    fontSize: 17,
     marginBottom: 20,
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'top',
+    alignItems: 'center'
   },
   input: {
     height: 40,
     flex: 1,
   },
   dateContainer: {
-    marginBottom: 20,
+    
   },
   scrollContainer: {
     flex: 1,
