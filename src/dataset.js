@@ -1,4 +1,4 @@
-const ranges = [ //천안아산역
+const ranges = [
   {
     id: "bus_stop1",
     points: [
@@ -538,925 +538,701 @@ const ranges = [ //천안아산역
       { latitude: 36.795259,longitude: 127.101319}
     ]
   },
-  // 천안역 불당대로 사거리(펜타포트 위 부터)
   {
-    id: "range a",
+    id: "range 71",
     points: [
-      { latitude: 36.800203,longitude: 127.100145},
-      { latitude: 36.800834,longitude: 127.101127}
+      { latitude: 36.801686 ,longitude: 127.105239},
+      { latitude: 36.802046, longitude: 127.105758}
     ]
   },
   {
-    id: "range b",
+    id: "range72",
     points: [
-      { latitude: 36.800491,longitude: 127.101153},
-      { latitude: 36.800942,longitude: 127.101703}
+      { latitude: 36.802099 ,longitude: 127.105359},
+      { latitude: 36.802518, longitude: 127.105869}
     ]
   },
   {
-    id: "range c",
+    id: "range73",
     points: [
-      { latitude: 36.800603,longitude: 127.101730},
-      { latitude: 36.801058,longitude: 127.102241}
+      { latitude: 36.802531 ,longitude: 127.105454},
+      { latitude: 36.802818, longitude: 127.105936}
     ]
   },
   {
-    id: "range d",
+    id: "range74",
     points: [
-      { latitude: 36.800705,longitude: 127.102256},
-      { latitude: 36.801147,longitude: 127.102739}
+      { latitude: 36.802986 ,longitude: 127.105576},
+      { latitude: 36.803597, longitude: 127.106212}
     ]
   },
   {
-    id: "range e",
+    id: "range75",
     points: [
-      { latitude: 36.800817,longitude: 127.102771},
-      { latitude: 36.801302,longitude: 127.103467}
+      { latitude: 36.803631 ,longitude: 127.105778},
+      { latitude: 36.804168, longitude: 127.106404}
     ]
   },
   {
-    id: "range f",
+    id: "range76",
     points: [
-      { latitude: 36.800950,longitude: 127.103499},
-      { latitude: 36.801434,longitude: 127.104252}
+      { latitude: 36.804188 ,longitude: 127.105983},
+      { latitude: 36.804694, longitude: 127.106563}
     ]
   },
   {
-    id: "range g",
+    id: "range77",
     points: [
-      { latitude: 36.801129,longitude: 127.104268},
-      { latitude: 36.801613,longitude: 127.105117}
+      { latitude: 36.804714 ,longitude: 127.106104},
+      { latitude: 36.805409, longitude: 127.106752}
     ]
   },
   {
-    id: "range h",
+    id: "range78",
     points: [
-      { latitude: 36.801286,longitude: 127.105122},
-      { latitude: 36.801764,longitude: 127.106049}
+      { latitude: 36.805403 ,longitude: 127.106418},
+      { latitude: 36.806122, longitude: 127.106968}
     ]
   },
   {
-    id: "range i",
+    id: "range79",
     points: [
-      { latitude: 36.801463,longitude: 127.106012},
-      { latitude: 36.801893,longitude: 127.106772}
+      { latitude: 36.806147 ,longitude: 127.106642},
+      { latitude: 36.807043, longitude: 127.107247}
     ]
   },
   {
-    id: "range j",
+    id: "range80",
     points: [
-      { latitude: 36.801580,longitude: 127.106751},
-      { latitude: 36.801974,longitude: 127.107254}
+      { latitude: 36.807043 ,longitude: 127.106906},
+      { latitude: 36.808200, longitude: 127.107603}
     ]
   },
   {
-    id: "range k",
+    id: "range81",
     points: [
-      { latitude: 36.801580,longitude: 127.106751},
-      { latitude: 36.801974,longitude: 127.107254}
-    ]
-  },
-  {
-    id: "range l",
-    points: [
-      { latitude: 36.801718,longitude: 127.107611},
-      { latitude: 36.802087,longitude: 127.108142}
-    ]
-  },
-  {
-    id: "range m",
-    points: [
-      { latitude: 36.801769,longitude: 127.108148},
-      { latitude: 36.802143,longitude: 127.108963}
-    ]
-  },
-  {
-    id: "range n",
-    points: [
-      { latitude: 36.801838,longitude: 127.108958},
-      { latitude: 36.802169,longitude: 127.109585}
-    ]
-  },
-  {
-    id: "range o",
-    points: [
-      { latitude: 36.801859,longitude: 127.109580},
-      { latitude: 36.802160,longitude: 127.109929}
-    ]
-  },
-  {
-    id: "range p",
-    points: [
-      { latitude: 36.801846,longitude: 127.109929},
-      { latitude: 36.802143,longitude: 127.110648}
-    ]
-  },
-  {
-    id: "range q",
-    points: [
-      { latitude: 36.802143,longitude: 127.110648},
-      { latitude: 36.801808,longitude: 127.111662}
-    ]
-  },
-  {
-    id: "range r",
-    points: [
-      { latitude: 36.802096,longitude: 127.111667},
-      { latitude: 36.801718,longitude: 127.112665}
-    ]
-  },
-  {
-    id: "range s",
-    points: [
-      { latitude: 36.802001,longitude: 127.112681},
-      { latitude: 36.801627,longitude: 127.113389}
-    ]
-  },
-  {
-    id: "range t",
-    points: [
-      { latitude: 36.801920,longitude: 127.113367},
-      { latitude: 36.801537,longitude: 127.114108}
-    ]
-  },
-  {
-    id: "range u",
-    points: [
-      { latitude: 36.801821,longitude: 127.114156},
-      { latitude: 36.801468,longitude: 127.114709}
-    ]
-  },
-  {
-    id: "range v",
-    points: [
-      { latitude: 36.801756,longitude: 127.114725},
-      { latitude: 36.801352,longitude: 127.115540}
-    ]
-  },
-  {
-    id: "range w",
-    points: [
-      { latitude: 36.801640,longitude: 127.115561},
-      { latitude: 36.801266,longitude: 127.116307}
-    ]
-  },
-  {
-    id: "range x",
-    points: [
-      { latitude: 36.801554,longitude: 127.116318},
-      { latitude: 36.801163,longitude: 127.117063}
-    ]
-  },
-  {
-    id: "range y",
-    points: [
-      { latitude: 36.801465,longitude: 127.117100},
-      { latitude: 36.801108,longitude: 127.117652}
-    ]
-  },
-  {
-    id: "range z",
-    points: [
-      { latitude: 36.801405,longitude: 127.117679},
-      { latitude: 36.801027,longitude: 127.118248}
-    ]
-  },
-  {
-    id: "range a2",
-    points: [
-      { latitude: 36.801323,longitude: 127.118280},
-      { latitude: 36.800915,longitude: 127.119047}
-    ]
+      { latitude: 36.808225 ,longitude: 127.107258},
+      { latitude: 36.809394, longitude: 127.107971}
+     ]
   },
   {
-    id: "range a3",
+    id: "range82",
     points: [
-      { latitude: 36.801215,longitude: 127.119062},
-      { latitude: 36.800874,longitude: 127.119499}
+      { latitude: 36.809394 ,longitude: 127.107628},
+      { latitude: 36.810001, longitude: 127.108131}
     ]
   },
   {
-    id: "range a4",
+    id: "range83",
     points: [
-      { latitude: 36.801162,longitude: 127.119520},
-      { latitude: 36.800792,longitude: 127.120062}
+      { latitude: 36.809981 ,longitude: 127.107780},
+      { latitude: 36.810581, longitude: 127.108321}
     ]
   },
   {
-    id: "range a5",
+    id: "range84",
     points: [
-      { latitude: 36.801078,longitude: 127.120078},
-      { latitude: 36.800711,longitude: 127.120680}
+      { latitude: 36.810590 ,longitude: 127.107997},
+      { latitude: 36.811296, longitude: 127.108522}
     ]
   },
   {
-    id: "range a6",
+    id: "range85",
     points: [
-      { latitude: 36.801003,longitude: 127.120706},
-      { latitude: 36.800651,longitude: 127.121066}
+      { latitude: 36.811285 ,longitude: 127.108206},
+      { latitude: 36.812499, longitude: 127.108882}
     ]
   },
   {
-    id: "range a7",
+    id: "range86",
     points: [
-      { latitude: 36.800947,longitude: 127.121082},
-      { latitude: 36.800578,longitude: 127.121527}
+      { latitude: 36.812495 ,longitude: 127.108559},
+      { latitude: 36.813025, longitude: 127.109046}
     ]
   },
   {
-    id: "range a8",
+    id: "range87",
     points: [
-      { latitude: 36.800870,longitude: 127.121552},
-      { latitude: 36.800509,longitude: 127.121981}
+      { latitude: 36.813040 ,longitude: 127.108718},
+      { latitude: 36.813384, longitude: 127.109167}
     ]
   },
   {
-    id: "range a9",
+    id: "range88",
     points: [
-      { latitude: 36.800810,longitude: 127.122008},
-      { latitude: 36.800389,longitude: 127.122694}
+      { latitude: 36.813403 ,longitude: 127.108839},
+      { latitude: 36.815147, longitude: 127.109714}
     ]
   },
   {
-    id: "range a10",
+    id: "range89",
     points: [
-      { latitude: 36.800690,longitude: 127.122732},
-      { latitude: 36.800329,longitude: 127.123070}
+      { latitude: 36.815163 ,longitude: 127.109370},
+      { latitude: 36.815679, longitude: 127.109886}
     ]
   },
   {
-    id: "range a11",
+    id: "range90",
     points: [
-      { latitude: 36.800612,longitude: 127.123091},
-      { latitude: 36.800256,longitude: 127.123456}
+      { latitude: 36.815691 ,longitude: 127.109529},
+      { latitude: 36.816220, longitude: 127.110041}
     ]
   },
   {
-    id: "range a12",
+    id: "range91",
     points: [
-      { latitude: 36.800561,longitude: 127.123462},
-      { latitude: 36.800157,longitude: 127.124068}
+      { latitude: 36.816237 ,longitude: 127.109712},
+      { latitude: 36.816728, longitude: 127.110202}
     ]
   },
   {
-    id: "range a13",
+    id: "range92",
     points: [
-      { latitude: 36.800441,longitude: 127.124089},
-      { latitude: 36.800050,longitude: 127.124706}
+      { latitude: 36.816741 ,longitude: 127.109837},
+      { latitude: 36.817539, longitude: 127.110454}
     ]
   },
   {
-    id: "range a14",
+    id: "range93",
     points: [
-      { latitude: 36.800333,longitude: 127.124738},
-      { latitude: 36.799990,longitude: 127.125071}
+      { latitude: 36.817591 ,longitude: 127.109944},
+      { latitude: 36.818288, longitude: 127.110632}
     ]
   },
   {
-    id: "range a15",
+    id: "range94",
     points: [
-      { latitude: 36.800264,longitude: 127.125103},
-      { latitude: 36.799874,longitude: 127.125693}
+      { latitude: 36.818306 ,longitude: 127.110379},
+      { latitude: 36.819121, longitude: 127.110950}
     ]
   },
   {
-    id: "range a16",
+    id: "range95",
     points: [
-      { latitude: 36.800157,longitude: 127.125725},
-      { latitude: 36.799831,longitude: 127.126074}
+      { latitude: 36.819160 ,longitude: 127.110582},
+      { latitude: 36.819946, longitude: 127.111188}
     ]
   },
   {
-    id: "range a17",
+    id: "range96",
     points: [
-      { latitude: 36.800086,longitude: 127.126085},
-      { latitude: 36.799622,longitude: 127.126933}
+      { latitude: 36.819963 ,longitude: 127.110837},
+      { latitude: 36.820702, longitude: 127.111483}
     ]
   },
   {
-    id: "range a18",
+    id: "range97",
     points: [
-      { latitude: 36.799906,longitude: 127.126975},
-      { latitude: 36.799519,longitude: 127.127394}
+      { latitude: 36.820738 ,longitude: 127.111100},
+      { latitude: 36.821597, longitude: 127.111741}
     ]
   },
   {
-    id: "range a19",
+    id: "range98",
     points: [
-      { latitude: 36.799751,longitude: 127.127444},
-      { latitude: 36.799342,longitude: 127.127856}
+      { latitude: 36.821618 ,longitude: 127.111343},
+      { latitude: 36.822488, longitude: 127.111983}
     ]
   },
   {
-    id: "range a20",
+    id: "range99",
     points: [
-      { latitude: 36.7996775,longitude: 127.1278855},
-      { latitude: 36.799103,longitude: 127.128382}
+      { latitude: 36.822500 ,longitude: 127.111562},
+      { latitude: 36.823029, longitude: 127.112275}
     ]
   },
   {
-    id: "range a21",
+    id: "range100",
     points: [
-      { latitude: 36.799618,longitude: 127.128404},
-      { latitude: 36.798798,longitude: 127.128865}
+      { latitude: 36.823022 ,longitude: 127.112301},
+      { latitude: 36.822635, longitude: 127.112881}
     ]
   },
   {
-    id: "range a21",
+    id: "range101",
     points: [
-      { latitude: 36.,longitude: 127.},
-      { latitude: 36.,longitude: 127.}
+      { latitude: 36.822927 ,longitude: 127.112891},
+      { latitude: 36.822640, longitude: 127.113508}
     ]
   },
   {
-    id: "range a22",
+    id: "range102",
     points: [
-      { latitude: 36.799154,longitude: 127.128935},
-      { latitude: 36.798458,longitude: 127.129305}
+      { latitude: 36.822640 ,longitude: 127.113508},
+      { latitude: 36.822842, longitude: 127.114104}
     ]
   },
   {
-    id: "range a23",
+    id: "range103",
     points: [
-      { latitude: 36.798858,longitude: 127.129385},
-      { latitude: 36.798050,longitude: 127.129831}
+      { latitude: 36.822837 ,longitude: 127.114131},
+      { latitude: 36.822665, longitude: 127.114887}
     ]
   },
   {
-    id: "range a24",
+    id: "range104",
     points: [
-      { latitude: 36.798458,longitude: 127.129927},
-      { latitude: 36.797466,longitude: 127.130957}
+      { latitude: 36.822806 ,longitude: 127.114911},
+      { latitude: 36.822665, longitude: 127.115534}
     ]
   },
   {
-    id: "range a25",
+    id: "range105",
     points: [
-      { latitude: 36.798493,longitude: 127.130705},
-      { latitude: 36.798643,longitude: 127.131065}
+      { latitude: 36.822665 ,longitude: 127.115534},
+      { latitude: 36.822793, longitude: 127.116205}
     ]
   },
   {
-    id: "range a26",
+    id: "range106",
     points: [
-      { latitude: 36.798683,longitude: 127.130817},
-      { latitude: 36.799095,longitude: 127.131337}
+      { latitude: 36.822793 ,longitude: 127.116205},
+      { latitude: 36.822701, longitude: 127.116607}
     ]
   },
   {
-    id: "range a27",
+    id: "range107",
     points: [
-      { latitude: 36.799156,longitude: 127.131122},
-      { latitude: 36.799472,longitude: 127.131368}
+      { latitude: 36.822700 ,longitude: 127.116634},
+      { latitude: 36.822877, longitude: 127.117270}
     ]
   },
   {
-    id: "range a28",
+    id: "range108",
     points: [
-      { latitude: 36.799096,longitude: 127.131332},
-      { latitude: 36.799376,longitude: 127.131718}
+      { latitude: 36.822772 ,longitude: 127.117288},
+      { latitude: 36.823059, longitude: 127.118103}
     ]
   },
   {
-    id: "range a29",
+    id: "range109",
     points: [
-      { latitude: 36.799285,longitude: 127.131723},
-      { latitude: 36.799560,longitude: 127.132222}
+      { latitude: 36.822846 ,longitude: 127.118167},
+      { latitude: 36.823110, longitude: 127.119210}
     ]
   },
   {
-    id: "range a30",
+    id: "range110",
     points: [
-      { latitude: 36.799444,longitude: 127.132238},
-      { latitude: 36.799732,longitude: 127.132705}
+      { latitude: 36.823004 ,longitude: 127.119252},
+      { latitude: 36.823408, longitude: 127.121399}
     ]
   },
   {
-    id: "range a31",
+    id: "range111",
     points: [
-      { latitude: 36.799741,longitude: 127.132726},
-      { latitude: 36.799882,longitude: 127.133140}
+      { latitude: 36.823305 ,longitude: 127.121422},
+      { latitude: 36.823532, longitude: 127.122530}
     ]
   },
   {
-    id: "range a32",
+    id: "range112",
     points: [
-      { latitude: 36.799771,longitude: 127.133161},
-      { latitude: 36.800003,longitude: 127.133547}
+      { latitude: 36.823426 ,longitude: 127.122545},
+      { latitude: 36.823706, longitude: 127.123808}
     ]
   },
   {
-    id: "range a33",
+    id: "range113",
     points: [
-      { latitude: 36.799908,longitude: 127.133563},
-      { latitude: 36.800127,longitude: 127.133912}
+      { latitude: 36.823526 ,longitude: 127.123827},
+      { latitude: 36.823876, longitude: 127.124331}
     ]
   },
   {
-    id: "range a34",
+    id: "range114",
     points: [
-      {latitude: 36.800026,longitude: 127.133933},
-      { latitude: 36.134144,longitude: 127.134144}
+      { latitude: 36.823778 ,longitude: 127.124381},
+      { latitude: 36.824114, longitude: 127.125109}
     ]
   },
   {
-    id: "range a35",
+    id: "range115",
     points: [
-      { latitude: 36.800108,longitude: 127.134187},
-      { latitude: 36.800366,longitude: 127.134638}
+      { latitude: 36.823994 ,longitude: 127.125120},
+      { latitude: 36.824487, longitude: 127.126268}
     ]
   },
   {
-    id: "range a36",
+    id: "range116",
     points: [
-      { latitude: 36.800239,longitude: 127.134631},
-      { latitude: 36.800557,longitude: 127.135119}
+      { latitude: 36.824359 ,longitude: 127.126284},
+      { latitude: 36.824818, longitude: 127.127260}
     ]
   },
   {
-    id: "range a37",
+    id: "range117",
     points: [
-      { latitude: 36.800432,longitude: 127.135130},
-      { latitude: 36.800925,longitude: 127.135945}
+      { latitude: 36.824686 ,longitude: 127.127243},
+      { latitude: 36.825169, longitude: 127.128439}
     ]
   },
   {
-    id: "range a38",
+    id: "range118",
     points: [
-      { latitude: 36.800835,longitude: 127.135981},
-      { latitude: 36.801148,longitude: 127.136330}
+      { latitude: 36.825064 ,longitude: 127.128458},
+      { latitude: 36.825538, longitude: 127.129646}
     ]
   },
   {
-    id: "range a39",
+    id: "range119",
     points: [
-      { latitude: 36.801033,longitude: 127.136340},
-      { latitude: 36.801359,longitude: 127.136763}
+      { latitude: 36.825435 ,longitude: 127.129651},
+      { latitude: 36.826009, longitude: 127.131100}
     ]
   },
   {
-    id: "range a40",
+    id: "range120",
     points: [
-      { latitude: 36.801243,longitude: 127.136790},
-      { latitude: 36.801557,longitude: 127.137134}
+      { latitude: 36.825908 ,longitude: 127.131124},
+      { latitude: 36.826575, longitude: 127.133055}
     ]
   },
   {
-    id: "range a41",
+    id: "range121",
     points: [
-      { latitude: 36.801428,longitude: 127.137144},
-      { latitude: 36.801793,longitude: 127.137627}
+      { latitude: 36.826575 ,longitude: 127.133055},
+      { latitude: 36.826073, longitude: 127.135306}
     ]
   },
   {
-    id: "range a42",
+    id: "range122",
     points: [
-      { latitude: 36.801682,longitude: 127.137638},
-      { latitude: 36.801964,longitude: 127.138152}
+      { latitude: 36.826311 ,longitude: 127.135249},
+      { latitude: 36.825796, longitude: 127.137108}
     ]
   },
   {
-    id: "range a43",
+    id: "range123",
     points: [
-      { latitude: 36.801861,longitude: 127.138163},
-      { latitude: 36.802149,longitude: 127.138715}
+      { latitude: 36.826056 ,longitude: 127.137137},
+      { latitude: 36.825693, longitude: 127.138149}
     ]
   },
   {
-    id: "range a44",
+    id: "range124",
     points: [
-      { latitude: 36.802029,longitude: 127.138704},
-      { latitude: 36.802318,longitude: 127.139273}
+      { latitude: 36.825800 ,longitude: 127.138141},
+      { latitude: 36.825611, longitude: 127.139160}
     ]
   },
   {
-    id: "range a45",
+    id: "range125",
     points: [
-      { latitude: 36.802206,longitude: 127.139268},
-      { latitude: 36.802469,longitude: 127.139950}
+      { latitude: 36.825850 ,longitude: 127.139152},
+      { latitude: 36.825562, longitude: 127.140230}
     ]
   },
   {
-    id: "range a46",
+    id: "range126",
     points: [
-      { latitude: 36.802362,longitude: 127.139961},
-      { latitude: 36.802603,longitude: 127.140975}
+      { latitude: 36.825562 ,longitude: 127.140230},
+      { latitude: 36.825682, longitude: 127.140970}
     ]
   },
   {
-    id: "range a47",
+    id: "range127",
     points: [
-      { latitude: 36.802487,longitude: 127.140980},
-      { latitude: 36.802714,longitude: 127.141817}
+      { latitude: 36.825644 ,longitude: 127.140970},
+      { latitude: 36.825412, longitude: 127.142725}
     ]
   },
   {
-    id: "range a48",
+    id: "range128",
     points: [
-      { latitude: 36.802618,longitude: 127.141810},
-      { latitude: 36.802854,longitude: 127.142770}
+      { latitude: 36.825502 ,longitude: 127.142725},
+      { latitude: 36.825264, longitude: 127.144479}
     ]
   },
   {
-    id: "range a49",
+    id: "range129",
     points: [
-      { latitude: 36.802747,longitude: 127.142770},
-      { latitude: 36.803039,longitude: 127.143489}
+      { latitude: 36.825401 ,longitude: 127.144500},
+      { latitude: 36.825085, longitude: 127.145203}
     ]
   },
   {
-    id: "range a50",//수정
+    id: "range130",
     points: [
-      { latitude: 36.803013,longitude: 127.143321},
-      { latitude: 36.804267,longitude: 127.143508}
+      { latitude: 36.825420 ,longitude: 127.145222},
+      { latitude: 36.824865, longitude: 127.147951}
     ]
   },
   {
-    id: "range a51",
+    id: "range131",
     points: [
-      { latitude: 36.804267,longitude: 127.143508},
-      { latitude: 36.804826,longitude: 127.143288}
+      { latitude: 36.825217 ,longitude: 127.147959},
+      { latitude: 36.824767, longitude: 127.149464}
     ]
   },
   {
-    id: "range a52",
+    id: "range132",
     points: [
-      { latitude: 36.804826,longitude: 127.143439},
-      { latitude: 36.805693,longitude: 127.143143}
+      { latitude: 36.825509 ,longitude: 127.149488},
+      { latitude: 36.824494, longitude: 127.152409}
     ]
   },
   {
-    id: "range a53",
+    id: "range133",
     points: [
-      { latitude: 36.805698,longitude: 127.143294},
-      { latitude: 36.806716,longitude: 127.143106}
+      { latitude: 36.824494 ,longitude: 127.152409},
+      { latitude: 36.824861, longitude: 127.152688}
     ]
   },
   {
-    id: "range a54",
+    id: "range134",
     points: [
-      { latitude: 36.806707,longitude: 127.143267},
-      { latitude: 36.808854,longitude: 127.143047}
+      { latitude: 36.824541 ,longitude: 127.153026},
+      { latitude: 36.824861, longitude: 127.156054}
     ]
   },
   {
-    id: "range a55",
+    id: "range135",
     points: [
-      { latitude: 36.808838,longitude: 127.143058},
-      { latitude: 36.809345,longitude: 127.143364}
+      { latitude: 36.824606 ,longitude: 127.156070},
+      { latitude: 36.824874, longitude: 127.158790}
     ]
   },
   {
-    id: "range a56",
+    id: "range136",
     points: [
-      { latitude: 36.809371,longitude: 127.143235},
-      { latitude: 36.809985,longitude: 127.143423}
+      { latitude: 36.824874 ,longitude: 127.158790},
+      { latitude: 36.824704, longitude: 127.159241}
     ]
   },
   {
-    id: "range a57",
+    id: "range137",
     points: [
-      { latitude: 36.809422,longitude: 127.143444},
-      { latitude: 36.810127,longitude: 127.144013}
+      { latitude: 36.824803 ,longitude: 127.159238},
+      { latitude: 36.824556, longitude: 127.159595}
     ]
   },
   {
-    id: "bus_stop6",
+    id: "range138",
     points: [
-      { latitude: 36.809968,longitude: 127.143439},
-      { latitude: 36.810234,longitude: 127.142500}
+      { latitude: 36.824668 ,longitude: 127.159597},
+      { latitude: 36.824341, longitude: 127.159965}
     ]
   },
   {
-    id: "range a58",
+    id: "range139",
     points: [
-      { latitude: 36.799520,longitude: 127.128868},
-      { latitude: 36.799348,longitude: 127.129431}
+      { latitude: 36.824449 ,longitude: 127.159978},
+      { latitude: 36.824163, longitude: 127.160196}
     ]
   },
   {
-    id: "range a59",
+    id: "range140",
     points: [
-      { latitude: 36.799348,longitude: 127.129431},
-      { latitude: 36.799549,longitude: 127.129977}
+      { latitude: 36.824103 ,longitude: 127.160410},
+      { latitude: 36.823707, longitude: 127.160713}
     ]
   },
   {
-    id: "range a60",
+    id: "range141",
     points: [
-      { latitude: 36.799435,longitude: 127.129980},
-      { latitude: 36.799676,longitude: 127.130484}
+      { latitude: 36.823708 ,longitude: 127.160553},
+      { latitude: 36.823473, longitude: 127.160968}
     ]
   },
   {
-    id: "range a61",
+    id: "range142",
     points: [
-      { latitude: 36.799557,longitude: 127.130516},
-      { latitude: 36.799802,longitude: 127.130988}
+      { latitude: 36.823451 ,longitude: 127.160697},
+      { latitude: 36.823159, longitude: 127.161283}
     ]
   },
   {
-    id: "range a62",
+    id: "range143",
     points: [
-      { latitude: 36.799471,longitude: 127.130998},
-      { latitude: 36.799944,longitude: 127.131583}
+      { latitude: 36.823188 ,longitude: 127.160855},
+      { latitude: 36.822787, longitude: 127.161572}
     ]
   },
   {
-    id: "range a63",
+    id: "range144",
     points: [
-      { latitude: 36.799922,longitude: 127.131165},
-      { latitude: 36.800627,longitude: 127.131701}
+      { latitude: 36.822780 ,longitude: 127.161162},
+      { latitude: 36.822451, longitude: 127.161852}
     ]
   },
   {
-    id: "range a64",
+    id: "range145",
     points: [
-      { latitude: 36.800653,longitude: 127.131331},
-      { latitude: 36.801215,longitude: 127.131728}
+      { latitude: 36.822437 ,longitude: 127.161459},
+      { latitude: 36.821956, longitude: 127.162245}
     ]
   },
   {
-    id: "range a65",
+    id: "range146",
     points: [
-      { latitude: 36.801220,longitude: 127.131524},
-      { latitude: 36.801757,longitude: 127.131782}
+      { latitude: 36.821946 ,longitude: 127.161854},
+      { latitude: 36.821653, longitude: 127.162510}
     ]
   },
   {
-    id: "range a66",
+    id: "range147",
     points: [
-      { latitude: 36.801787,longitude: 127.131631},
-      { latitude: 36.802357,longitude: 127.131878}
+      { latitude: 36.821665 ,longitude: 127.162501},
+      { latitude: 36.820916, longitude: 127.162018}
     ]
   },
   {
-    id: "range a67",
+    id: "range148",
     points: [
-      { latitude: 36.802356,longitude: 127.131737},
-      { latitude: 36.802791,longitude: 127.131957}
+      { latitude: 36.821334 ,longitude: 127.162501},
+      { latitude: 36.820637, longitude: 127.161565}
     ]
   },
   {
-    id: "range a68",
+    id: "range149",
     points: [
-      { latitude: 36.802779,longitude: 127.131819},
-      { latitude: 36.803294,longitude: 127.132039}
+      { latitude: 36.820984 ,longitude: 127.161557},
+      { latitude: 36.820372, longitude: 127.161133}
     ]
   },
   {
-    id: "range a69",
+    id: "range150",
     points: [
-      { latitude: 36.803307,longitude: 127.131900},
-      { latitude: 36.803732,longitude: 127.132136}
+      { latitude: 36.820712 ,longitude: 127.161098},
+      { latitude: 36.820098, longitude: 127.160685}
     ]
   },
   {
-    id: "range a70",
+    id: "range151",
     points: [
-      { latitude: 36.803737,longitude: 127.131975},
-      { latitude: 36.804067,longitude: 127.132184}
+      { latitude: 36.820452 ,longitude: 127.160667},
+      { latitude: 36.819808, longitude: 127.160200}
     ]
   },
   {
-    id: "range a71",
+    id: "range152",
     points: [
-      { latitude: 36.804084,longitude: 127.132045},
-      { latitude: 36.804523,longitude: 127.132281}
+      { latitude: 36.820179 ,longitude: 127.160219},
+      { latitude: 36.819554, longitude: 127.159763}
     ]
   },
   {
-    id: "range a72",
+    id: "range153",
     points: [
-      { latitude: 36.804540,longitude: 127.132125},
-      { latitude: 36.804939,longitude: 127.132334}
+      { latitude: 36.819913 ,longitude: 127.159760},
+      { latitude: 36.819286, longitude: 127.159307}
     ]
   },
   {
-    id: "range a73",
+    id: "range154",
     points: [
-      { latitude: 36.804932,longitude: 127.132189},
-      { latitude: 36.805177,longitude: 127.132388}
+      { latitude: 36.819638 ,longitude: 127.159293},
+      { latitude: 36.818940, longitude: 127.158658}
     ]
   },
   {
-    id: "range a74",
+    id: "range155",
     points: [
-      { latitude: 36.805190,longitude: 127.132248},
-      { latitude: 36.805379,longitude: 127.132420}
+      { latitude: 36.819267 ,longitude: 127.158644},
+      { latitude: 36.818856, longitude: 127.157775}
     ]
   },
   {
-    id: "range a75",
+    id: "range156",
     points: [
-      { latitude: 36.805371,longitude: 127.132270},
-      { latitude: 36.805822,longitude: 127.132506}
+      { latitude: 36.819144 ,longitude: 127.157789},
+      { latitude: 36.818690, longitude: 127.155013}
     ]
   },
-  {
-    id: "range a76",
-    points: [
-      { latitude: 36.805839,longitude: 127.132356},
-      { latitude: 36.806513,longitude: 127.132619}
-    ]
-  },
-  {
-    id: "range a77",
-    points: [
-      { latitude: 36.806526,longitude: 127.132484},
-      { latitude: 36.806728,longitude: 127.132662}
-    ]
-  },
-  {
-    id: "range a78",
-    points: [
-      { latitude: 36.806724,longitude: 127.132511},
-      { latitude: 36.807260,longitude: 127.132758}
-    ]
-  },
-  {
-    id: "range a79",
-    points: [
-      { latitude: 36.807273,longitude: 127.132619},
-      { latitude: 36.807372,longitude: 127.132753}
-    ]
-  },
-  {
-    id: "range a80",
-    points: [
-      { latitude: 36.807372,longitude: 127.132753},
-      { latitude: 36.807226,longitude: 127.133434}
-    ]
-  },
-  {
-    id: "range a81",
-    points: [
-      { latitude: 36.807327,longitude: 127.133445},
-      { latitude: 36.807172,longitude: 127.134410}
-    ]
-  },
-  {
-    id: "range a82",
-    points: [
-      { latitude: 36.807280,longitude: 127.134410},
-      { latitude: 36.807108,longitude: 127.135682}
-    ]
-  },
-  {
-    id: "range a83",
-    points: [
-      { latitude: 36.807207,longitude: 127.135682},
-      { latitude: 36.807005,longitude: 127.136985}
-    ]
-  },
-  {
-    id: "range a84",
-    points: [
-      { latitude: 36.807121,longitude: 127.136985},
-      { latitude: 36.806989,longitude: 127.137496}
-    ]
-  },
-  {
-    id: "range a85",
-    points: [
-      { latitude: 36.807079,longitude: 127.137490},
-      { latitude: 36.806899,longitude: 127.138478}
-    ]
-  },
-  {
-    id: "range a86",
-    points: [
-      { latitude: 36.807019,longitude: 127.138461},
-      { latitude: 36.806835,longitude: 127.139862}
-    ]
-  },
-  {
-    id: "range a87",
-    points: [
-      { latitude: 36.802496,longitude: 127.139508},
-      { latitude: 36.803024,longitude: 127.138999}
-    ]
-  },
-  {
-    id: "range a88",
-    points: [
-      { latitude: 36.803024,longitude: 127.138999},
-      { latitude: 36.803196,longitude: 127.139170}
-    ]
-  },
-  {
-    id: "range a89",
-    points: [
-      { latitude: 36.803209,longitude: 127.139020},
-      { latitude: 36.803716,longitude: 127.139278}
-    ]
-  },
-  {
-    id: "range a90",
-    points: [
-      { latitude: 36.803720,longitude: 127.139122},
-      { latitude: 36.804076,longitude: 127.139353}
-    ]
-  },
-  {
-    id: "range a91",
-    points: [
-      { latitude: 36.804081,longitude: 127.139213},
-      { latitude: 36.804420,longitude: 127.139444}
-    ]
-  },
-  {
-    id: "range a92",
+
+   {
+    id: "range157",
     points: [
-      { latitude: 36.804424,longitude: 127.139299},
-      { latitude: 36.804819,longitude: 127.139541}
+      { latitude: 36.818982 ,longitude: 127.155002},
+      { latitude: 36.818523, longitude: 127.152934}
     ]
   },
   {
-    id: "range a93",
+    id: "range158",
     points: [
-      { latitude: 36.804845,longitude: 127.139412},
-      { latitude: 36.805236,longitude: 127.139616}
+      { latitude: 36.818628 ,longitude: 127.152931},
+      { latitude: 36.818860, longitude: 127.152001}
     ]
   },
   {
-    id: "range a94",
+    id: "range159",
     points: [
-      { latitude: 36.805258,longitude: 127.139482},
-      { latitude: 36.805717,longitude: 127.139739}
+      { latitude: 36.818869 ,longitude: 127.152121},
+      { latitude: 36.819038, longitude: 127.151899}
     ]
   },
   {
-    id: "range a95",
+    id: "range160",
     points: [
-      { latitude: 36.805734,longitude: 127.139610},
-      { latitude: 36.806155,longitude: 127.139830}
+      { latitude: 36.819041 ,longitude: 127.152019},
+      { latitude: 36.819324, longitude: 127.151719}
     ]
   },
   {
-    id: "range a96",
+    id: "range161",
     points: [
-      { latitude: 36.806164,longitude: 127.139685},
-      { latitude: 36.806830,longitude: 127.140002}
+      { latitude: 36.819346 ,longitude: 127.151826},
+      { latitude: 36.819572, longitude: 127.151606}
     ]
   },
   {
-    id: "range a97",
+    id: "range162",
     points: [
-      { latitude: 36.806834,longitude: 127.139862},
-      { latitude: 36.807388,longitude: 127.140131}
+      { latitude: 36.819572 ,longitude: 127.151606},
+      { latitude: 36.820553, longitude: 127.152000}
     ]
   },
   {
-    id: "range a98",
+    id: "range163",
     points: [
-      { latitude: 36.807396,longitude: 127.139981},
-      { latitude: 36.808144,longitude: 127.140335}
+      { latitude: 36.820546 ,longitude: 127.151900},
+      { latitude: 36.820926, longitude: 127.152114}
     ]
   },
   {
-    id: "range a99",
+    id: "range164",
     points: [
-      { latitude: 36.808152,longitude: 127.140190},
-      { latitude: 36.808814,longitude: 127.140495}
+      { latitude: 36.821337 ,longitude: 127.152114},
+      { latitude: 36.821373, longitude: 127.152232}
     ]
   },
   {
-    id: "range a100",
+    id: "range165",
     points: [
-      { latitude: 36.808856,longitude: 127.140372},
-      { latitude: 36.809247,longitude: 127.140603}
+      { latitude: 36.821381 ,longitude: 127.152109},
+      { latitude: 36.821922, longitude: 127.152369}
     ]
   },
   {
-    id: "range a101",
+    id: "range166",
     points: [
-      { latitude: 36.809268,longitude: 127.140464},
-      { latitude: 36.809663,longitude: 127.140710}
+      { latitude: 36.821918 ,longitude: 127.152254},
+      { latitude: 36.822455, longitude: 127.152495}
     ]
   },
   {
-    id: "range a102",
+    id: "range167",
     points: [
-      { latitude: 36.809676,longitude: 127.140566},
-      { latitude: 36.810488,longitude: 127.140898}
+      { latitude: 36.822459 ,longitude: 127.152380},
+      { latitude: 36.823176, longitude: 127.152677}
     ]
   },
   {
-    id: "range a103",
+    id: "range168",
     points: [
-      { latitude: 36.810488,longitude: 127.140898},
-      { latitude: 36.810243,longitude: 127.141542}
+      { latitude: 36.823193 ,longitude: 127.152559},
+      { latitude: 36.823550, longitude: 127.152774}
     ]
   },
   {
-    id: "range a104",
+    id: "range169",
     points: [
-      { latitude: 36.810351,longitude: 127.141569},
-      { latitude: 36.810110,longitude: 127.142491}
+      { latitude: 36.823552 ,longitude: 127.152643},
+      { latitude: 36.824464, longitude: 127.153010}
     ]
   },
-// 이 아래에 천안터미널 넣어주세요
+
 ];
 
 module.exports = ranges;
