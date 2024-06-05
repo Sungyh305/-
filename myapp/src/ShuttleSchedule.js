@@ -14,7 +14,7 @@ const ShuttleSchedule = ({ navigation }) => {
     return () => clearInterval(timer);
   }, []);
 
-  const [stations] = useState([//칸 형식으로 ui변경해야할듯 근데 그러면 글씨가 겹칠 우려 큼
+  const [stations] = useState([
     { id: 1, name: '천안아산역' },
     { id: 2, name: '천안역' },
     { id: 3, name: '천안 터미널' },
@@ -484,8 +484,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 2,  //26
       time: '15:45', 
       middleTime: '16:10',
-      approximately: 'X(하교 전용 차량)',
-      arrivalTime: 'X(하교 전용 차량)', 
+      approximately: '',
+      approximately2: 'X(하교 전용 차량)',
+      arrivalTime: '', 
       status: '금(X)' 
     },
     { 
@@ -508,8 +509,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 2,  //29
       time: '16:45', 
       middleTime: '17:10',
-      approximately: 'X(하교 전용 차량)',
-      arrivalTime: 'X(하교 전용 차량)', 
+      approximately: '',
+      approximately2: 'X(하교 전용 차량)',
+      arrivalTime: '', 
       status: '금(X)' 
     },
     { 
@@ -548,15 +550,18 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 2,  //34
       time: '18:50', 
       middleTime: '19:15',
-      approximately: 'X(하교 전용 차량)',
-      arrivalTime: 'X(하교 전용 차량)', 
+      approximately: '',
+      approximately2: 'X(하교 전용 차량)',
+      arrivalTime: '', 
       status: '금(X)' 
     },
     { 
       id: 3,  //1
       time: '07:30', 
       middleTime: '08:05',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '08:40', 
       status: '' 
     },
@@ -564,7 +569,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //2
       time: 'X', 
       middleTime: '08:15',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '08:50', 
       status: '금(X)' 
     },
@@ -572,7 +579,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //3
       time: 'X', 
       middleTime: '08:25',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '09:00', 
       status: '금(X)' 
     },
@@ -580,7 +589,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //4
       time: 'X', 
       middleTime: '08:30',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '09:05', 
       status: '금(X)' 
     },
@@ -588,7 +599,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //5
       time: '08:20\n성정동 스타벅스', 
       middleTime: '08:35',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '09:10', 
       status: '금(X)' 
     },
@@ -596,7 +609,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //6
       time: 'X', 
       middleTime: '08:40',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '09:15', 
       status: '금(X)' 
     },
@@ -604,7 +619,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //7 두정동 맥도날드만 8:50 추가해야하는데 칸 형식으로 변경해야함 일단은 무시하고 진행
       time: 'X', 
       middleTime: 'X',
-      approximately: '5~20m',
+      approximately: '08:50',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '09:15', 
       status: '금(X)' 
     },
@@ -612,7 +629,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //8
       time: 'X', 
       middleTime: '08:45',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '09:20', 
       status: '' 
     },
@@ -620,7 +639,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //9
       time: 'X', 
       middleTime: '08:50',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '09:20', 
       status: '금(X)' 
     },
@@ -628,7 +649,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //10
       time: 'X', 
       middleTime: '09:50',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '10:20', 
       status: '' 
     },
@@ -636,7 +659,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //11
       time: '09:30', 
       middleTime: '10:00',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '10:30', 
       status: '' 
     },
@@ -644,7 +669,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //12
       time: '10:20', 
       middleTime: '10:50',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '11:20', 
       status: '' 
     },
@@ -652,7 +679,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //13
       time: '10:30', 
       middleTime: '11:00',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '11:30', 
       status: '' 
     },
@@ -660,7 +689,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //14
       time: '11:20', 
       middleTime: '11:50',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '12:20', 
       status: '' 
     },
@@ -668,7 +699,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //15
       time: '11:30', 
       middleTime: '12:00',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '12:30', 
       status: '금(X)' 
     },
@@ -676,7 +709,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //16
       time: '11:40', 
       middleTime: '12:10',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '12:40', 
       status: '' 
     },
@@ -684,7 +719,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //17
       time: '12:20', 
       middleTime: '12:50',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '12:40', 
       status: '' 
     },
@@ -692,7 +729,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //18
       time: '12:30', 
       middleTime: '13:00',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '13:30', 
       status: '금(X)' 
     },
@@ -700,7 +739,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //19
       time: '12:40', 
       middleTime: '13:10',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '13:40', 
       status: '' 
     },
@@ -708,7 +749,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //20
       time: '13:20', 
       middleTime: '13:50',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '14:20', 
       status: '' 
     },
@@ -716,7 +759,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //21
       time: '13:30', 
       middleTime: '14:00',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '14:20', 
       status: '' 
     },
@@ -724,7 +769,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //22
       time: '13:40', 
       middleTime: '14:10',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '14:20', 
       status: '' 
     },
@@ -732,7 +779,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //23
       time: '14:20', 
       middleTime: '14:50',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '15:20', 
       status: '' 
     },
@@ -740,7 +789,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //24
       time: '14:30', 
       middleTime: '15:00',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '15:30', 
       status: '금(X)' 
     },
@@ -748,7 +799,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //25
       time: '14:40', 
       middleTime: '15:10',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '15:40', 
       status: '' 
     },
@@ -756,7 +809,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //26
       time: '15:20', 
       middleTime: '15:50',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '16:20', 
       status: '' 
     },
@@ -764,15 +819,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //27
       time: '15:40', 
       middleTime: '16:10',
-      approximately: '5~20m',
-      arrivalTime: '16:40', 
-      status: '' 
-    },
-    { 
-      id: 3,  //27
-      time: '15:40', 
-      middleTime: '16:10',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '16:40', 
       status: '' 
     },
@@ -780,15 +829,19 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //28 칸 어떻게 합치지 지금 헤더 기준인데 흠..
       time: '15:50', 
       middleTime: '16:20',
-      approximately: 'X(하교 전용차량)',
-      arrivalTime: 'X(하교 전용차량)', 
+      approximately: '',
+      approximately2 :'X(하교 전용차량)',
+      approximately3: '',
+      arrivalTime: '', 
       status: '금(X)' 
     },
     { 
       id: 3,  //29
       time: '16:20', 
       middleTime: '16:50',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '17:20', 
       status: '금(X)' 
     },
@@ -796,7 +849,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //30
       time: '16:40', 
       middleTime: '17:10',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '17:40', 
       status: '' 
     },
@@ -812,7 +867,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //32
       time: '17:20', 
       middleTime: '17:50',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '18:20', 
       status: '' 
     },
@@ -820,7 +877,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //33
       time: '17:40', 
       middleTime: '18:10',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '18:40', 
       status: '' 
     },
@@ -828,7 +887,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //34
       time: '18:20', 
       middleTime: '18:50',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '19:20', 
       status: '금(X)' 
     },
@@ -836,7 +897,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //35
       time: '18:30', 
       middleTime: '19:00',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '19:30', 
       status: '' 
     },
@@ -844,15 +907,18 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //36 칸 어떻게 합치지 지금 헤더 기준인데 흠..
       time: '18:40', 
       middleTime: '19:10',
-      approximately: 'X(하교 전용차량)',
-      arrivalTime: 'X(하교 전용차량)', 
+      approximately: '',
+      approximately2 :'X(하교 전용차량)',
+      approximately3: '',
       status: '금(X)' 
     },
     { 
       id: 3,  //37
       time: '19:30', 
       middleTime: '20:00',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '20:30', 
       status: '' 
     },
@@ -860,7 +926,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //38
       time: '20:30', 
       middleTime: '21:00',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '21:30', 
       status: '' 
     },
@@ -868,7 +936,9 @@ const ShuttleSchedule = ({ navigation }) => {
       id: 3,  //39
       time: '21:30', 
       middleTime: '22:00',
-      approximately: '5~20m',
+      approximately: '',
+      approximately2 :'5~20m',
+      approximately3: '',
       arrivalTime: '22:30', 
       status: '' 
     },
@@ -876,8 +946,8 @@ const ShuttleSchedule = ({ navigation }) => {
 
   const headers = {
     1: ['아산 캠퍼스', '천안 아산역', '아산 캠퍼스', '금요일 운행 여부'],
-    2: ['아산 캠퍼스', '천안역', '하이렉 스파 건너편/    용암 마을', '아산 캠퍼스', '금요일 운행 여부'],
-    3: ['아산 캠퍼스', '터미널', '두정동 맥도날드/홈마트 에브리데이/서울대정병원','아산 캠퍼스', '금요일 운행 여부'],
+    2: ['아산 캠퍼스', '천안역', '하이렉 스파 건너편','용암 마을', '아산 캠퍼스', '금요일 운행 여부'],
+    3: ['아산 캠퍼스', '터미널', '두정동 맥도날드','홈마트 에브리데이','서울대정병원','아산 캠퍼스', '금요일 운행 여부'],
   };
 
   const filteredScheduleData = scheduleData.filter(item => item.id === selectedStation);
@@ -885,47 +955,44 @@ const ShuttleSchedule = ({ navigation }) => {
   const renderScheduleItem = ({ item }) => {
     let textStyle = styles.cell;
     let scheduleTime;
-  
-    // time이 'X'가 아니고 현재 시간 이전의 시간들에 대해 색상 변경
+
     if (item.time !== 'X') {
       scheduleTime = new Date();
       const [hours, minutes] = item.time.split(':');
       scheduleTime.setHours(parseInt(hours, 10));
       scheduleTime.setMinutes(parseInt(minutes, 10));
-  
+
       if (scheduleTime < currentTime) {
         textStyle = [styles.cell, { color: '#E2E2E2' }];
       }
     } else {
-      // time이 'X'인 경우에도 색상 변경
       textStyle = [styles.cell, { color: '#E2E2E2' }];
     }
-  
-    // approximately에 대해서도 동일한 색상 변경 적용
+
     if (item.approximately === 'X') {
-      textStyle = [styles.cell, { color: 'E2E2E2' }];
+      textStyle = [styles.cell, { color: '#E2E2E2' }];
     }
-  
+
     const onPressHandler = item.time !== 'X' ? () => navigation.navigate('TrainSchedule', { scheduleItem: item }) : null;
-  
+
     return (
       <TouchableOpacity
         style={styles.row}
         onPress={onPressHandler}
         disabled={item.time === 'X'}
       >
-        
         <Text style={textStyle}>{item.time}</Text>
         <Text style={textStyle}>{item.middleTime}</Text>
-        {/* id가 2,3인 경우에만 approximately 표시 */}
         {selectedStation === 2 && <Text style={textStyle}>{item.approximately}</Text>}
+        {selectedStation === 2 && <Text style={textStyle}>{item.approximately2}</Text>}
         {selectedStation === 3 && <Text style={textStyle}>{item.approximately}</Text>}
+        {selectedStation === 3 && <Text style={textStyle}>{item.approximately2}</Text>}
+        {selectedStation === 3 && <Text style={textStyle}>{item.approximately3}</Text>}
         <Text style={textStyle}>{item.arrivalTime}</Text>
         <Text style={textStyle}>{item.status}</Text>
       </TouchableOpacity>
     );
   };
-  
 
   const handleStationSelect = () => {
     setShowStationList(true);
