@@ -1,7 +1,3 @@
-import React, { Component } from 'react';
-import { View, Text, Button, TextInput, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-
 export class CityStationData  {
   constructor() {
       this.ktxCityStationData = [

@@ -150,6 +150,8 @@ class TrainSchedule extends Component {
           <Picker.Item label="천안아산역" value="NATH10960" />
           <Picker.Item label="천안역" value="NAT010971" />
         </Picker>
+        </View>
+        <View style={styles.PickerContainer}>
         {selectedDepCity ? (
           <Picker
             style={styles.input}
@@ -188,7 +190,9 @@ class TrainSchedule extends Component {
             </Picker>
           )
           }
-          <View style={styles.dateContainer}>
+        </View>
+        <View style={styles.ButtonContainer}>
+        <View style={styles.dateContainer}>
           <TouchableOpacity onPress={() => this.setState({ showDatePicker: true })}>
             <View style={styles.Button}>
               <Text style={styles.text}>출발 날짜 선택</Text>
@@ -205,8 +209,6 @@ class TrainSchedule extends Component {
             />
           )}
         </View >
-        </View>
-        <View style={styles.ButtonContainer}>
         <TouchableOpacity onPress={this.fetchTrainInfo}>
           <View style={styles.SearchButton}>
             <Text style={styles.text}>검색</Text>
@@ -243,7 +245,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#86CC57',
     padding: 7,
     borderRadius: 5,
-    borderColor : 'gray'
+    borderColor : 'gray',
   },
   SearchButton: {
     alignItems: 'center',
@@ -252,6 +254,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor : 'gray',
     width: 100,
+    marginLeft: 10
   },
   ButtonContainer: {
     flexDirection: 'row',

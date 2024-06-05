@@ -169,16 +169,16 @@ class BusSchedule extends Component {
       <View style={styles.container}>
         <Text style={styles.text}></Text>
         <View style={styles.PickerContainer}>
-          <Text style={styles.text}>도착 터미널:</Text>
+          <Text style={styles.label}>도착 터미널:</Text>
           <TextInput
             style={styles.input}
             value={inputValue}
             onChangeText={this.handleInputChange}
-            placeholder="도착 터미널의 이름을 검색 하세요."
+            placeholder=""
           />
           <TouchableOpacity onPress={this.fetchTerminalInfo}>
-            <View style={styles.Button}>
-              <Text style={styles.label}>터미널 검색</Text>
+            <View style={styles.SearchButton}>
+              <Text style={styles.text}>검색</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -188,6 +188,7 @@ class BusSchedule extends Component {
               style={styles.input}
               selectedValue={selectedTerminal}
               onValueChange={this.handleTerminalChange}>
+                <Picker.Item label="도착 터미널을 선택하세요." value="" />
               {TerminalInfo.map((terminal, index) => (
                 <Picker.Item key={index} label={terminal.terminalNm} value={terminal.terminalId} />
               ))}
@@ -201,10 +202,12 @@ class BusSchedule extends Component {
               </Picker>
           )
           }
+        </View>
+        <View style={styles.ButtonContainer}>
           <View style={styles.dateContainer}>
             <TouchableOpacity onPress={() => this.setState({ showDatePicker: true })}>
               <View style={styles.Button}>
-                <Text style={styles.label}>출발 날짜 선택</Text>
+                <Text style={styles.text}>출발 날짜 선택</Text>
               </View>
             </TouchableOpacity>
             {showDatePicker && (
@@ -218,12 +221,14 @@ class BusSchedule extends Component {
               />
             )}
           </View>
+
           <TouchableOpacity onPress={this.fetchBusInfo}>
-            <View style={styles.Button}>
-              <Text style={styles.label}>검색</Text>
+            <View style={styles.SearchButton}>
+              <Text style={styles.text}>검색</Text>
             </View>
           </TouchableOpacity>
         </View>
+
         {loading && (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color="#0000ff" />
@@ -238,7 +243,7 @@ class BusSchedule extends Component {
                 <Text>출발시각: {info.depPlandTime}</Text>
                 <Text>도착터미널: {info.arrPlace}</Text>
                 <Text>도착시각: {info.arrPlandTime}</Text>
-                <Text>운임: {info.fare} : {info.gradeName}</Text>
+                <Text>운임: {info.fare}     등급: {info.gradeName}</Text>
               </View>
             ))}
           </ScrollView>
@@ -252,12 +257,22 @@ const styles = StyleSheet.create({
   Button: {
     alignItems: 'center',
     backgroundColor: '#86CC57',
-    padding: 17,
+    padding: 7,
     borderRadius: 5,
-    marginLeft: 1
+    borderColor : 'gray',
+  },
+  SearchButton: {
+    alignItems: 'center',
+    backgroundColor: '#86CC57',
+    padding: 7,
+    borderRadius: 5,
+    borderColor : 'gray',
+    width: 100,
+    marginLeft: 10
   },
   ButtonContainer: {
     flexDirection: 'row',
+    alignItems: 'top'
   },
   PickerContainer: {
     width: '90%',
@@ -269,11 +284,11 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 17,
-    justifyContent: 'center',
+    padding: 10,
   },
   text: {
-    fontSize: 17,
-    padding: 17,
+      fontSize: 17,
+      marginBottom: 20,
   },
   container: {
     flex: 1,
@@ -284,6 +299,7 @@ const styles = StyleSheet.create({
     height: 55,
     flex: 1,
     padding: 16,
+    fontSize: 17
   },
   dateContainer: {
     
