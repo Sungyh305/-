@@ -91,6 +91,118 @@ const ranges = [
   ]
 },
 {
+  id: "range7",
+  points: [
+    { latitude: 36.808989, longitude: 127.104971},
+    { latitude: 36.803278, longitude: 127.109761}
+  ]
+},
+{
+  id: "range8",
+  points: [
+    { latitude: 36.807416, longitude: 127.105055},
+    { latitude: 36.813197, longitude: 127.111342}
+  ]
+},
+{
+  id: "range9",
+  points: [
+    { latitude: 36.812492, longitude: 127.106611},
+    { latitude: 36.817740, longitude: 127.113391}
+  ]
+},
+{
+  id: "range10",
+  points: [
+    { latitude: 36.817156, longitude: 127.107585},
+    { latitude: 36.822699, longitude: 127.114044}
+  ]
+},
+{
+  id: "range11",
+  points: [
+    { latitude: 36.821505, longitude: 127.110069},
+    { latitude: 36.825518, longitude: 127.126508}
+  ]
+},
+{
+  id: "range12",
+  points: [
+    { latitude: 36.822684, longitude: 127.124668},
+    { latitude: 36.827843, longitude: 127.133062}
+  ]
+},
+{
+  id: "range13",
+  points: [
+    { latitude: 36.824000, longitude: 127.132327},
+    { latitude: 36.828186, longitude: 127.142509}
+  ]
+},
+{
+  id: "range14",
+  points: [
+    { latitude: 36.826409, longitude: 127.141543},
+    { latitude: 36.823434, longitude: 127.151579}
+  ]
+},
+{
+  id: "range15",
+  points: [
+    { latitude: 36.825882, longitude: 127.150704},
+    { latitude: 36.822776, longitude: 127.156684}
+  ]
+},
+{
+  id: "range16",
+  points: [
+    { latitude: 36.825341, longitude: 127.156284},
+    { latitude: 36.823086, longitude: 127.162288}
+  ]
+},
+{
+  id: "range17",
+  points: [
+    { latitude: 36.824061, longitude: 127.159853},
+    { latitude: 36.819444, longitude: 127.162889}
+  ]
+},
+{
+  id: "range18",
+  points: [
+    { latitude: 36.820481, longitude: 127.160454},
+    { latitude: 36.817746, longitude: 127.156225}
+  ]
+},
+{
+  id: "range19",
+  points: [
+    { latitude: 36.820138, longitude: 127.156730},
+    { latitude: 36.817291, longitude: 127.152669}
+  ]
+},
+{
+  id: "_bus", //천안터미널 정류장 내리는건가?
+  points: [
+    { latitude: 36.819219, longitude: 127.154037},
+    { latitude: 36.818661, longitude: 127.152441}
+  ]
+},
+{
+  id: "range20",
+  points: [
+    { latitude: 36.818141, longitude: 127.154358},
+    { latitude: 36.821491, longitude: 127.150601}
+  ]
+},
+{
+  id: "range21",
+  points: [
+    { latitude: 36.820349, longitude: 127.153890},
+    { latitude: 36.823144, longitude: 127.150966}
+  ]
+},
+{
   id: "range101",
   points: [
     { latitude: 36.797950, longitude: 127.093802},
@@ -133,7 +245,7 @@ const ranges = [
   ]
 },
 {
-  id: "_bus", //용암마을 까먹었다 어디였지
+  id: "_bus", //용암마을 까먹었다 내리는건가?
   points: [
     { latitude: 36.801768, longitude: 127.117101},
     { latitude: 36.801192, longitude: 127.118619}
@@ -146,7 +258,7 @@ const ranges = [
     { latitude: 36., longitude: 127.}
   ]
 },
-
+//여기 이후로 안상찬씨가 채워주세요.
 ];
 
 module.exports = ranges;
