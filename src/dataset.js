@@ -258,7 +258,28 @@ const ranges = [
     { latitude: 36., longitude: 127.}
   ]
 },
-//여기 이후로 안상찬씨가 채워주세요.
+{
+  id: "range201",
+  points: [
+    { latitude: 36.799845, longitude: 127.098462},
+    { latitude: 36.795684, longitude: 127.102530}
+  ]
+},
+{
+  id: "range202",
+  points: [
+    { latitude: 36.796595, longitude: 127.099381},
+    { latitude: 36.791001, longitude: 127.104761}
+  ]
+},
+{
+  id: "_bus", //천안아산역 타고 내리는거 둘 다인가?
+  points: [
+    { latitude: 36.795318, longitude: 127.102765},
+    { latitude: 36.793016, longitude: 127.104364}
+  ]
+},
+//여기 이후로 안상찬씨가 채워주세요. 천안역 남았습니다
 ];
 
 module.exports = ranges;
