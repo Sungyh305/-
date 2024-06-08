@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
+import { withNavigation } from '@react-navigation/native';
 
 class BusSchedule extends Component {
   constructor(props) {
@@ -44,6 +45,7 @@ class BusSchedule extends Component {
     return `${year}${month}${day}${hours}${minutes}`;
   };
 
+  // api Url 생성
   generateAPIUrl = () => {
     const { selectedTerminal, selectedDate } = this.state;
     if (!selectedTerminal || !selectedDate) {
@@ -65,6 +67,7 @@ class BusSchedule extends Component {
     return `${baseUrl}${params.toString()}`;
   };
 
+  // api호출 및 BusInfo에 데이터 입력
   fetchBusInfo = async () => {
     this.setState({ loading: true });
     const currentTime = this.getCurrentTime();
@@ -104,6 +107,7 @@ class BusSchedule extends Component {
     }
   };
 
+  // 터미널 목록 api Url생성
   terminalUrl = () => {
     const { inputValue } = this.state;
     const baseUrl = 'http://apis.data.go.kr/1613000/ExpBusInfoService/getExpBusTrminlList?serviceKey=lg684aDIcnOKaJWsrwOKHl%2BMIrtxenNFx1Elb6Y36W5ZgBmw%2FJIFrJZDaT23%2F3d8JmnYmZPtwxVIl8eq2aNl9w%3D%3D&';
@@ -118,6 +122,7 @@ class BusSchedule extends Component {
     return `${baseUrl}${params.toString()}`;
   }
 
+  // 입력된 문자열이 포함된 터미널을 호출하고 TerminalInfo에 입력
   fetchTerminalInfo = async () => {
     this.setState({ loading: true });
     const apiTUrl = this.terminalUrl();
@@ -167,7 +172,13 @@ class BusSchedule extends Component {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.text}></Text>
+        < View style={styles.changeButtonContainer}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('TrainSchedule')}>
+          <View style={styles.changeButton}>
+            <Text style={styles.text}>기차 시간표</Text>
+          </View>
+        </TouchableOpacity>
+        </View>
         <View style={styles.PickerContainer}>
           <Text style={styles.label}>도착 터미널:</Text>
           <TextInput
@@ -261,6 +272,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor : 'gray',
   },
+  changeButton: {
+    alignItems: 'center',
+    backgroundColor: '#86CC57',
+    padding: 7,
+    borderRadius: 5,
+    borderColor : 'gray',
+    marginBottom: 10,
+    marginTop: 10,
+  },
   SearchButton: {
     alignItems: 'center',
     backgroundColor: '#86CC57',
@@ -272,7 +292,14 @@ const styles = StyleSheet.create({
   },
   ButtonContainer: {
     flexDirection: 'row',
-    alignItems: 'top'
+    alignItems: 'top',
+    justifyContent: 'space-between'
+  },
+  changeButtonContainer: {
+    width: '90%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginBottom: 10
   },
   PickerContainer: {
     width: '90%',

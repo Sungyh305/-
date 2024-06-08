@@ -3,6 +3,7 @@ import { View, Text, Button, StyleSheet, ScrollView, TouchableOpacity, ActivityI
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { CityStationData } from './CityStationData';
+import { withNavigation } from '@react-navigation/native';
 
 class TrainSchedule extends Component {
   constructor(props) {
@@ -21,10 +22,12 @@ class TrainSchedule extends Component {
     this.cityStationData = new CityStationData(); // 인스턴스 생성
   }
 
+
   handleCityChange = (city) => {
     this.setState({ selectedCity: city, selectedStation: '' });
   };
 
+  // 출발역에 따라서 도착도시, 도착역의 목록을 변경
   handleDepCityChange = (city) => {
     this.setState({ selectedDepCity: city, selectedCity: '', selectedStation: '' }, () => {
       if (city === 'NATH10960') {
@@ -59,6 +62,7 @@ class TrainSchedule extends Component {
     return year + month + day + hours + minutes + seconds;
   };
 
+  // 선택된 날짜와 출발역, 출발도시를 이용해 api의 Url을 생성
   generateAPIUrl = () => {
     const { selectedDepCity, selectedCity, selectedStation, selectedDate } = this.state;
     if (!selectedCity || !selectedStation || !selectedDate) {
@@ -80,6 +84,7 @@ class TrainSchedule extends Component {
     return `${baseUrl}${params.toString()}`;
   };
 
+  // api를 호출하고 응답 내용을 trainInfo에 입력 
   fetchTrainInfo = async () => {
     this.setState({ loading: true });
     const currentTime = this.getCurrentTime();
@@ -137,10 +142,13 @@ class TrainSchedule extends Component {
 
     return (
       <View style={styles.container}>
-        <Text
-        style={styles.text}>
-
-        </Text>
+        < View style={styles.changeButtonContainer}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('BusSchedule')}>
+          <View style={styles.changeButton}>
+            <Text style={styles.text}>고속 버스 시간표</Text>
+          </View>
+        </TouchableOpacity>
+        </View>
         <View style={styles.PickerContainer}>
         <Picker
           style={styles.input}
@@ -247,6 +255,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor : 'gray',
   },
+  changeButton: {
+    alignItems: 'center',
+    backgroundColor: '#86CC57',
+    padding: 7,
+    borderRadius: 5,
+    borderColor : 'gray',
+    marginBottom: 10,
+    marginTop: 10,
+  },
   SearchButton: {
     alignItems: 'center',
     backgroundColor: '#86CC57',
@@ -259,6 +276,12 @@ const styles = StyleSheet.create({
   ButtonContainer: {
     flexDirection: 'row',
     alignItems: 'top'
+  },
+  changeButtonContainer: {
+    width: '90%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginBottom: 10
   },
   PickerContainer: {
     width: '90%',
