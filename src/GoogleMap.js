@@ -159,52 +159,41 @@ const GoogleMap = () => {
   ];
 
   useEffect(() => {
-    let socket;
+    let socket = socketIOClient(SERVER_URL);
 
-    // 소켓 연결
-    const connectSocket = () => {
-      socket = socketIOClient(SERVER_URL);
+    // 새로운 위치 데이터를 받아와서 마커 갱신
+    socket.on('broadcastLocation', (location) => {
+      console.log('New location received:', location);
+      // 범위 id 구별하여 이미지 분리
+      if (location.key.startsWith('bus_stop')) {
+        console.log('Setting marker image for bus stop');
+        newMarkerImage = require('../assets/Person_expo.png');
+      } else {
+        console.log('Setting marker image for user');
+        newMarkerImage = require('../assets/bus_expo.png');
+      }
 
-      socket.on('connect', () => {
-        console.log('Socket connected');
+      setUserMarkers((prevMarkers) => ({
+        ...prevMarkers,
+        [location.userId]: location,
+      }));
+    });
+
+    // 사용자 연결이 종료되었을 때 해당 사용자의 마커 제거
+    socket.on('removeMarker', (userId) => {
+      console.log('Removing marker for user:', userId);
+
+      setUserMarkers((prevMarkers) => {
+        const updatedMarkers = { ...prevMarkers };
+        delete updatedMarkers[userId];
+        console.log('Updated markers after removal:', updatedMarkers);
+        return updatedMarkers;
       });
-
-      socket.on('disconnect', () => {
-        console.log('Socket disconnected');
-      });
-
-      // 새로운 위치 데이터를 받아와서 마커 갱신
-      socket.on('broadcastLocation', (location) => {
-        // 범위 id 구별하여 이미지 분리
-        if (location.key.startsWith('bus_stop')) {
-          newMarkerImage = require('../assets/Person_expo.png');
-        } else {
-          newMarkerImage = require('../assets/bus_apk.png');
-        }
-
-        setUserMarkers((prevMarkers) => ({
-          ...prevMarkers,
-          [location.userId]: location,
-        }));
-      });
-
-      // 사용자 연결이 종료되었을 때 해당 사용자의 마커 제거
-      socket.on('removeMarker', (userId) => {
-        setUserMarkers((prevMarkers) => {
-          const updatedMarkers = { ...prevMarkers };
-          delete updatedMarkers[userId];
-          return updatedMarkers;
-        });
-      });
-    };
-
-    connectSocket();
+    });
 
     // 컴포넌트 언마운트 시 소켓 연결 해제
     return () => {
-      if (socket) {
-        socket.disconnect();
-      }
+      socket.disconnect();
     };
   }, []);
 
@@ -234,6 +223,14 @@ const GoogleMap = () => {
             longitude: 127.116516,
             latitudeDelta: 0.1,
             longitudeDelta: 0.1,
+          });
+          break;
+        case '4':
+          setRegion({
+            latitude: 36.807468,
+            longitude: 127.107576,
+            latitudeDelta: 0.08,
+            longitudeDelta: 0.08,
           });
           break;
         default:

@@ -25,6 +25,7 @@ const { width, height } = Dimensions.get('window');
 let globalSocket = null; // 전역 Socket.IO 클라이언트 인스턴스
 let globalSelectedLocation = '1'; // 전역 선택된 위치 (default 1)
 let initialPoints = 0; // 전역 변수로 설정
+let hasExceededSpeed = false; // 설정해둔 속도를 넘었는지 여부를 추적하는 변수
 
 // 백그라운드 위치 추적 태스크 정의
 TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
@@ -53,6 +54,13 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
 
     // Socket이 연결되어 있다면 위치 데이터 전송
     if (globalSocket && globalSocket.connected) {
+      const speed = location.coords.speed;
+
+      if (speed >= 8.33) {
+        //30km/h = 8.33m/s, 35km/h = 9.72m/s, 40km/h = 11.11m/s
+        hasExceededSpeed = true;
+      }
+
       globalSocket.emit('userLocation', {
         // 사용자 위치 데이터를 서버로 전송
         email: userData.data().email,
@@ -77,6 +85,7 @@ const Dashboard = ({ route }) => {
     1: '천안아산역',
     2: '천안역',
     3: '천안터미널',
+    4: '공동운행(천안역, 천안아산역)',
   };
 
   // 사용자 데이터 가져오기
@@ -109,6 +118,7 @@ const Dashboard = ({ route }) => {
   // 선택된 위치 변경 시 전역 변수 업데이트
   useEffect(() => {
     globalSelectedLocation = selectedLocation;
+    console.log('selectedLocation', selectedLocation);
   }, [selectedLocation]);
 
   // 컴포넌트가 처음 로드될 때 위치 업데이트 초기화
@@ -153,6 +163,7 @@ const Dashboard = ({ route }) => {
     setSwitchValue(value); // 스위치 상태 업데이트
 
     if (value) {
+      hasExceededSpeed = false; // 스위치 켜질 때마다 속도 플래그 초기화
       try {
         // 포어그라운드 위치 권한 요청
         let { status: foregroundStatus } =
@@ -170,6 +181,12 @@ const Dashboard = ({ route }) => {
         let { status: backgroundStatus } =
           await Location.requestBackgroundPermissionsAsync();
         if (backgroundStatus !== 'granted') {
+          Alert.alert(
+            '백그라운드 위치 권한 필요',
+            '백그라운드 위치 권한이 없으면 서비스가 정상 작동하지 않습니다.\n 백그라운드 위치 권한을 <항상 허용> 으로 설정해주세요.',
+            [{ text: '확인' }],
+            { cancelable: false }
+          );
           setBackgroundPermissionDenied(true); // 권한 거부 상태 설정
           return;
         }
@@ -179,7 +196,7 @@ const Dashboard = ({ route }) => {
         if (!gpsEnabled) {
           Alert.alert(
             'GPS 활성화 요청',
-            'GPS가 꺼져 있습니다. 앱을 사용하기 위해서는 GPS를 활성화해주세요.',
+            'GPS가 꺼져 있습니다. 포인트를 얻기 위해서는 GPS를 활성화해주세요.',
             [{ text: '확인' }]
           );
           setSwitchValue(false);
@@ -203,7 +220,7 @@ const Dashboard = ({ route }) => {
         }
 
         // Socket.IO 초기화
-        if (!globalSocket) {
+        if (!globalSocket || !globalSocket.connected) {
           globalSocket = socketIOClient(SERVER_URL);
           globalSocket.connect();
 
@@ -289,24 +306,46 @@ const Dashboard = ({ route }) => {
           // 사용자 포인트 차이를 계산하여 알림 표시
           if (userData.exists) {
             const finalPoints = userData.data().point;
-            const pointsEarned = finalPoints - initialPoints;
+            let pointsEarned = finalPoints - initialPoints;
 
-            if ((globalSelectedLocation = 1)) {
+            if (globalSelectedLocation === 1) {
               content = '천안아산역 노선 탑승';
-            } else if ((globalSelectedLocation = 2)) {
+            } else if (globalSelectedLocation === 2) {
               content = '천안역 노선 탑승';
-            } else {
+            } else if (globalSelectedLocation === 3) {
               content = '천안터미널 노선 탑승';
+            } else {
+              content = '공동운행(천안역, 천안아산역) 노선 탑승';
             }
 
-            if (pointsEarned != 0) {
+            console.log('hasExceededSpeed :', hasExceededSpeed);
+            // 속도가 30km/h를 넘고 적립중인 포인트가 0이 아니라면 저장
+            if (hasExceededSpeed && pointsEarned != 0) {
               addPointLog(user.email, new Date(), content, pointsEarned);
+              Alert.alert(
+                'GPS 연결이 종료되었습니다.',
+                `적립된 포인트: ${pointsEarned}`
+              );
+            } else {
+              if (!hasExceededSpeed) {
+                pointsEarned = 0;
+                Alert.alert(
+                  '버스 탑승 인식 오류',
+                  '이동 중 속도가 30km/h 이상인 적이 없어 포인트가 적립되지 않았습니다.',
+                  [
+                    {
+                      text: '확인',
+                      onPress: () => {
+                        Alert.alert(
+                          'GPS 연결이 종료되었습니다.',
+                          `적립된 포인트: ${pointsEarned}`
+                        );
+                      },
+                    },
+                  ]
+                );
+              }
             }
-
-            Alert.alert(
-              'GPS 연결이 종료되었습니다.',
-              `적립된 포인트: ${pointsEarned}`
-            );
           } else {
             Alert.alert(
               '오류',
@@ -414,6 +453,7 @@ const Dashboard = ({ route }) => {
                 <Picker.Item label="천안아산역" value="1" />
                 <Picker.Item label="천안역" value="2" />
                 <Picker.Item label="천안터미널" value="3" />
+                <Picker.Item label="공동운행(천안역, 천안아산역)" value="4" />
               </Picker>
 
               <Switch

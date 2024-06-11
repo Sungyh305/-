@@ -146,6 +146,7 @@ function MapHeaderTitle() {
           <Picker.Item label="천안아산역" value="1" />
           <Picker.Item label="천안역" value="2" />
           <Picker.Item label="천안터미널" value="3" />
+          <Picker.Item label="공동운행(천안역, 천안아산역)" value="4" />
         </Picker>
       </View>
     </View>

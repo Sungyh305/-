@@ -137,7 +137,6 @@ io.on('connection', (socket) => {
     console.log(`사용자 ${userId} 연결 종료`);
     // 클라이언트에게 해당 사용자의 식별자를 전송하여 마커 제거 요청
     io.emit('removeMarker', userId);
-    socket.emit('removeMarker', userId);
 
     // 연결 종료 시 해당 사용자의 포인트 초기화
     delete userPoints[socket.id];
