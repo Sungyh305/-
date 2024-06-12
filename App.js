@@ -15,6 +15,7 @@ import ShuttleSchedule from './src/ShuttleSchedule';
 import TrainSchedule from './src/TrainSchedule';
 import Notice from './src/Notice';
 import PointHistory from './src/PointHistory';
+import BusSchedule from './src/BusSchedule';
 
 const Stack = createStackNavigator();
 const RootStack = createStackNavigator();
@@ -108,7 +109,15 @@ const AppStackScreen = () => (
       name="TrainSchedule"
       component={TrainSchedule}
       options={{
-        headerTitle: 'KTX 시간표',
+        headerTitle: '기차 시간표',
+        headerTitleAlign: 'center',
+      }}
+    />
+    <Stack.Screen
+      name="BusSchedule"
+      component={BusSchedule}
+      options={{
+        headerTitle: '버스 시간표',
         headerTitleAlign: 'center',
       }}
     />
