@@ -1,11 +1,4 @@
 const ranges = [
-  {
-    id: "on_bus1", //bus_stop1 타는 곳
-    points: [
-      { latitude: 36.800642, longitude: 127.070844 },
-      { latitude: 36.800260, longitude: 127.072132 }
-    ]
-  },
   /*{ // 도서관 위치
     id: "test1",
     points: [
@@ -20,39 +13,11 @@ const ranges = [
       { latitude: 36.799305, longitude: 127.076220 }
     ]
   },*/
- {
-    id: "range1",
-    points: [
-      { latitude: 36.800743, longitude: 127.070258},
-      { latitude: 36.796910, longitude: 127.079217}
-    ]
- },
- {
-  id: "off_bus1",//bus_stop2
-  points: [
-    { latitude: 36.798251, longitude: 127.071979},
-    { latitude: 36.798049, longitude: 127.072532}
-  ]
-},
 {
-  id: "on_bus2",//bus_stop3
-  points: [
-    { latitude: 36.797997, longitude: 127.077213},
-    { latitude: 36.797787, longitude: 127.077798}
-  ]
-},
-{
-  id: "off_bus2",//bus_stop4
-  points: [
-    { latitude: 36.799634, longitude: 127.074279},
-    { latitude: 36.799355, longitude: 127.075880}
-  ]
-},
-{
-  id: "off_bus3",//더 크게 bus_stop5
-  points: [
-    { latitude: 36.799032, longitude: 127.077969},
-    { latitude: 36.798676, longitude: 127.078264}
+  id: "range1",
+   points: [
+    { latitude: 36.800743, longitude: 127.070258},
+    { latitude: 36.796910, longitude: 127.079217}
   ]
 },
 {
@@ -182,13 +147,6 @@ const ranges = [
   ]
 },
 {
-  id: "_bus", //천안터미널 정류장 내리는건가?
-  points: [
-    { latitude: 36.819219, longitude: 127.154037},
-    { latitude: 36.818661, longitude: 127.152441}
-  ]
-},
-{
   id: "range20",
   points: [
     { latitude: 36.818141, longitude: 127.154358},
@@ -231,13 +189,6 @@ const ranges = [
   ]
 },
 {
-  id: "range104",
-  points: [
-    { latitude: 36.802987, longitude: 127.110172},
-    { latitude: 36.798715, longitude: 127.117411}
-  ]
-},
-{
   id: "range105",
   points: [
     { latitude: 36.802916, longitude: 127.116161},
@@ -245,17 +196,129 @@ const ranges = [
   ]
 },
 {
-  id: "_bus", //용암마을 까먹었다 내리는건가?
+  id: "range106",
   points: [
-    { latitude: 36.801768, longitude: 127.117101},
-    { latitude: 36.801192, longitude: 127.118619}
+    { latitude: 36.801317, longitude: 127.121983},
+    { latitude: 36.798220, longitude: 127.129287}
   ]
 },
 {
-  id: "range106",
+  id: "range107",
   points: [
-    { latitude: 36., longitude: 127.},
-    { latitude: 36., longitude: 127.}
+    { latitude: 36.799565, longitude: 127.126675},
+    { latitude: 36.797310, longitude: 127.131484}
+  ]
+},
+{
+  id: "range108",
+  points: [
+    { latitude: 36.799123, longitude: 127.129771},
+    { latitude: 36.808046, longitude: 127.133886}
+  ]
+},
+{
+  id: "range109",
+  points: [
+    { latitude: 36.806107, longitude: 127.132684},
+    { latitude: 36.808476, longitude: 127.140946}
+  ]
+},
+{
+  id: "range110",
+  points: [
+    { latitude: 36.806503, longitude: 127.137789},
+    { latitude: 36.811784, longitude: 127.142792}
+  ]
+},
+{
+  id: "range111",
+  points: [
+    { latitude: 36.808991, longitude: 127.139118},
+    { latitude: 36.810760, longitude: 127.144784}
+  ]
+},
+{
+  id: "range112",
+  points: [
+    { latitude: 36.798760, longitude: 127.132613},
+    { latitude: 36.801878, longitude: 127.138434}
+  ]
+},
+{
+  id: "range113",
+  points: [
+    { latitude: 36.800709, longitude: 127.136492},
+    { latitude: 36.803779, longitude: 127.144451}
+  ]
+},
+{
+  id: "range114",
+  points: [
+    { latitude: 36.801437, longitude: 127.142040},
+    { latitude: 36.810801, longitude: 127.145070}
+  ]
+},
+{
+  id: "range115",
+  points: [
+    { latitude: 36.795953, longitude: 127.086178},
+    { latitude: 36.787585, longitude: 127.091218}
+  ]
+},
+{
+  id: "range116",
+  points: [
+    { latitude: 36.791233, longitude: 127.086141},
+    { latitude: 36.788676, longitude: 127.094327}
+  ]
+},
+{
+  id: "range117",
+  points: [
+    { latitude: 36.792732, longitude: 127.092055},
+    { latitude: 36.787775, longitude: 127.099468}
+  ]
+},
+{
+  id: "range118",
+  points: [
+    { latitude: 36.791286, longitude: 127.094230},
+    { latitude: 36.794317, longitude: 127.097998}
+  ]
+},
+{
+  id: "range119",
+  points: [
+    { latitude: 36.793299, longitude: 127.096481},
+    { latitude: 36.796421, longitude: 127.100197}
+  ]
+},
+{
+  id: "range120",
+  points: [
+    { latitude: 36.794534, longitude: 127.099129},
+    { latitude: 36.797526, longitude: 127.101542}
+  ]
+},
+{
+  id: "range121",
+  points: [
+    { latitude: 36.798031, longitude: 127.100865},
+    { latitude: 36.795051, longitude: 127.106334}
+  ]
+},
+{
+  id: "range122",
+  points: [
+    { latitude: 36.794992, longitude: 127.104202},
+    { latitude: 36.799595, longitude: 127.111146}
+  ]
+},
+{
+  id: "range123",
+  points: [
+    { latitude: 36.797046, longitude: 127.107972},
+    { latitude: 36.799979, longitude: 127.116107}
   ]
 },
 {
@@ -273,13 +336,103 @@ const ranges = [
   ]
 },
 {
-  id: "_bus", //천안아산역 타고 내리는거 둘 다인가?
+  id: "on_bus_a1_Cheonan Asan Station", //천안아산역
   points: [
     { latitude: 36.795318, longitude: 127.102765},
     { latitude: 36.793016, longitude: 127.104364}
   ]
 },
-//여기 이후로 안상찬씨가 채워주세요. 천안역 남았습니다
+{
+  id: "off_bus_a2_Cheonan Asan Station", //천안아산역
+  points: [
+    { latitude: 36.795318, longitude: 127.102765},
+    { latitude: 36.793016, longitude: 127.104364}
+  ]
+},
+{
+  id: "on_bus_b1_Cheonan",//천안역
+  points: [
+    { latitude: 36.810102, longitude: 127.142462},
+    { latitude: 36.810313, longitude: 127.143145}
+  ]
+},
+{
+  id: "off_bus_b2_Cheonan",//천안역
+  points: [
+    { latitude: 36.810102, longitude: 127.142462},
+    { latitude: 36.810313, longitude: 127.143145}
+  ]
+},
+{
+  id: "on_bus_b3_cheonan station (용암마을)",//천안역
+  points: [
+    { latitude: 36.801169, longitude: 127.117163},
+    { latitude: 36.801796, longitude: 127.118724}
+  ]
+},
+{
+  id: "off_bus_b4_cheonan station(월봉청솔)",//천안역
+  points: [
+    { latitude: 36.800841, longitude: 127.115388},
+    { latitude: 36.801600, longitude: 127.117200}
+  ]
+},
+{
+  id: "on_bus_b5_cheonan station(하이렉스 승차장)",//천안역
+  points: [
+    { latitude: 36.799969, longitude: 127.124125},
+    { latitude: 36.800673, longitude: 127.126131}
+  ]
+},
+{
+  id: "off_bus_b6_cheonan station(쌍용동 하이마트 하차장)",//천안역
+  points: [
+    { latitude: 36.799905, longitude: 127.126453},
+    { latitude: 36.799131, longitude: 127.128213}
+  ]
+},
+{
+  id: "on_bus1_SUNMOONUNI", //bus_stop1 선문대
+  points: [
+    { latitude: 36.800642, longitude: 127.070844 },
+    { latitude: 36.800260, longitude: 127.072132 }
+  ]
+},
+{
+  id: "off_bus1_SUNMOONUNI",//bus_stop2 선문대
+  points: [
+    { latitude: 36.798251, longitude: 127.071979},
+    { latitude: 36.798049, longitude: 127.072532}
+  ]
+},
+{
+  id: "on_bus2_SUNMOONUNI",//bus_stop3 선문대
+  points: [
+    { latitude: 36.797997, longitude: 127.077213},
+    { latitude: 36.797787, longitude: 127.077798}
+  ]
+},
+{
+  id: "off_bus2_SUNMOONUNI",//bus_stop4 선문대
+  points: [
+    { latitude: 36.799634, longitude: 127.074279},
+    { latitude: 36.799355, longitude: 127.075880}
+  ]
+},
+{
+  id: "off_bus3_SUNMOONUNI",//선문대 더 크게 bus_stop5
+  points: [
+    { latitude: 36.799032, longitude: 127.077969},
+    { latitude: 36.798676, longitude: 127.078264}
+  ]
+},
+{
+  id: "off_bus_c1_Cheonan Terminal", //천안터미널 정류장 내리는건가?
+  points: [
+    { latitude: 36.819219, longitude: 127.154037},
+    { latitude: 36.818661, longitude: 127.152441}
+  ]
+},
 ];
 
 module.exports = ranges;
