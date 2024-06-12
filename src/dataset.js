@@ -9,40 +9,40 @@ const ranges = [
   {
     id: 'range2',
     points: [
-      { latitude: 36.798324, longitude: 127.077969 },
-      { latitude: 36.796575, longitude: 127.082202 },
+      { latitude: 36.796549, longitude: 127.078013 },
+      { latitude: 36.798365, longitude: 127.085943 },
     ],
   },
   {
     id: 'range3',
     points: [
-      { latitude: 36.797924, longitude: 127.08158 },
-      { latitude: 36.794738, longitude: 127.087667 },
+      { latitude: 36.793945, longitude: 127.085378 },
+      { latitude: 36.798051, longitude: 127.087746 },
     ],
   },
   {
     id: 'range4',
     points: [
-      { latitude: 36.800771, longitude: 127.085068 },
-      { latitude: 36.797204, longitude: 127.087765 },
+      { latitude: 36.797144, longitude: 127.084574 },
+      { latitude: 36.800991, longitude: 127.087364 },
     ],
   },
   {
     id: 'range5',
     points: [
-      { latitude: 36.797806, longitude: 127.08703 },
-      { latitude: 36.794757, longitude: 127.09318 },
+      { latitude: 36.79395, longitude: 127.087102 },
+      { latitude: 36.797648, longitude: 127.09261 },
     ],
   },
   {
     id: 'range6',
     points: [
-      { latitude: 36.796425, longitude: 127.091158 },
-      { latitude: 36.799312, longitude: 127.094151 },
+      { latitude: 36.796404, longitude: 127.090982 },
+      { latitude: 36.799312, longitude: 127.094173 },
     ],
   },
   {
-    id: 'range7',
+    id: 'range7', //애는 천안터미널 101부터 다시
     points: [
       { latitude: 36.808989, longitude: 127.104971 },
       { latitude: 36.803278, longitude: 127.109761 },
@@ -140,108 +140,108 @@ const ranges = [
     ],
   },
   {
-    id: 'range21',
+    id: 'range21', //천텀
     points: [
       { latitude: 36.820349, longitude: 127.15389 },
       { latitude: 36.823144, longitude: 127.150966 },
     ],
   },
   {
-    id: 'range101',
+    id: 'range101', //천안 아산,천안
     points: [
-      { latitude: 36.79795, longitude: 127.093802 },
-      { latitude: 36.800983, longitude: 127.099845 },
+      { latitude: 36.797486, longitude: 127.093628 },
+      { latitude: 36.801106, longitude: 127.099763 },
     ],
   },
   {
     id: 'range102',
     points: [
-      { latitude: 36.803009, longitude: 127.098048 },
-      { latitude: 36.79962, longitude: 127.105226 },
+      { latitude: 36.798736, longitude: 127.098421 },
+      { latitude: 36.802515, longitude: 127.104944 },
     ],
   },
   {
     id: 'range103',
     points: [
-      { latitude: 36.803933, longitude: 127.103962 },
-      { latitude: 36.800045, longitude: 127.111899 },
+      { latitude: 36.799953, longitude: 127.104184 },
+      { latitude: 36.803659, longitude: 127.112242 },
     ],
   },
   {
     id: 'range104',
     points: [
-      { latitude: 36.802987, longitude: 127.110172 },
-      { latitude: 36.798715, longitude: 127.117411 },
+      { latitude: 36.800139, longitude: 127.110121 },
+      { latitude: 36.803117, longitude: 127.117679 },
     ],
   },
   {
     id: 'range105',
     points: [
-      { latitude: 36.802916, longitude: 127.116161 },
-      { latitude: 36.799456, longitude: 127.123393 },
+      { latitude: 36.799859, longitude: 127.11553 },
+      { latitude: 36.801763, longitude: 127.123636 },
     ],
   },
   {
     id: 'range106',
     points: [
-      { latitude: 36.801317, longitude: 127.121983 },
-      { latitude: 36.79822, longitude: 127.129287 },
+      { latitude: 36.797998, longitude: 127.122044 },
+      { latitude: 36.801558, longitude: 127.129481 },
     ],
   },
   {
     id: 'range107',
     points: [
-      { latitude: 36.799565, longitude: 127.126675 },
-      { latitude: 36.79731, longitude: 127.131484 },
+      { latitude: 36.795332, longitude: 127.126641 },
+      { latitude: 36.799649, longitude: 127.134117 },
     ],
   },
   {
     id: 'range108',
     points: [
-      { latitude: 36.799123, longitude: 127.129771 },
-      { latitude: 36.808046, longitude: 127.133886 },
+      { latitude: 36.799044, longitude: 127.129805 },
+      { latitude: 36.80799, longitude: 127.134037 },
     ],
   },
   {
     id: 'range109',
     points: [
-      { latitude: 36.806107, longitude: 127.132684 },
-      { latitude: 36.808476, longitude: 127.140946 },
+      { latitude: 36.805864, longitude: 127.132803 },
+      { latitude: 36.808451, longitude: 127.141263 },
     ],
   },
   {
     id: 'range110',
     points: [
-      { latitude: 36.806503, longitude: 127.137789 },
-      { latitude: 36.811784, longitude: 127.142792 },
+      { latitude: 36.80605, longitude: 127.137412 },
+      { latitude: 36.810756, longitude: 127.143082 },
     ],
   },
   {
     id: 'range111',
     points: [
-      { latitude: 36.808991, longitude: 127.139118 },
-      { latitude: 36.81076, longitude: 127.144784 },
+      { latitude: 36.808897, longitude: 127.139315 },
+      { latitude: 36.81137, longitude: 127.145292 },
     ],
   },
   {
     id: 'range112',
     points: [
-      { latitude: 36.79876, longitude: 127.132613 },
-      { latitude: 36.801878, longitude: 127.138434 },
+      { latitude: 36.798723, longitude: 127.132579 },
+      { latitude: 36.802149, longitude: 127.138571 },
     ],
   },
   {
     id: 'range113',
     points: [
-      { latitude: 36.800709, longitude: 127.136492 },
-      { latitude: 36.803779, longitude: 127.144451 },
+      { latitude: 36.800604, longitude: 127.13615 },
+      { latitude: 36.803964, longitude: 127.14445 },
     ],
   },
   {
-    id: 'range114',
+    id: 'range114', //여기까지 천안역 수정됨 정류장, 천안역말고 수정안됨
     points: [
-      { latitude: 36.801437, longitude: 127.14204 },
-      { latitude: 36.810801, longitude: 127.14507 },
+      { latitude: 36.801849, longitude: 127.141977 },
+      { latitude: 36.810837, longitude: 127.144726 },
     ],
   },
   {
@@ -324,99 +324,106 @@ const ranges = [
   {
     id: 'on_bus_a1_Cheonan Asan Station', //천안아산역
     points: [
-      { latitude: 36.795318, longitude: 127.102765 },
-      { latitude: 36.793016, longitude: 127.104364 },
+      { latitude: 36.792831, longitude: 127.10273 },
+      { latitude: 36.795473, longitude: 127.104271 },
     ],
   },
   {
     id: 'off_bus_a2_Cheonan Asan Station', //천안아산역
     points: [
-      { latitude: 36.795318, longitude: 127.102765 },
-      { latitude: 36.793016, longitude: 127.104364 },
+      { latitude: 36.792831, longitude: 127.10273 },
+      { latitude: 36.795473, longitude: 127.104271 },
     ],
   },
   {
-    id: 'on_bus_b1_Cheonan', //천안역
+    id: 'on_bus_b1_Cheonan', //천안역(승차장)
     points: [
-      { latitude: 36.810102, longitude: 127.142462 },
+      { latitude: 36.810011, longitude: 127.14234 },
       { latitude: 36.810313, longitude: 127.143145 },
     ],
   },
   {
-    id: 'off_bus_b2_Cheonan', //천안역
+    id: 'off_bus_b2_Cheonan', //천안역(하차장)
     points: [
-      { latitude: 36.810102, longitude: 127.142462 },
+      { latitude: 36.810011, longitude: 127.14234 },
       { latitude: 36.810313, longitude: 127.143145 },
     ],
   },
   {
-    id: 'on_bus_b3_cheonan station (용암마을)', //천안역
+    id: 'on_bus_b3_cheonan station', //천안역(용암마을 승차장)
     points: [
       { latitude: 36.801169, longitude: 127.117163 },
       { latitude: 36.801796, longitude: 127.118724 },
     ],
   },
   {
-    id: 'off_bus_b4_cheonan station(월봉청솔)', //천안역
+    id: 'off_bus_b4_cheonan station', //천안역(월봉청솔 하차장)
     points: [
       { latitude: 36.800841, longitude: 127.115388 },
       { latitude: 36.8016, longitude: 127.1172 },
     ],
   },
   {
-    id: 'on_bus_b5_cheonan station(하이렉스 승차장)', //천안역
+    id: 'on_bus_b5_cheonan station', //천안역(하이렉스파 건너편 승차장)
     points: [
       { latitude: 36.799969, longitude: 127.124125 },
       { latitude: 36.800673, longitude: 127.126131 },
     ],
   },
   {
-    id: 'off_bus_b6_cheonan station(쌍용동 하이마트 하차장)', //천안역
+    id: 'off_bus_b6_cheonan station', //천안역(쌍용동 하이마트 하차장)
     points: [
-      { latitude: 36.799905, longitude: 127.126453 },
-      { latitude: 36.799131, longitude: 127.128213 },
+      { latitude: 36.799264, longitude: 127.126476 },
+      { latitude: 36.799711, longitude: 127.127577 },
     ],
   },
   {
-    id: 'on_bus_SUNMOONUNI1', //bus_stop1 선문대
+    id: 'on_bus_SUNMOONUNI1', //선문대(공학관 옆 승차장)
     points: [
-      { latitude: 36.800642, longitude: 127.070844 },
-      { latitude: 36.80026, longitude: 127.072132 },
+      { latitude: 36.800134, longitude: 127.070749 },
+      { latitude: 36.800661, longitude: 127.072235 },
     ],
   },
   {
-    id: 'off_bus_SUNMOONUNI1', //bus_stop2 선문대
+    id: 'off_bus_SUNMOONUNI1', //선문대(오렌지식당 뒤 하차장)
     points: [
-      { latitude: 36.798251, longitude: 127.071979 },
-      { latitude: 36.798049, longitude: 127.072532 },
+      { latitude: 36.797887, longitude: 127.071936 },
+      { latitude: 36.798245, longitude: 127.072672 },
     ],
   },
   {
-    id: 'on_bus_SUNMOONUNI2', //bus_stop3 선문대
+    id: 'on_bus_SUNMOONUNI2', //선문대(학관 앞 승차장)
     points: [
-      { latitude: 36.797997, longitude: 127.077213 },
-      { latitude: 36.797787, longitude: 127.077798 },
+      { latitude: 36.797781, longitude: 127.077244 },
+      { latitude: 36.798126, longitude: 127.078109 },
     ],
   },
   {
-    id: 'off_bus_SUNMOONUNI2', //bus_stop4 선문대
+    id: 'off_bus_SUNMOONUNI2', //선문대(본관 앞 하차장)
     points: [
-      { latitude: 36.799634, longitude: 127.074279 },
-      { latitude: 36.799355, longitude: 127.07588 },
+      { latitude: 36.799279, longitude: 127.074063 },
+      { latitude: 36.79972, longitude: 127.075892 },
     ],
   },
   {
-    id: 'off_bus_SUNMOONUNI3', //선문대 더 크게 bus_stop5
+    id: 'off_bus_SUNMOONUNI3', //선문대(의료관 앞 하차장)
     points: [
-      { latitude: 36.799032, longitude: 127.077969 },
-      { latitude: 36.798676, longitude: 127.078264 },
+      { latitude: 36.79845, longitude: 127.077774 },
+      { latitude: 36.799311, longitude: 127.078478 },
     ],
   },
   {
-    id: 'off_bus_c1_Cheonan Terminal', //천안터미널 정류장 내리는건가?
+    id: 'on_bus_c1_Cheonan Terminal', //천안터미널(승차장)
     points: [
-      { latitude: 36.819219, longitude: 127.154037 },
       { latitude: 36.818661, longitude: 127.152441 },
+      { latitude: 36.819219, longitude: 127.154037 },
+    ],
+  },
+  {
+    id: 'off_bus_c1_Cheonan Terminal', //천안터미널(하차장)
+    points: [
+      { latitude: 36.818661, longitude: 127.152441 },
+      { latitude: 36.819219, longitude: 127.154037 },
     ],
   },
 ];
