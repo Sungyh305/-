@@ -336,84 +336,91 @@ const ranges = [
     ]
   },
   {
-    id: "on_bus_b1_Cheonan",//천안역
+    id: "on_bus_b1_Cheonan",//천안역(승차장)
     points: [
       { latitude: 36.810011, longitude: 127.142340},
       { latitude: 36.810313, longitude: 127.143145}
     ]
   },
   {
-    id: "off_bus_b2_Cheonan",//천안역
+    id: "off_bus_b2_Cheonan",//천안역(하차장)
     points: [
       { latitude: 36.810011, longitude: 127.142340},
       { latitude: 36.810313, longitude: 127.143145}
     ]
   },
   {
-    id: "on_bus_b3_cheonan station (용암마을 승차장)",//천안역
+    id: "on_bus_b3_cheonan station",//천안역(용암마을 승차장)
     points: [
       { latitude: 36.801169, longitude: 127.117163},
       { latitude: 36.801796, longitude: 127.118724}
     ]
   },
   {
-    id: "off_bus_b4_cheonan station(월봉청솔 하차장)",//천안역
+    id: "off_bus_b4_cheonan station",//천안역(월봉청솔 하차장)
     points: [
       { latitude: 36.800841, longitude: 127.115388},
       { latitude: 36.801600, longitude: 127.117200}
     ]
   },
   {
-    id: "on_bus_b5_cheonan station(하이렉스파 승차장)",//천안역
+    id: "on_bus_b5_cheonan station",//천안역(하이렉스파 건너편 승차장)
     points: [
       { latitude: 36.799969, longitude: 127.124125},
       { latitude: 36.800673, longitude: 127.126131}
     ]
   },
   {
-    id: "off_bus_b6_cheonan station(쌍용동 하이마트 하차장)",//천안역
+    id: "off_bus_b6_cheonan station",//천안역(쌍용동 하이마트 하차장)
     points: [
       { latitude: 36.799264, longitude: 127.126476 },
       { latitude: 36.799711, longitude: 127.127577 }
     ]
   },
   {
-    id: "on_bus_SUNMOONUNI1", //bus_stop1 선문대
+    id: "on_bus_SUNMOONUNI1", //선문대(공학관 옆 승차장)
     points: [
       { latitude: 36.800134, longitude: 127.070749 },
       { latitude: 36.800661, longitude: 127.072235 }
     ]
   },
   {
-    id: "off_bus_SUNMOONUNI1",//bus_stop2 선문대
+    id: "off_bus_SUNMOONUNI1",//선문대(오렌지식당 뒤 하차장)
     points: [
       { latitude: 36.797887, longitude: 127.071936},
       { latitude: 36.798245, longitude: 127.072672}
     ]
   },
   {
-    id: "on_bus_SUNMOONUNI2",//bus_stop3 선문대
+    id: "on_bus_SUNMOONUNI2",//선문대(학관 앞 승차장)
     points: [
       { latitude: 36.797781, longitude: 127.077244},
       { latitude: 36.798126, longitude: 127.078109}
     ]
   },
   {
-    id: "off_bus_SUNMOONUNI2",//bus_stop4 선문대
+    id: "off_bus_SUNMOONUNI2",//선문대(본관 앞 하차장)
     points: [
       { latitude: 36.799279, longitude: 127.074063},
       { latitude: 36.799720, longitude: 127.075892}
     ]
   },
   {
-    id: "off_bus_SUNMOONUNI3",//선문대 더 크게 bus_stop5
+    id: "off_bus_SUNMOONUNI3",//선문대(의료관 앞 하차장)
     points: [
       { latitude: 36.798450, longitude: 127.077774},
       { latitude: 36.799311, longitude: 127.078478}
     ]
   },
   {
-    id: "off_bus_c1_Cheonan Terminal", //천안터미널 정류장 내리는건가?
+    id: "on_bus_c1_Cheonan Terminal", //천안터미널(승차장)
+    points: [
+      { latitude: 36.818661, longitude: 127.152441},
+      { latitude: 36.819219, longitude: 127.154037}
+    ]
+  },
+  {
+    id: "off_bus_c1_Cheonan Terminal", //천안터미널(하차장)
     points: [
       { latitude: 36.818661, longitude: 127.152441},
       { latitude: 36.819219, longitude: 127.154037}
