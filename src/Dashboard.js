@@ -260,6 +260,45 @@ const Dashboard = ({ route }) => {
               { cancelable: false }
             );
           });
+
+          //소켓 최대 연결 시간(TimeOut)
+          globalSocket.off('connectionTimeout');
+          globalSocket.on('connectionTimeout', async () => {
+            const isBackgroundUpdateRunning =
+              await Location.hasStartedLocationUpdatesAsync(LOCATION_TASK_NAME);
+            if (isBackgroundUpdateRunning) {
+              await Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
+              console.log(
+                'Stopped background location updates on connectionTimeout'
+              );
+            }
+
+            // Socket.IO 연결 해제
+            if (globalSocket) {
+              globalSocket.emit('disconnectUser', globalSocket.id);
+              globalSocket.disconnect();
+              globalSocket = null;
+            }
+
+            setSwitchValue(false);
+            let pointsEarned = 0;
+
+            Alert.alert(
+              '연결 시간 초과',
+              '최대 연결 시간 2시간이 지났습니다.',
+              [
+                {
+                  text: '확인',
+                  onPress: () => {
+                    Alert.alert(
+                      'GPS 연결이 종료되었습니다.',
+                      `적립된 포인트: ${pointsEarned}`
+                    );
+                  },
+                },
+              ]
+            );
+          });
         }
 
         // 백그라운드 위치 업데이트 시작
@@ -325,6 +364,17 @@ const Dashboard = ({ route }) => {
             Alert.alert(
               '알림',
               `버스를 탑승하지 않으셨습니다.\nGPS 연결을 종료합니다.`,
+              [
+                { text: '확인', onPress: () => {switch_off(0)} }
+              ]
+            );
+          });
+
+          // 설정한 노선과 내린 정류장이 다를 경우
+          globalSocket.on('off_bus_result3', () => {
+            Alert.alert(
+              '알림',
+              `설정한 노선과 다릅니다.\nGPS 연결을 종료합니다.`,
               [
                 { text: '확인', onPress: () => {switch_off(0)} }
               ]
