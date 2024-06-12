@@ -166,10 +166,8 @@ const GoogleMap = () => {
       console.log('New location received:', location);
       // 범위 id 구별하여 이미지 분리
       if (location.key.startsWith('bus_stop')) {
-        console.log('Setting marker image for bus stop');
         newMarkerImage = require('../assets/Person_expo.png');
       } else {
-        console.log('Setting marker image for user');
         newMarkerImage = require('../assets/bus_expo.png');
       }
 
@@ -186,7 +184,6 @@ const GoogleMap = () => {
       setUserMarkers((prevMarkers) => {
         const updatedMarkers = { ...prevMarkers };
         delete updatedMarkers[userId];
-        console.log('Updated markers after removal:', updatedMarkers);
         return updatedMarkers;
       });
     });
@@ -295,7 +292,6 @@ const GoogleMap = () => {
                   latitude: userMarkers[userId].latitude,
                   longitude: userMarkers[userId].longitude,
                 }}
-                title={`사용자 ${userId} 위치`}
                 image={newMarkerImage}
               />
             )

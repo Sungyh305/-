@@ -24,7 +24,8 @@ const { width, height } = Dimensions.get('window');
 
 let globalSocket = null; // 전역 Socket.IO 클라이언트 인스턴스
 let globalSelectedLocation = '1'; // 전역 선택된 위치 (default 1)
-let initialPoints = 0; // 전역 변수로 설정
+let key_on = 0;
+let switch_key = 0;
 let hasExceededSpeed = false; // 설정해둔 속도를 넘었는지 여부를 추적하는 변수
 
 // 백그라운드 위치 추적 태스크 정의
@@ -36,7 +37,6 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
   if (data) {
     const { locations } = data;
     const location = locations[0];
-    console.log('Background location:', location);
 
     // 사용자 인증 정보 확인
     const user = firebase.auth().currentUser;
@@ -45,29 +45,27 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
       return;
     }
 
-    // Firestore에서 사용자 데이터 가져오기
-    const userData = await firebase
-      .firestore()
-      .collection('users')
-      .doc(user.uid)
-      .get();
-
     // Socket이 연결되어 있다면 위치 데이터 전송
     if (globalSocket && globalSocket.connected) {
       const speed = location.coords.speed;
-
-      if (speed >= 8.33) {
+      if (speed >= 9.72) {
         //30km/h = 8.33m/s, 35km/h = 9.72m/s, 40km/h = 11.11m/s
         hasExceededSpeed = true;
       }
-
-      globalSocket.emit('userLocation', {
-        // 사용자 위치 데이터를 서버로 전송
-        email: userData.data().email,
-        identifier: globalSelectedLocation,
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      });
+      if (key_on) {
+        globalSocket.emit('userLocation2', {
+          identifier: globalSelectedLocation,
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        });
+      } else {
+        globalSocket.emit('userLocation', {
+          // 사용자 위치 데이터를 서버로 전송
+          identifier: globalSelectedLocation,
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        });
+      }
     }
   }
 });
@@ -118,7 +116,6 @@ const Dashboard = ({ route }) => {
   // 선택된 위치 변경 시 전역 변수 업데이트
   useEffect(() => {
     globalSelectedLocation = selectedLocation;
-    console.log('selectedLocation', selectedLocation);
   }, [selectedLocation]);
 
   // 컴포넌트가 처음 로드될 때 위치 업데이트 초기화
@@ -135,28 +132,47 @@ const Dashboard = ({ route }) => {
     initializeLocationUpdates();
   }, []);
 
-  const addPointLog = async (email, date, content, points) => {
+  // 스위치 껐을 때 함수 정의
+  async function switch_off(point) {
     try {
-      const pointLog = {
-        date,
-        content,
-        points,
-      };
-      await firebase
-        .firestore()
-        .collection('users')
-        .where('email', '==', email)
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            doc.ref.collection('pointLogs').add(pointLog);
-          });
-        });
-      console.log('포인트 지급 내역 추가 성공');
+      // 백그라운드 위치 업데이트 중지
+      const isBackgroundUpdateRunning =
+        await Location.hasStartedLocationUpdatesAsync(LOCATION_TASK_NAME);
+      if (isBackgroundUpdateRunning) {
+        await Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
+        console.log('Stopped background location updates');
+      }
+
+      // Socket.IO 연결 해제
+      if (globalSocket) {
+        globalSocket.emit('disconnectUser', globalSocket.id);
+        if (point !== 0) {
+          Alert.alert(
+            '알림',
+            `GPS 연결이 종료되었습니다.\n(적립된 포인트 : ${point})`,
+            [{ text: '확인' }],
+            { cancelable: false }
+          );
+        } else {
+          Alert.alert(
+            '알림',
+            `GPS 연결이 종료되었습니다.`,
+            [{ text: '확인' }],
+            { cancelable: false }
+          );
+        }
+        globalSocket.disconnect();
+        globalSocket = null;
+      }
     } catch (error) {
-      console.error('Error adding point log:', error);
+      console.error('Error function switch_off updates:', error);
+      Alert.alert(
+        '오류',
+        '위치 서비스를 중지하는 중 오류가 발생했습니다. 다시 시도해주세요.'
+      );
     }
-  };
+    key_on = 0;
+  }
 
   // GPS 스위치 토글 시 동작
   const toggleSwitch = async (value) => {
@@ -202,31 +218,20 @@ const Dashboard = ({ route }) => {
           setSwitchValue(false);
           return;
         }
-        // 사용자 데이터 가져오기
-        const user = firebase.auth().currentUser;
-        if (user) {
-          const userData = await firebase
-            .firestore()
-            .collection('users')
-            .doc(user.uid)
-            .get();
-          if (userData.exists) {
-            initialPoints = userData.data().point; // 초기 포인트 설정
-          } else {
-            console.log('User does not exist');
-            setSwitchValue(false);
-            return;
-          }
-        }
 
         // Socket.IO 초기화
         if (!globalSocket || !globalSocket.connected) {
           globalSocket = socketIOClient(SERVER_URL);
           globalSocket.connect();
 
+          // on_bus 위치 벗어날 시
+          globalSocket.on('LocationChange', async () => {
+            key_on = 1;
+          });
+
           globalSocket.off('LocationError');
-          globalSocket.on('LocationError', async (point) => {
-            console.log('LocationError event received:', point);
+          globalSocket.on('LocationError', async () => {
+            console.log('LocationError event received');
 
             // 백그라운드 위치 전송 중지
             const isBackgroundUpdateRunning =
@@ -239,20 +244,60 @@ const Dashboard = ({ route }) => {
             }
 
             // 스위치 끄기
+            switch_key = 1;
             setSwitchValue(false);
 
             Alert.alert(
               '알림',
-              `범위를 벗어났습니다.\nGPS를 다시 설정해주세요.`,
+              `버스 승차장에서 스위치를 켜주세요.`,
               [
                 {
                   text: '확인',
                   onPress: () => {
-                    toggleSwitch(false);
+                    switch_off(0);
                   },
                 },
               ],
               { cancelable: false }
+            );
+          });
+
+          //소켓 최대 연결 시간(TimeOut)
+          globalSocket.off('connectionTimeout');
+          globalSocket.on('connectionTimeout', async () => {
+            const isBackgroundUpdateRunning =
+              await Location.hasStartedLocationUpdatesAsync(LOCATION_TASK_NAME);
+            if (isBackgroundUpdateRunning) {
+              await Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
+              console.log(
+                'Stopped background location updates on connectionTimeout'
+              );
+            }
+
+            // Socket.IO 연결 해제
+            if (globalSocket) {
+              globalSocket.emit('disconnectUser', globalSocket.id);
+              globalSocket.disconnect();
+              globalSocket = null;
+            }
+
+            setSwitchValue(false);
+            let pointsEarned = 0;
+
+            Alert.alert(
+              '연결 시간 초과',
+              '최대 연결 시간 2시간이 지났습니다.',
+              [
+                {
+                  text: '확인',
+                  onPress: () => {
+                    Alert.alert(
+                      'GPS 연결이 종료되었습니다.',
+                      `적립된 포인트: ${pointsEarned}`
+                    );
+                  },
+                },
+              ]
             );
           });
         }
@@ -279,79 +324,66 @@ const Dashboard = ({ route }) => {
       }
     } else {
       try {
-        // 백그라운드 위치 업데이트 중지
-        const isBackgroundUpdateRunning =
-          await Location.hasStartedLocationUpdatesAsync(LOCATION_TASK_NAME);
-        if (isBackgroundUpdateRunning) {
-          await Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
-          console.log('Stopped background location updates');
-        }
-
-        // Socket.IO 연결 해제
         if (globalSocket) {
-          globalSocket.emit('disconnectUser', globalSocket.id);
-          globalSocket.disconnect();
-          globalSocket = null;
-        }
+          // 이전 핸들러 제거
+          globalSocket.off('off_bus_result');
 
-        // 스위치를 종료될 때 적립된 포인트 확인 및 알림
-        const user = firebase.auth().currentUser;
-        if (user) {
-          const userData = await firebase
-            .firestore()
-            .collection('users')
-            .doc(user.uid)
-            .get();
+          // 현재 위치 정보 가져오기
+          const location = await Location.getCurrentPositionAsync({});
 
-          // 사용자 포인트 차이를 계산하여 알림 표시
-          if (userData.exists) {
-            const finalPoints = userData.data().point;
-            let pointsEarned = finalPoints - initialPoints;
+          globalSocket.emit('off_bus', {
+            email: user.email,
+            identifier: globalSelectedLocation,
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            hasExceededSpeed: hasExceededSpeed,
+          });
 
-            if (globalSelectedLocation === 1) {
-              content = '천안아산역 노선 탑승';
-            } else if (globalSelectedLocation === 2) {
-              content = '천안역 노선 탑승';
-            } else if (globalSelectedLocation === 3) {
-              content = '천안터미널 노선 탑승';
+          globalSocket.on('off_bus_result', (result) => {
+            if (result.result) {
+              switch_off(result.point);
             } else {
-              content = '공동운행(천안역, 천안아산역) 노선 탑승';
-            }
-
-            console.log('hasExceededSpeed :', hasExceededSpeed);
-            // 속도가 30km/h를 넘고 적립중인 포인트가 0이 아니라면 저장
-            if (hasExceededSpeed && pointsEarned != 0) {
-              addPointLog(user.email, new Date(), content, pointsEarned);
-              Alert.alert(
-                'GPS 연결이 종료되었습니다.',
-                `적립된 포인트: ${pointsEarned}`
-              );
-            } else {
-              if (!hasExceededSpeed) {
-                pointsEarned = 0;
+              if (switch_key == 0) {
                 Alert.alert(
-                  '버스 탑승 인식 오류',
-                  '이동 중 속도가 30km/h 이상인 적이 없어 포인트가 적립되지 않았습니다.',
+                  '주의사항',
+                  `지금 종료하면 포인트를 얻지 못합니다.\n버스에서 내리면 종료해주세요.`,
                   [
                     {
-                      text: '확인',
+                      text: '취소',
                       onPress: () => {
-                        Alert.alert(
-                          'GPS 연결이 종료되었습니다.',
-                          `적립된 포인트: ${pointsEarned}`
-                        );
+                        setSwitchValue(true);
+                      },
+                    },
+                    {
+                      text: '종료',
+                      onPress: () => {
+                        switch_off(0);
                       },
                     },
                   ]
                 );
               }
+              switch_key = 0;
             }
-          } else {
+          });
+
+          // 스위치를 킨 정류장에서 다시 끄거나 속도가 30km 이상 나오지 않았을 때
+          globalSocket.on('off_bus_result2', () => {
             Alert.alert(
-              '오류',
-              '사용자 데이터를 가져오는 중 오류가 발생했습니다.'
+              '알림',
+              `버스를 탑승하지 않으셨습니다.\nGPS 연결을 종료합니다.`,
+              [
+                {
+                  text: '확인',
+                  onPress: () => {
+                    switch_off(0);
+                  },
+                },
+              ]
             );
-          }
+          });
+        } else {
+          console.error('globalSocket is null');
         }
       } catch (error) {
         console.error('Error stopping location updates:', error);
@@ -478,23 +510,25 @@ const Dashboard = ({ route }) => {
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
-          <View style={styles.View_notice}>
-            <Image
-              style={styles.notice_image}
-              source={require('../assets/notice.png')}
-            />
-            <Text
-              style={{
-                fontSize: 18,
-                textAlign: 'center',
-                fontWeight: 'bold',
-                padding: 2,
-              }}
-            >
-              공지사항
-            </Text>
-          </View>
+        <TouchableOpacity
+          style={styles.View_notice}
+          onPress={() => navigation.navigate('Notice')}
+        >
+          <Image
+            style={styles.notice_image}
+            source={require('../assets/notice.png')}
+            onPress={() => navigation.navigate('Notice')}
+          />
+          <Text
+            style={{
+              fontSize: 18,
+              textAlign: 'center',
+              fontWeight: 'bold',
+              padding: 2,
+            }}
+          >
+            공지사항
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -512,6 +546,7 @@ const styles = StyleSheet.create({
   outerContainer: {
     alignItems: 'center',
     paddingTop: height * 0.02,
+    height: height * 0.43,
   },
   middleContainer: {
     flexDirection: 'row',
