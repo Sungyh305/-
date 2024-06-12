@@ -382,6 +382,22 @@ const Dashboard = ({ route }) => {
               ]
             );
           });
+
+          // 설정한 노선과 내린 정류장이 다를 경우
+          globalSocket.on('off_bus_result3', () => {
+            Alert.alert(
+              '알림',
+              `설정한 노선과 다릅니다.\nGPS 연결을 종료합니다.`,
+              [
+                {
+                  text: '확인',
+                  onPress: () => {
+                    switch_off(0);
+                  },
+                },
+              ]
+            );
+          });
         } else {
           console.error('globalSocket is null');
         }

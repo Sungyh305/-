@@ -146,31 +146,69 @@ io.on('connection', (socket) => {
       for (const range of ranges) {
         const key = isInRange(location.latitude, location.longitude, range);
         if (key.startsWith('off_bus')) {
-          if (location.hasExceededSpeed) {
-            if (location.identifier == 1) {
-              destination = '천안아산역 노선 탑승';
-            } else if (location.identifier == 2) {
-              destination = '천안역 노선 탑승';
-            } else if (location.identifier == 3) {
-              destination = '천안터미널 노선 탑승';
+          var bus_stop = key[8];
+          if (bus_stop == 'a') {
+            bus_stop = 1;
+          } else if (bus_stop == 'b') {
+            bus_stop = 2;
+          } else if (bus_stop == 'c') {
+            bus_stop = 3;
+          }
+          // 사용자가 선택한 노선과 내린 정류장이 맞는지 확인
+          if (location.identifier == 4) {
+            if (bus_stop == 1 || 2) {
+              if (location.hasExceededSpeed) {
+                destination = '공동운행(천안역, 천안아산역) 노선 탑승';
+                addPointLog(
+                  location.email,
+                  new Date(),
+                  destination,
+                  userPoints[socket.id]
+                );
+                userPoints[socket.id] = 0;
+                socket.emit('off_bus_result', {
+                  result: true,
+                  point: userPoints[socket.id],
+                });
+                break;
+              } else {
+                socket.emit('off_bus_result2');
+                break;
+              }
             } else {
-              destination = '공동운행(천안역, 천안아산역) 노선 탑승';
+              socket.emit('off_bus_result3');
+              break;
             }
-            addPointLog(
-              location.email,
-              new Date(),
-              destination,
-              userPoints[socket.id]
-            );
-            userPoints[socket.id] = 0;
-            socket.emit('off_bus_result', {
-              result: true,
-              point: userPoints[socket.id],
-            });
-            break;
           } else {
-            socket.emit('off_bus_result2');
-            break;
+            if (bus_stop == location.identifier) {
+              if (location.hasExceededSpeed) {
+                if (location.identifier == 1) {
+                  destination = '천안아산역 노선 탑승';
+                } else if (location.identifier == 2) {
+                  destination = '천안역 노선 탑승';
+                } else {
+                  destination = '천안터미널 노선 탑승';
+                }
+                addPointLog(
+                  location.email,
+                  new Date(),
+                  destination,
+                  userPoints[socket.id]
+                );
+                userPoints[socket.id] = 0;
+                socket.emit('off_bus_result', {
+                  result: true,
+                  point: userPoints[socket.id],
+                });
+                break;
+              } else {
+                socket.emit('off_bus_result2');
+                break;
+              }
+            } else {
+              socket.emit('off_bus_result3');
+              break;
+            }
           }
         } else if (ranges.indexOf(range) === ranges.length - 1) {
           socket.emit('off_bus_result', {
@@ -183,11 +221,10 @@ io.on('connection', (socket) => {
   });
 
   // 사용자 연결 종료 시
-  socket.on('disconnectUser', () => {
-    console.log(`사용자 ${socket.id} 연결 종료`);
+  socket.on('disconnectUser', (userId) => {
+    console.log(`사용자 ${userId} 연결 종료`);
     // 클라이언트에게 해당 사용자의 식별자를 전송하여 마커 제거 요청
-    io.emit('removeMarker', socket.id);
-    console.log('send removeMarker');
+    io.emit('removeMarker', userId);
 
     // 연결 종료 시 해당 사용자의 포인트 초기화
     delete userPoints[socket.id];
