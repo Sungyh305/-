@@ -84,17 +84,67 @@ io.on('connection', (socket) => {
       const key = isInRange(location.latitude, location.longitude, range);
       let key_on = 0;
       if (key.startsWith('on_bus')) {
+        var bus_stop = key[7];
+        if(bus_stop == 'a') {bus_stop = 1}
+        else if(bus_stop == 'b') {bus_stop = 2}
+        else if(bus_stop == 'c') {bus_stop = 3}
+        else if(bus_stop == 'S') {bus_stop = 5}
         const { identifier, latitude, longitude } = location;
-        socket.broadcast.emit('broadcastLocation', {
-          key,
-          identifier,
-          latitude,
-          longitude,
-          userId: socket.id,
-        });
-        key_on = 1;
-        userPoints[socket.id] += 0.3
-        break;
+        if(identifier == 4) {
+          if(bus_stop == 1 || 2) {
+            socket.broadcast.emit('broadcastLocation', {
+              key,
+              identifier,
+              latitude,
+              longitude,
+              userId: socket.id,
+            });
+            key_on = 1;
+            userPoints[socket.id] += 0.3
+            break;
+          } else if (bus_stop == 5) {
+            socket.broadcast.emit('broadcastLocation', {
+              key,
+              identifier,
+              latitude,
+              longitude,
+              userId: socket.id,
+            });
+            key_on = 1;
+            userPoints[socket.id] += 0.3
+            break;
+          } else {
+            socket.emit('on_bus_location')
+            break;
+          }
+        } else {
+          if(identifier == bus_stop) {
+            socket.broadcast.emit('broadcastLocation', {
+              key,
+              identifier,
+              latitude,
+              longitude,
+              userId: socket.id,
+            });
+            key_on = 1;
+            userPoints[socket.id] += 0.3
+            break;
+          } else if (bus_stop == 5) {
+            socket.broadcast.emit('broadcastLocation', {
+              key,
+              identifier,
+              latitude,
+              longitude,
+              userId: socket.id,
+            });
+            key_on = 1;
+            userPoints[socket.id] += 0.3
+            break;
+          } else {
+            socket.emit('on_bus_location')
+            break;
+          }
+        }
       } else if (key.startsWith('range') && key_on == 1) {
         console.log('탑승 range');
         socket.emit('LocationChange');
@@ -142,7 +192,6 @@ io.on('connection', (socket) => {
 
   socket.on('off_bus', (location) => {
     if(userPoints[socket.id] !== 0) {
-      console.log('off_bus', userPoints[socket.id], location.hasExceededSpeed);
       for (const range of ranges) {
         const key = isInRange(location.latitude, location.longitude, range);
         if (key.startsWith('off_bus')) {
@@ -150,14 +199,26 @@ io.on('connection', (socket) => {
           if(bus_stop == 'a') {bus_stop = 1}
           else if(bus_stop == 'b') {bus_stop = 2}
           else if(bus_stop == 'c') {bus_stop = 3}
+          else if(bus_stop == 'S') {bus_stop = 5}
           // 사용자가 선택한 노선과 내린 정류장이 맞는지 확인
           if(location.identifier == 4) {
             if(bus_stop == 1 || 2) {
               if(location.hasExceededSpeed) {
                 destination = "공동운행(천안역, 천안아산역) 노선 탑승"
                 addPointLog(location.email, new Date, destination, userPoints[socket.id]);
-                userPoints[socket.id] = 0;
                 socket.emit('off_bus_result', {result: true, point: userPoints[socket.id]});
+                userPoints[socket.id] = 0;
+                break;
+              } else {
+                socket.emit('off_bus_result2');
+                break;
+              }
+            } else if (bus_stop == 5) {
+              if(location.hasExceededSpeed) {
+                destination = "공동운행(천안역, 천안아산역) 노선 탑승"
+                addPointLog(location.email, new Date, destination, userPoints[socket.id]);
+                socket.emit('off_bus_result', {result: true, point: userPoints[socket.id]});
+                userPoints[socket.id] = 0;
                 break;
               } else {
                 socket.emit('off_bus_result2');
@@ -174,8 +235,21 @@ io.on('connection', (socket) => {
                 else if(location.identifier == 2) {destination = "천안역 노선 탑승"}
                 else {destination = "천안터미널 노선 탑승"}
                 addPointLog(location.email, new Date, destination, userPoints[socket.id]);
-                userPoints[socket.id] = 0;
                 socket.emit('off_bus_result', {result: true, point: userPoints[socket.id]});
+                userPoints[socket.id] = 0;
+                break;
+              } else {
+                socket.emit('off_bus_result2');
+                break;
+              }
+            } else if (bus_stop == 5) {
+              if(location.hasExceededSpeed) {
+                if(location.identifier == 1) {destination = "천안아산역 노선 탑승"}
+                else if(location.identifier == 2) {destination = "천안역 노선 탑승"}
+                else {destination = "천안터미널 노선 탑승"}
+                addPointLog(location.email, new Date, destination, userPoints[socket.id]);
+                socket.emit('off_bus_result', {result: true, point: userPoints[socket.id]});
+                userPoints[socket.id] = 0;
                 break;
               } else {
                 socket.emit('off_bus_result2');

@@ -299,6 +299,20 @@ const Dashboard = ({ route }) => {
               ]
             );
           });
+
+          globalSocket.on('on_bus_location', async () => {
+            Alert.alert(
+              '알림',
+              `설정한 노선과 다른 승차장입니다.\n다시 확인해주세요.\nGPS 연결을 종료합니다.`,
+              [
+                {
+                  text: '확인',
+                  onPress: () => {switch_off(0), setSwitchValue(false)}
+                },
+              ],
+              { cancelable: false }
+            );
+          });
         }
 
         // 백그라운드 위치 업데이트 시작
@@ -340,6 +354,7 @@ const Dashboard = ({ route }) => {
 
           globalSocket.on('off_bus_result', (result) => {
             if (result.result) {
+              console.log(result.point);
               switch_off(result.point);
             } else {
               if(switch_key == 0) {
@@ -374,7 +389,7 @@ const Dashboard = ({ route }) => {
           globalSocket.on('off_bus_result3', () => {
             Alert.alert(
               '알림',
-              `설정한 노선과 다릅니다.\nGPS 연결을 종료합니다.`,
+              `설정한 노선과 다른 정류장에서 하차하셨습니다.\n포인트가 지급되지 않습니다.`,
               [
                 { text: '확인', onPress: () => {switch_off(0)} }
               ]

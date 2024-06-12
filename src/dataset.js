@@ -1,18 +1,4 @@
 const ranges = [
-  /*{ // 도서관 위치
-    id: "test1",
-    points: [
-      { latitude: 36.797005, longitude: 127.075645 },
-      { latitude: 36.797882, longitude: 127.076233 }
-    ]
-  },*/
-  /*{ // 인문관 위치
-    id: "test2",
-    points: [
-      { latitude: 36.798337, longitude: 127.075637 },
-      { latitude: 36.799305, longitude: 127.076220 }
-    ]
-  },*/
 {
   id: "range1",
    points: [
