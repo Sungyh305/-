@@ -378,35 +378,35 @@ const ranges = [
   ]
 },
 {
-  id: "on_bus1_SUNMOONUNI", //bus_stop1 선문대
+  id: "on_bus_SUNMOONUNI1", //bus_stop1 선문대
   points: [
     { latitude: 36.800642, longitude: 127.070844 },
     { latitude: 36.800260, longitude: 127.072132 }
   ]
 },
 {
-  id: "off_bus1_SUNMOONUNI",//bus_stop2 선문대
+  id: "off_bus_SUNMOONUNI1",//bus_stop2 선문대
   points: [
     { latitude: 36.798251, longitude: 127.071979},
     { latitude: 36.798049, longitude: 127.072532}
   ]
 },
 {
-  id: "on_bus2_SUNMOONUNI",//bus_stop3 선문대
+  id: "on_bus_SUNMOONUNI2",//bus_stop3 선문대
   points: [
     { latitude: 36.797997, longitude: 127.077213},
     { latitude: 36.797787, longitude: 127.077798}
   ]
 },
 {
-  id: "off_bus2_SUNMOONUNI",//bus_stop4 선문대
+  id: "off_bus_SUNMOONUNI2",//bus_stop4 선문대
   points: [
     { latitude: 36.799634, longitude: 127.074279},
     { latitude: 36.799355, longitude: 127.075880}
   ]
 },
 {
-  id: "off_bus3_SUNMOONUNI",//선문대 더 크게 bus_stop5
+  id: "off_bus_SUNMOONUNI3",//선문대 더 크게 bus_stop5
   points: [
     { latitude: 36.799032, longitude: 127.077969},
     { latitude: 36.798676, longitude: 127.078264}
