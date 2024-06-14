@@ -69,6 +69,7 @@ io.on('connection', (socket) => {
 
   // 사용자 연결 시간 추적 시작
   userConnections[socket.id] = Date.now();
+  let key_on = 0;
 
   // 최대 연결 시간이 지나면 연결 종료
   const disconnectTimeout = setTimeout(() => {
@@ -82,7 +83,6 @@ io.on('connection', (socket) => {
     for (let i = ranges.length - 1; i >= 0; i--) {
       const range = ranges[i];
       const key = isInRange(location.latitude, location.longitude, range);
-      let key_on = 0;
       if (key.startsWith('on_bus')) {
         var bus_stop = key[7];
         if(bus_stop == 'a') {bus_stop = 1}
