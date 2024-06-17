@@ -203,6 +203,11 @@ const GoogleMap = () => {
     { latitude: 36.791246, longitude: 127.094606 },
     { latitude: 36.795052, longitude: 127.098083 },
     { latitude: 36.796176, longitude: 127.10084 }, // 이후 갈래길 추가 필요
+    { latitude: 36.797118, longitude: 127.106371 },
+    { latitude: 36.797367, longitude: 127.107691 },
+    { latitude: 36.798066, longitude: 127.109132 },
+    { latitude: 36.799682, longitude: 127.110301 },
+    { latitude: 36.801012, longitude: 127.111886 },
     { latitude: 36.801922, longitude: 127.112149 }, // 불당 원형 육교
     { latitude: 36.799884, longitude: 127.126561 },
     { latitude: 36.799332, longitude: 127.128304 },
@@ -231,6 +236,18 @@ const GoogleMap = () => {
     { latitude: 36.799799, longitude: 127.131344 },
     { latitude: 36.799415, longitude: 127.129589 },
     { latitude: 36.799871, longitude: 127.126555 }, // 천안역
+  ];
+
+  const PolylineCoordinates06 = [
+    { latitude: 36.796176, longitude: 127.10084 }, // 이후 갈래길 추가 필요
+    { latitude: 36.797118, longitude: 127.106371 },
+    { latitude: 36.801517, longitude: 127.105569 },
+    { latitude: 36.801986, longitude: 127.108896 },
+    { latitude: 36.801922, longitude: 127.112149 }, // 불당 원형 육교
+    { latitude: 36.801986, longitude: 127.108896 },
+    { latitude: 36.801517, longitude: 127.105569 },
+    { latitude: 36.800417, longitude: 127.099756 },
+    { latitude: 36.796176, longitude: 127.10084 },
   ];
 
   useEffect(() => {
@@ -368,7 +385,14 @@ const GoogleMap = () => {
           <Polyline
             coordinates={PolylineCoordinates02}
             strokeWidth={4}
-            strokeColor="rgba(0, 176, 240, 1)"
+            strokeColor="rgba(235, 42, 42, 1)"
+          />
+        )}
+        {selectedIdentifier === '4' && (
+          <Polyline
+            coordinates={PolylineCoordinates06}
+            strokeWidth={4}
+            strokeColor="rgba(235, 42, 42, 1)"
           />
         )}
         
