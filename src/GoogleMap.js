@@ -198,7 +198,8 @@ const GoogleMap = () => {
     { latitude: 36.795052, longitude: 127.098083 },
     { latitude: 36.791246, longitude: 127.094606 },
     { latitude: 36.790576, longitude: 127.093147 },
-    { latitude: 36.795709, longitude: 127.087605 },
+    { latitude: 36.795709, longitude: 127.087605 }, //
+    { latitude: 36.789776, longitude: 127.088300 },
     { latitude: 36.790576, longitude: 127.093147 },
     { latitude: 36.791246, longitude: 127.094606 },
     { latitude: 36.795052, longitude: 127.098083 },
