@@ -72,7 +72,6 @@ class BusSchedule extends Component {
     this.setState({ loading: true });
     const currentTime = this.getCurrentTime();
     const apiUrl = this.generateAPIUrl();
-    console.log(apiUrl)
     if (!apiUrl) {
       this.setState({ loading: false });
       return;

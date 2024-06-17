@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, SafeAreaView } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, SafeAreaView, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { firebase } from '../config'
@@ -17,17 +17,30 @@ const Login = () => {
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password)
         } catch (error){
-            alert(error.message)
+            Alert.alert(
+                '알림',
+                `이메일이나 비밀번호가 다릅니다.\n다시 시도해주세요.`,
+                [
+                  {text: '확인'},
+                ],
+                { cancelable: false }
+            );
         }
     }
 
-    // forget password
+    // 이메일 변경하기
     const forgetPassword = () => {
         firebase.auth().sendPasswordResetEmail(email)
         .then(() => {
-            alert("이메일을 정확하게 입력해주세요.")
+            Alert.alert(
+                '알림',
+                `비밀번호를 바꿀 수 있는 메세지를 이메일로 전송하였습니다.`
+              );
         }).catch((error) => {
-            alert(error)
+            Alert.alert(
+                '알림',
+                `이메일을 정확하게 입력해주세요.`
+            );
         })
     }
     return (
