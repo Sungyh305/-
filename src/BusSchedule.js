@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
-import { View, Text, Button, TextInput, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { withNavigation } from '@react-navigation/native';
 
 class BusSchedule extends Component {
   constructor(props) {
@@ -49,11 +56,12 @@ class BusSchedule extends Component {
   generateAPIUrl = () => {
     const { selectedTerminal, selectedDate } = this.state;
     if (!selectedTerminal || !selectedDate) {
-      console.error("도착터미널, 날짜를 선택해주세요.");
+      console.error('도착터미널, 날짜를 선택해주세요.');
       return null;
     }
 
-    const baseUrl = 'https://apis.data.go.kr/1613000/ExpBusInfoService/getStrtpntAlocFndExpbusInfo?serviceKey=lg684aDIcnOKaJWsrwOKHl%2BMIrtxenNFx1Elb6Y36W5ZgBmw%2FJIFrJZDaT23%2F3d8JmnYmZPtwxVIl8eq2aNl9w%3D%3D&';
+    const baseUrl =
+      'https://apis.data.go.kr/1613000/ExpBusInfoService/getStrtpntAlocFndExpbusInfo?serviceKey=lg684aDIcnOKaJWsrwOKHl%2BMIrtxenNFx1Elb6Y36W5ZgBmw%2FJIFrJZDaT23%2F3d8JmnYmZPtwxVIl8eq2aNl9w%3D%3D&';
 
     const params = new URLSearchParams({
       depTerminalId: 'NAEK310',
@@ -61,7 +69,7 @@ class BusSchedule extends Component {
       depPlandTime: selectedDate.toISOString().slice(0, 10).replace(/-/g, ''),
       numOfRows: '100',
       pageNo: '1',
-      _type: 'json'
+      _type: 'json',
     });
 
     return `${baseUrl}${params.toString()}`;
@@ -88,8 +96,8 @@ class BusSchedule extends Component {
       }
 
       const BusInfo = items
-        .filter(item => new Date(item.depPlandTime) > currentTime)
-        .map(item => ({
+        .filter((item) => new Date(item.depPlandTime) > currentTime)
+        .map((item) => ({
           depPlace: item.depPlaceNm,
           depPlandTime: this.formatDateTime(item.depPlandTime),
           arrPlace: item.arrPlaceNm,
@@ -109,17 +117,18 @@ class BusSchedule extends Component {
   // 터미널 목록 api Url생성
   terminalUrl = () => {
     const { inputValue } = this.state;
-    const baseUrl = 'http://apis.data.go.kr/1613000/ExpBusInfoService/getExpBusTrminlList?serviceKey=lg684aDIcnOKaJWsrwOKHl%2BMIrtxenNFx1Elb6Y36W5ZgBmw%2FJIFrJZDaT23%2F3d8JmnYmZPtwxVIl8eq2aNl9w%3D%3D&';
+    const baseUrl =
+      'http://apis.data.go.kr/1613000/ExpBusInfoService/getExpBusTrminlList?serviceKey=lg684aDIcnOKaJWsrwOKHl%2BMIrtxenNFx1Elb6Y36W5ZgBmw%2FJIFrJZDaT23%2F3d8JmnYmZPtwxVIl8eq2aNl9w%3D%3D&';
 
     const params = new URLSearchParams({
       terminalNm: inputValue,
       numOfRows: '100',
       pageNo: '1',
-      _type: 'json'
+      _type: 'json',
     });
 
     return `${baseUrl}${params.toString()}`;
-  }
+  };
 
   // 입력된 문자열이 포함된 터미널을 호출하고 TerminalInfo에 입력
   fetchTerminalInfo = async () => {
@@ -142,7 +151,7 @@ class BusSchedule extends Component {
         return;
       }
 
-      const TerminalInfo = items.map(item => ({
+      const TerminalInfo = items.map((item) => ({
         terminalId: item.terminalId,
         terminalNm: item.terminalNm,
       }));
@@ -165,18 +174,28 @@ class BusSchedule extends Component {
   };
 
   render() {
-    const { selectedTerminal, inputValue, selectedDate, showDatePicker, BusInfo, TerminalInfo, loading } = this.state;
+    const {
+      selectedTerminal,
+      inputValue,
+      selectedDate,
+      showDatePicker,
+      BusInfo,
+      TerminalInfo,
+      loading,
+    } = this.state;
 
     const showResults = BusInfo && BusInfo.length > 0;
 
     return (
       <View style={styles.container}>
-        < View style={styles.changeButtonContainer}>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('TrainSchedule')}>
-          <View style={styles.changeButton}>
-            <Text style={styles.text}>기차 시간표</Text>
-          </View>
-        </TouchableOpacity>
+        <View style={styles.changeButtonContainer}>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('TrainSchedule')}
+          >
+            <View style={styles.changeButton}>
+              <Text style={styles.text}>기차 시간표</Text>
+            </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.PickerContainer}>
           <Text style={styles.label}>도착 터미널:</Text>
@@ -197,25 +216,32 @@ class BusSchedule extends Component {
             <Picker
               style={styles.input}
               selectedValue={selectedTerminal}
-              onValueChange={this.handleTerminalChange}>
-                <Picker.Item label="도착 터미널을 선택하세요." value="" />
+              onValueChange={this.handleTerminalChange}
+            >
+              <Picker.Item label="도착 터미널을 선택하세요." value="" />
               {TerminalInfo.map((terminal, index) => (
-                <Picker.Item key={index} label={terminal.terminalNm} value={terminal.terminalId} />
+                <Picker.Item
+                  key={index}
+                  label={terminal.terminalNm}
+                  value={terminal.terminalId}
+                />
               ))}
             </Picker>
           ) : (
             <Picker
               style={styles.input}
               selectedValue={selectedTerminal}
-              onValueChange={this.handleTerminalChange}>
+              onValueChange={this.handleTerminalChange}
+            >
               <Picker.Item label="도착 터미널" value="" />
-              </Picker>
-          )
-          }
+            </Picker>
+          )}
         </View>
         <View style={styles.ButtonContainer}>
           <View style={styles.dateContainer}>
-            <TouchableOpacity onPress={() => this.setState({ showDatePicker: true })}>
+            <TouchableOpacity
+              onPress={() => this.setState({ showDatePicker: true })}
+            >
               <View style={styles.Button}>
                 <Text style={styles.text}>출발 날짜 선택</Text>
               </View>
@@ -253,7 +279,9 @@ class BusSchedule extends Component {
                 <Text>출발시각: {info.depPlandTime}</Text>
                 <Text>도착터미널: {info.arrPlace}</Text>
                 <Text>도착시각: {info.arrPlandTime}</Text>
-                <Text>운임: {info.fare}     등급: {info.gradeName}</Text>
+                <Text>
+                  운임: {info.fare} 등급: {info.gradeName}
+                </Text>
               </View>
             ))}
           </ScrollView>
@@ -269,14 +297,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#86CC57',
     padding: 7,
     borderRadius: 5,
-    borderColor : 'gray',
+    borderColor: 'gray',
   },
   changeButton: {
     alignItems: 'center',
     backgroundColor: '#86CC57',
     padding: 7,
     borderRadius: 5,
-    borderColor : 'gray',
+    borderColor: 'gray',
     marginBottom: 10,
     marginTop: 10,
   },
@@ -285,20 +313,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#86CC57',
     padding: 7,
     borderRadius: 5,
-    borderColor : 'gray',
+    borderColor: 'gray',
     width: 100,
-    marginLeft: 10
+    marginLeft: 10,
   },
   ButtonContainer: {
     flexDirection: 'row',
     alignItems: 'top',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   changeButtonContainer: {
     width: '90%',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginBottom: 10
+    marginBottom: 10,
   },
   PickerContainer: {
     width: '90%',
@@ -313,23 +341,21 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   text: {
-      fontSize: 17,
-      marginBottom: 20,
+    fontSize: 17,
+    marginBottom: 20,
   },
   container: {
     flex: 1,
     justifyContent: 'top',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   input: {
     height: 55,
     flex: 1,
     padding: 16,
-    fontSize: 17
+    fontSize: 17,
   },
-  dateContainer: {
-    
-  },
+  dateContainer: {},
   scrollContainer: {
     flex: 1,
     width: '100%',

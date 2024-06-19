@@ -18,7 +18,7 @@ import * as TaskManager from 'expo-task-manager'; // Expo 백그라운드 태스
 import * as Location from 'expo-location'; // Expo 위치 API 가져오기
 import { Picker } from '@react-native-picker/picker'; // React Native Picker 컴포넌트 가져오기
 
-const SERVER_URL = 'https://advanced-sawfish-faithful.ngrok-free.app/'; // 서버 URL
+const SERVER_URL = 'https://profound-leech-engaging.ngrok-free.app'; // 서버 URL
 const LOCATION_TASK_NAME = 'background-location-task'; // 백그라운드 위치 태스크 이름
 const { width, height } = Dimensions.get('window');
 
@@ -37,7 +37,6 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
   if (data) {
     const { locations } = data;
     const location = locations[0];
-    //console.log('Background location:', location);
 
     // 사용자 인증 정보 확인
     const user = firebase.auth().currentUser;
@@ -49,7 +48,7 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
     // Socket이 연결되어 있다면 위치 데이터 전송
     if (globalSocket && globalSocket.connected) {
       const speed = location.coords.speed;
-      if (speed >= 8.33) {
+      if (speed >= 11.11) {
         //30km/h = 8.33m/s, 35km/h = 9.72m/s, 40km/h = 11.11m/s
         hasExceededSpeed = true;
       }
@@ -147,18 +146,18 @@ const Dashboard = ({ route }) => {
       // Socket.IO 연결 해제
       if (globalSocket) {
         globalSocket.emit('disconnectUser', globalSocket.id);
-        if(point !== 0) {
+        if (point !== 0) {
           Alert.alert(
             '알림',
             `GPS 연결이 종료되었습니다.\n(적립된 포인트 : ${point})`,
-            [{ text: '확인'}],
+            [{ text: '확인' }],
             { cancelable: false }
           );
         } else {
           Alert.alert(
             '알림',
             `GPS 연결이 종료되었습니다.`,
-            [{ text: '확인'}],
+            [{ text: '확인' }],
             { cancelable: false }
           );
         }
@@ -226,7 +225,9 @@ const Dashboard = ({ route }) => {
           globalSocket.connect();
 
           // on_bus 위치 벗어날 시
-          globalSocket.on('LocationChange', async () => {key_on = 1});
+          globalSocket.on('LocationChange', async () => {
+            key_on = 1;
+          });
 
           globalSocket.off('LocationError');
           globalSocket.on('LocationError', async () => {
@@ -307,7 +308,9 @@ const Dashboard = ({ route }) => {
               [
                 {
                   text: '확인',
-                  onPress: () => {switch_off(0), setSwitchValue(false)}
+                  onPress: () => {
+                    switch_off(0), setSwitchValue(false);
+                  },
                 },
               ],
               { cancelable: false }
@@ -357,15 +360,22 @@ const Dashboard = ({ route }) => {
               console.log(result.point);
               switch_off(result.point);
             } else {
-              if(switch_key == 0) {
+              if (switch_key == 0) {
                 Alert.alert(
                   '주의사항',
                   `지금 종료하면 포인트를 얻지 못합니다.\n버스에서 내리면 종료해주세요.`,
                   [
-                    { text: '취소', onPress: () => {setSwitchValue(true)} },
+                    {
+                      text: '취소',
+                      onPress: () => {
+                        setSwitchValue(true);
+                      },
+                    },
                     {
                       text: '종료',
-                      onPress: () => {switch_off(0)}
+                      onPress: () => {
+                        switch_off(0);
+                      },
                     },
                   ]
                 );
@@ -380,7 +390,12 @@ const Dashboard = ({ route }) => {
               '알림',
               `버스를 탑승하지 않으셨습니다.\nGPS 연결을 종료합니다.`,
               [
-                { text: '확인', onPress: () => {switch_off(0)} }
+                {
+                  text: '확인',
+                  onPress: () => {
+                    switch_off(0);
+                  },
+                },
               ]
             );
           });
@@ -391,7 +406,12 @@ const Dashboard = ({ route }) => {
               '알림',
               `설정한 노선과 다른 정류장에서 하차하셨습니다.\n포인트가 지급되지 않습니다.`,
               [
-                { text: '확인', onPress: () => {switch_off(0)} }
+                {
+                  text: '확인',
+                  onPress: () => {
+                    switch_off(0);
+                  },
+                },
               ]
             );
           });
@@ -523,7 +543,10 @@ const Dashboard = ({ route }) => {
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity style={styles.View_notice} onPress={() => navigation.navigate('Notice')}>
+        <TouchableOpacity
+          style={styles.View_notice}
+          onPress={() => navigation.navigate('Notice')}
+        >
           <Image
             style={styles.notice_image}
             source={require('../assets/notice.png')}
@@ -556,7 +579,7 @@ const styles = StyleSheet.create({
   outerContainer: {
     alignItems: 'center',
     paddingTop: height * 0.02,
-    height: height * 0.43
+    height: height * 0.43,
   },
   middleContainer: {
     flexDirection: 'row',

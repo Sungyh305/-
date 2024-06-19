@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Alert, Image, Modal, TextInput, FlatList } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+  Alert,
+  Image,
+  Modal,
+  TextInput,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { firebase } from '../config';
 import * as ImagePicker from 'expo-image-picker';
@@ -23,24 +33,28 @@ const Profile = ({ route }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userDoc = await firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).get();
+        const userDoc = await firebase
+          .firestore()
+          .collection('users')
+          .doc(firebase.auth().currentUser.uid)
+          .get();
         if (userDoc.exists) {
           setUser(userDoc.data());
           const coupons = userDoc.data().coupons;
           if (coupons && coupons.length > 0) {
-            coupons.forEach(coupon => {
+            coupons.forEach((coupon) => {
               switch (coupon) {
                 case '셔틀버스 1회 이용권':
-                  setShuttleBusCount(prevCount => prevCount + 1);
+                  setShuttleBusCount((prevCount) => prevCount + 1);
                   break;
                 case '코나킹 3000원 쿠폰':
-                  setKonaKingCount(prevCount => prevCount + 1);
+                  setKonaKingCount((prevCount) => prevCount + 1);
                   break;
                 case 'CU 3000원 기프티콘':
-                  setCuGiftCard3000Count(prevCount => prevCount + 1);
+                  setCuGiftCard3000Count((prevCount) => prevCount + 1);
                   break;
                 case 'CU 5000원 기프티콘':
-                  setCuGiftCard5000Count(prevCount => prevCount + 1);
+                  setCuGiftCard5000Count((prevCount) => prevCount + 1);
                   break;
                 default:
                   break;
@@ -52,12 +66,14 @@ const Profile = ({ route }) => {
         }
 
         // 스토리지에서 프로필 이미지 가져오기
-        const storageRef = firebase.storage().ref().child(`profile_images/${firebase.auth().currentUser.uid}`);
+        const storageRef = firebase
+          .storage()
+          .ref()
+          .child(`profile_images/${firebase.auth().currentUser.uid}`);
         try {
           const url = await storageRef.getDownloadURL();
           setUserPhoto({ uri: url });
-        } catch (error) {
-        }
+        } catch (error) {}
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -70,24 +86,28 @@ const Profile = ({ route }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userDoc = await firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).get();
+        const userDoc = await firebase
+          .firestore()
+          .collection('users')
+          .doc(firebase.auth().currentUser.uid)
+          .get();
         if (userDoc.exists) {
           setUser(userDoc.data());
           if (route.params && route.params.couponname) {
             const { couponname } = route.params;
             switch (couponname) {
               case '셔틀버스 1회 이용권':
-                setShuttleBusCount(prevCount => prevCount + 1);
+                setShuttleBusCount((prevCount) => prevCount + 1);
                 break;
               case '코나킹 3000원 쿠폰':
-                setKonaKingCount(prevCount => prevCount + 1);
+                setKonaKingCount((prevCount) => prevCount + 1);
                 console.log('ok');
                 break;
               case 'CU 3000원 기프티콘':
-                setCuGiftCard3000Count(prevCount => prevCount + 1);
+                setCuGiftCard3000Count((prevCount) => prevCount + 1);
                 break;
               case 'CU 5000원 기프티콘':
-                setCuGiftCard5000Count(prevCount => prevCount + 1);
+                setCuGiftCard5000Count((prevCount) => prevCount + 1);
                 break;
               default:
                 break;
@@ -114,9 +134,14 @@ const Profile = ({ route }) => {
   };
 
   const changePassword = () => {
-    firebase.auth().sendPasswordResetEmail(firebase.auth().currentUser.email)
+    firebase
+      .auth()
+      .sendPasswordResetEmail(firebase.auth().currentUser.email)
       .then(() => {
-        Alert.alert('알림', '비밀번호를 바꿀 수 있는 메세지를 이메일로 전송하였습니다.');
+        Alert.alert(
+          '알림',
+          '비밀번호를 바꿀 수 있는 메세지를 이메일로 전송하였습니다.'
+        );
       })
       .catch((error) => {
         alert(error);
@@ -126,51 +151,64 @@ const Profile = ({ route }) => {
   // 프로필 이미지 변경
   const selectPhoto = async () => {
     try {
-        // 권한 요청
-        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (permissionResult.granted === false) {
-            Alert.alert('Permission Required', 'Permission to access camera roll is required!');
-            return;
-        }
+      // 권한 요청
+      const permissionResult =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (permissionResult.granted === false) {
+        Alert.alert(
+          'Permission Required',
+          'Permission to access camera roll is required!'
+        );
+        return;
+      }
 
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        const { uri } = result.assets[0]; // result.assets[0]에서 uri 추출
+        const response = await fetch(uri);
+        const blob = await response.blob();
+
+        const storageRef = firebase
+          .storage()
+          .ref()
+          .child(`profile_images/${firebase.auth().currentUser.uid}`);
+        await storageRef.put(blob);
+        const url = await storageRef.getDownloadURL();
+
+        const userRef = firebase
+          .firestore()
+          .collection('users')
+          .doc(firebase.auth().currentUser.uid);
+        await userRef.update({
+          photoURL: url,
         });
 
-        if (!result.canceled && result.assets && result.assets.length > 0) {
-            const { uri } = result.assets[0]; // result.assets[0]에서 uri 추출
-            const response = await fetch(uri);
-            const blob = await response.blob();
+        setUserPhoto({ uri });
 
-            const storageRef = firebase.storage().ref().child(`profile_images/${firebase.auth().currentUser.uid}`);
-            await storageRef.put(blob);
-            const url = await storageRef.getDownloadURL();
-
-            const userRef = firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid);
-            await userRef.update({
-                photoURL: url,
-            });
-
-            setUserPhoto({ uri });
-
-            // 이미지 변경 성공 알림 띄우기
-            Alert.alert('알림', '프로필 이미지가 변경되었습니다.');
-            navigation.navigate('Dashboard', { updatedImage: url });
-        } else {
-            console.log('User cancelled image picker');
-        }
+        // 이미지 변경 성공 알림 띄우기
+        Alert.alert('알림', '프로필 이미지가 변경되었습니다.');
+        navigation.navigate('Dashboard', { updatedImage: url });
+      } else {
+        console.log('User cancelled image picker');
+      }
     } catch (error) {
-        console.error('Error uploading image to Firebase:', error);
-        Alert.alert('Error', 'Failed to upload image to Firebase.');
+      console.error('Error uploading image to Firebase:', error);
+      Alert.alert('Error', 'Failed to upload image to Firebase.');
     }
   };
 
   // 이름 변경 함수
   const updateName = async (newname) => {
-    const userRef = firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid);
+    const userRef = firebase
+      .firestore()
+      .collection('users')
+      .doc(firebase.auth().currentUser.uid);
 
     try {
       await userRef.update({
@@ -180,7 +218,9 @@ const Profile = ({ route }) => {
       Alert.alert('알림', '이름이 업데이트되었습니다.', [
         {
           text: '확인',
-          onPress: () => { setModalVisible(false); },
+          onPress: () => {
+            setModalVisible(false);
+          },
         },
       ]);
       navigation.navigate('Dashboard', { updatedName: newname });
@@ -192,14 +232,26 @@ const Profile = ({ route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.iconButtonRight} onPress={() => { setModalVisible(true); }}>
+        <TouchableOpacity
+          style={styles.iconButtonRight}
+          onPress={() => {
+            setModalVisible(true);
+          }}
+        >
           <Icon name="edit" size={24} color="black" />
         </TouchableOpacity>
       </View>
       <View style={styles.userInfoSection}>
         <TouchableOpacity style={styles.userRow} onPress={selectPhoto}>
           {userPhoto ? (
-            <Image source={userPhoto} style={{ width: width * 0.34, height: width * 0.34, borderRadius: 60 }} />
+            <Image
+              source={userPhoto}
+              style={{
+                width: width * 0.34,
+                height: width * 0.34,
+                borderRadius: 60,
+              }}
+            />
           ) : (
             <Icon name="account-circle" size={120} color="grey" />
           )}
@@ -207,21 +259,30 @@ const Profile = ({ route }) => {
       </View>
       <View style={styles.details}>
         <View style={{ alignItems: 'center' }}>
-          <Text style={styles.detailText}>이   름</Text>
+          <Text style={styles.detailText}>이 름</Text>
           <Text style={styles.detailText}>이메일</Text>
           <Text style={styles.detailText}>포인트</Text>
-          <Text style={styles.detailText}>쿠   폰</Text>
+          <Text style={styles.detailText}>쿠 폰</Text>
         </View>
         <View style={{ alignItems: 'left' }}>
           <Text style={styles.detailText}>{user.name}</Text>
           <Text style={styles.detailemailText}>{user.email}</Text>
           <Text style={styles.detailText}>{user.point}</Text>
-          <TouchableOpacity onPress={() => { setcouponModalVisible(true); }}>
-            <Text style={styles.detailText}>보유 갯수 : {user.coupons ? user.coupons.length : 0}개</Text>
+          <TouchableOpacity
+            onPress={() => {
+              setcouponModalVisible(true);
+            }}
+          >
+            <Text style={styles.detailText}>
+              보유 갯수 : {user.coupons ? user.coupons.length : 0}개
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
-      <TouchableOpacity style={styles.point} onPress={() => navigation.navigate('PointHistory')}>
+      <TouchableOpacity
+        style={styles.point}
+        onPress={() => navigation.navigate('PointHistory')}
+      >
         <View>
           <Text style={styles.pointText}>포인트 적립 내역 및 상점</Text>
         </View>
@@ -229,7 +290,10 @@ const Profile = ({ route }) => {
       <TouchableOpacity style={styles.button} onPress={changePassword}>
         <Text style={styles.buttonText}>비밀번호 변경</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={{ alignItems: 'flex-end', marginStart: width * 0.65 }} onPress={logout}>
+      <TouchableOpacity
+        style={{ alignItems: 'flex-end', marginStart: width * 0.65 }}
+        onPress={logout}
+      >
         <Text style={styles.buttonText}>로그아웃</Text>
       </TouchableOpacity>
       <Modal
@@ -267,19 +331,27 @@ const Profile = ({ route }) => {
         </View>
       </Modal>
       <Modal
-      animationType="slide"
-      transparent={true}
-      visible={couponmodalVisible}
-      onRequestClose={() => {
-        setModalVisible(!couponmodalVisible);
-      }}
+        animationType="slide"
+        transparent={true}
+        visible={couponmodalVisible}
+        onRequestClose={() => {
+          setModalVisible(!couponmodalVisible);
+        }}
       >
         <View style={styles.modal_view}>
           <View style={styles.modal_coupon_content}>
-            <Text style={styles.detailText}>셔틀버스 1회 이용권 : {shuttleBusCount}개</Text>
-            <Text style={styles.detailText}>코나킹 3000원 쿠폰 : {konaKingCount}개</Text>
-            <Text style={styles.detailText}>CU 3000원 기프티콘 : {cuGiftCard3000Count}개</Text>
-            <Text style={styles.detailText}>CU 5000원 기프티콘 : {cuGiftCard5000Count}개</Text>
+            <Text style={styles.detailText}>
+              셔틀버스 1회 이용권 : {shuttleBusCount}개
+            </Text>
+            <Text style={styles.detailText}>
+              코나킹 3000원 쿠폰 : {konaKingCount}개
+            </Text>
+            <Text style={styles.detailText}>
+              CU 3000원 기프티콘 : {cuGiftCard3000Count}개
+            </Text>
+            <Text style={styles.detailText}>
+              CU 5000원 기프티콘 : {cuGiftCard5000Count}개
+            </Text>
             <TouchableOpacity
               style={styles.modal_button}
               onPress={() => setcouponModalVisible(false)}
