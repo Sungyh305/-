@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  Button,
   TextInput,
   StyleSheet,
   ScrollView,
@@ -11,7 +10,6 @@ import {
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { withNavigation } from '@react-navigation/native';
 
 class BusSchedule extends Component {
   constructor(props) {
@@ -82,7 +80,6 @@ class BusSchedule extends Component {
     this.setState({ loading: true });
     const currentTime = this.getCurrentTime();
     const apiUrl = this.generateAPIUrl();
-    console.log(apiUrl);
     if (!apiUrl) {
       this.setState({ loading: false });
       return;

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  Button,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
@@ -11,7 +10,6 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { CityStationData } from './CityStationData';
-import { withNavigation } from '@react-navigation/native';
 
 class TrainSchedule extends Component {
   constructor(props) {

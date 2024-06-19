@@ -29,13 +29,27 @@ const Registration = () => {
           name,
           point: 0,
         });
+      // 포인트 적립 내역 하위 컬렉션에 추가
+      const pointLog = {
+        date,
+        content,
+        points,
+      };
+      await firebase
+        .firestore()
+        .collection('users')
+        .doc(user.uid)
+        .collection('pointLogs')
+        .add(pointLog);
       // 이메일 확인을 위한 이메일 발송
       await firebase.auth().currentUser.sendEmailVerification({
         handleCodeInApp: true,
         url: 'https://login-943f1.firebaseapp.com',
       });
       // 회원가입 성공 메시지 표시
-      alert('Verification email sent');
+      Alert.alert('알림', `회원가입에 성공하였습니다.`, [{ text: '확인' }], {
+        cancelable: false,
+      });
     } catch (error) {
       alert(error.message);
     }

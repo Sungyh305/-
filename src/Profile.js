@@ -9,7 +9,6 @@ import {
   Image,
   Modal,
   TextInput,
-  FlatList,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { firebase } from '../config';

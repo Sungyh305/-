@@ -2,8 +2,8 @@ const ranges = [
   {
     id: 'range1',
     points: [
-      { latitude: 36.800743, longitude: 127.070258 },
-      { latitude: 36.79691, longitude: 127.079217 },
+      { latitude: 36.79553, longitude: 127.069628 },
+      { latitude: 36.801026, longitude: 127.078431 },
     ],
   },
   {
@@ -42,10 +42,10 @@ const ranges = [
     ],
   },
   {
-    id: 'range7', //애는 천안터미널 101부터 다시
+    id: 'range7', //천안터미널
     points: [
-      { latitude: 36.808989, longitude: 127.104971 },
-      { latitude: 36.803278, longitude: 127.109761 },
+      { latitude: 36.802526, longitude: 127.103735 },
+      { latitude: 36.808486, longitude: 127.109459 },
     ],
   },
   {
@@ -93,57 +93,57 @@ const ranges = [
   {
     id: 'range14',
     points: [
-      { latitude: 36.826409, longitude: 127.141543 },
-      { latitude: 36.823434, longitude: 127.151579 },
+      { latitude: 36.824083, longitude: 127.14064 },
+      { latitude: 36.825964, longitude: 127.151807 },
     ],
   },
   {
     id: 'range15',
     points: [
-      { latitude: 36.825882, longitude: 127.150704 },
-      { latitude: 36.822776, longitude: 127.156684 },
+      { latitude: 36.823008, longitude: 127.15075 },
+      { latitude: 36.825593, longitude: 127.156845 },
     ],
   },
   {
     id: 'range16',
     points: [
-      { latitude: 36.825341, longitude: 127.156284 },
-      { latitude: 36.823086, longitude: 127.162288 },
+      { latitude: 36.823038, longitude: 127.15603 },
+      { latitude: 36.825357, longitude: 127.161588 },
     ],
   },
   {
     id: 'range17',
     points: [
-      { latitude: 36.824061, longitude: 127.159853 },
-      { latitude: 36.819444, longitude: 127.162889 },
+      { latitude: 36.818845, longitude: 127.159751 },
+      { latitude: 36.824409, longitude: 127.164246 },
     ],
   },
   {
     id: 'range18',
     points: [
-      { latitude: 36.820481, longitude: 127.160454 },
       { latitude: 36.817746, longitude: 127.156225 },
+      { latitude: 36.820481, longitude: 127.160454 },
     ],
   },
   {
     id: 'range19',
     points: [
-      { latitude: 36.820138, longitude: 127.15673 },
       { latitude: 36.817291, longitude: 127.152669 },
+      { latitude: 36.820138, longitude: 127.15673 },
     ],
   },
   {
     id: 'range20',
     points: [
-      { latitude: 36.818141, longitude: 127.154358 },
-      { latitude: 36.821491, longitude: 127.150601 },
+      { latitude: 36.817509, longitude: 127.150342 },
+      { latitude: 36.820672, longitude: 127.153191 },
     ],
   },
   {
     id: 'range21', //천텀
     points: [
-      { latitude: 36.820349, longitude: 127.15389 },
-      { latitude: 36.823144, longitude: 127.150966 },
+      { latitude: 36.819827, longitude: 127.150753 },
+      { latitude: 36.824084, longitude: 127.154156 },
     ],
   },
   {
@@ -238,7 +238,7 @@ const ranges = [
     ],
   },
   {
-    id: 'range114', //여기까지 천안역 수정됨 정류장, 천안역말고 수정안됨
+    id: 'range114', //천안역
     points: [
       { latitude: 36.801849, longitude: 127.141977 },
       { latitude: 36.810837, longitude: 127.144726 },
@@ -247,78 +247,78 @@ const ranges = [
   {
     id: 'range115',
     points: [
-      { latitude: 36.795953, longitude: 127.086178 },
-      { latitude: 36.787585, longitude: 127.091218 },
+      { latitude: 36.787473, longitude: 127.085788 },
+      { latitude: 36.796229, longitude: 127.088935 },
     ],
   },
   {
     id: 'range116',
     points: [
-      { latitude: 36.791233, longitude: 127.086141 },
-      { latitude: 36.788676, longitude: 127.094327 },
+      { latitude: 36.788288, longitude: 127.08727 },
+      { latitude: 36.791129, longitude: 127.094168 },
     ],
   },
   {
     id: 'range117',
     points: [
-      { latitude: 36.792732, longitude: 127.092055 },
-      { latitude: 36.787775, longitude: 127.099468 },
+      { latitude: 36.789462, longitude: 127.09236 },
+      { latitude: 36.791821, longitude: 127.098042 },
     ],
   },
   {
     id: 'range118',
     points: [
-      { latitude: 36.791286, longitude: 127.09423 },
-      { latitude: 36.794317, longitude: 127.097998 },
+      { latitude: 36.791186, longitude: 127.094239 },
+      { latitude: 36.794373, longitude: 127.098053 },
     ],
   },
   {
     id: 'range119',
     points: [
-      { latitude: 36.793299, longitude: 127.096481 },
-      { latitude: 36.796421, longitude: 127.100197 },
+      { latitude: 36.793071, longitude: 127.096245 },
+      { latitude: 36.796491, longitude: 127.100338 },
     ],
   },
   {
     id: 'range120',
     points: [
-      { latitude: 36.794534, longitude: 127.099129 },
-      { latitude: 36.797526, longitude: 127.101542 },
+      { latitude: 36.79433, longitude: 127.099147 },
+      { latitude: 36.797522, longitude: 127.101497 },
     ],
   },
   {
     id: 'range121',
     points: [
-      { latitude: 36.798031, longitude: 127.100865 },
-      { latitude: 36.795051, longitude: 127.106334 },
+      { latitude: 36.795202, longitude: 127.100848 },
+      { latitude: 36.798123, longitude: 127.10611 },
     ],
   },
   {
     id: 'range122',
     points: [
-      { latitude: 36.794992, longitude: 127.104202 },
-      { latitude: 36.799595, longitude: 127.111146 },
+      { latitude: 36.795507, longitude: 127.103567 },
+      { latitude: 36.799004, longitude: 127.110257 },
     ],
   },
   {
     id: 'range123',
     points: [
-      { latitude: 36.797046, longitude: 127.107972 },
-      { latitude: 36.799979, longitude: 127.116107 },
+      { latitude: 36.796993, longitude: 127.107939 },
+      { latitude: 36.800223, longitude: 127.116095 },
     ],
   },
   {
     id: 'range201',
     points: [
-      { latitude: 36.799845, longitude: 127.098462 },
-      { latitude: 36.795684, longitude: 127.10253 },
+      { latitude: 36.793538, longitude: 127.097041 },
+      { latitude: 36.802309, longitude: 127.105558 },
     ],
   },
   {
     id: 'range202',
     points: [
-      { latitude: 36.796595, longitude: 127.099381 },
-      { latitude: 36.791001, longitude: 127.104761 },
+      { latitude: 36.790634, longitude: 127.098394 },
+      { latitude: 36.797743, longitude: 127.106947 },
     ],
   },
   {

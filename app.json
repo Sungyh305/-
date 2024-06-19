@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "my-app",
+    "name": "버스! 어디가?",
     "slug": "my-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon2.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -16,6 +16,7 @@
     },
     "android": {
       "adaptiveIcon": {
+        "icon": "./assets/icon.png",
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
@@ -24,7 +25,7 @@
           "apiKey": "AIzaSyDcT2FPLOsWCCgeKJgH0MVT9ehPiWe4IxI"
         }
       },
-      "package": "com.hyeonu.myapp",
+      "package": "com.hyeonu.busodiga",
       "networkSecurityConfig": "./android/app/src/main/res/xml/network_security_config.xml",
       "permissions": [
         "ACCESS_COARSE_LOCATION",

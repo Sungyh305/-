@@ -1,5 +1,14 @@
 import React, { useState, useRef } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, Modal } from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Dimensions,
+  Modal,
+} from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 const Notice = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -134,28 +143,28 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
-    paddingTop: 20,
+    paddingTop: height * 0.025,
   },
   box_view: {
-    width: 320,
-    height: 220,
+    width: width * 0.9,
+    height: height * 0.29,
     borderRadius: 8,
-    paddingTop: 10,
-    backgroundColor: '#86CC57',
-    marginBottom: 20,
+    paddingTop: height * 0.015,
+    backgroundColor: '#DAD0C0',
+    marginBottom: height * 0.02,
     overflow: 'hidden', // 뷰를 벗어나는 내용 숨김
   },
   header_view: {
-    width: 300,
-    height: 60,
+    width: width * 0.84,
+    height: height * 0.08,
     borderRadius: 8,
-    marginLeft: 10,
-    backgroundColor: '#CCBEA7',
+    marginLeft: width * 0.03,
+    backgroundColor: '#F8CD8E',
   },
   inquiry_view: {
     alignItems: 'flex-end',
-    marginTop: 155,
-    marginStart: 190,
+    marginTop: height * 0.2,
+    marginStart: width * 0.5,
   },
   header_text: {
     fontSize: 17,
@@ -171,16 +180,16 @@ const styles = StyleSheet.create({
   },
   body_text: {
     fontSize: 17,
-    padding: 10,
-    lineHeight: 30,
+    padding: width * 0.03,
+    lineHeight: height * 0.042,
     textAlign: 'left',
     flexWrap: 'wrap', // 텍스트 줄바꿈 허용
   },
   modal_body_text: {
-    width: 350,
+    width: width * 0.97,
     fontSize: 17,
-    padding: 15,
-    lineHeight: 30,
+    padding: width * 0.04,
+    lineHeight: height * 0.04,
     textAlign: 'left',
   },
   inquiry_text: {
@@ -188,10 +197,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   modal_inquiry_text: {
-    width: 350,
+    width: width * 0.9,
     fontSize: 17,
-    padding: 15,
-    lineHeight: 30,
+    padding: width * 0.04,
+    lineHeight: height * 0.04,
     textAlign: 'center',
   },
   button_text: {
@@ -199,12 +208,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   button: {
-    width: 80,
-    padding: 15,
-    backgroundColor: '#4BB863',
+    width: width * 0.3,
+    padding: width * 0.04,
+    backgroundColor: '#E7D1AF',
     borderRadius: 8,
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: height * 0.02,
     borderColor: 'black',
     borderWidth: 0.5,
   },
@@ -214,19 +223,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modal_header_view: {
-    width: 330,
-    height: 60,
+    width: width * 0.92,
+    height: height * 0.085,
     borderRadius: 8,
-    backgroundColor: '#CCBEA7',
+    backgroundColor: '#F8CD8E',
     borderColor: 'black',
     borderWidth: 0.5,
   },
   modal_content: {
-    width: 350,
+    width: width * 0.97,
     borderRadius: 8,
-    paddingTop: 10,
-    backgroundColor: '#86CC57',
-    marginBottom: 20,
+    paddingTop: width * 0.03,
+    backgroundColor: '#DAD0C0',
+    marginBottom: height * 0.025,
     alignItems: 'center',
     elevation: 5,
     borderColor: 'black',
